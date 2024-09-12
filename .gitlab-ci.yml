@@ -16,7 +16,6 @@ stages:
   - staging # - join-reports
   - pages
   - publish  # might not need in our case
-  - scan
 
 # Include CI templates
 include:
@@ -45,11 +44,6 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml' 
 
-
-
-python-gemnasium-scan:
-  rules:
-    - when: never
 
 python-test: 
   rules:
