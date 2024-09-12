@@ -38,7 +38,7 @@ tmc-csp:
     auto_stop_in: 1 minute
   rules:
     - exists:
-        - tests/**/*
+        - Mid/tests/**/*
 
 
 stop-k8s-test-mid-with-csp:
