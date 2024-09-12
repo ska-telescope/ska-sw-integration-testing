@@ -1,0 +1,217 @@
+mid-on-demand-deploy:
+  stage: on-demand
+  tags:
+    - ska-k8s
+  variables:
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-mid-on-demand"
+    TARANTA_ENABLED: "true"
+  script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - make k8s-install-chart
+    - make k8s-wait
+    - make taranta-link
+    - make alarm-handler-configurator-link
+  environment:
+    name: $CI_PROJECT_NAME/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      # This repetition is needed for gitlab to parse the namespace correctly
+      namespace: $KUBE_NAMESPACE
+    on_stop: mid-on-demand-destroy
+  when: manual
+  allow_failure: true # need to keep this to unlock the pipeline
+
+mid-on-demand-destroy:
+  stage: on-demand
+  tags:
+    - ska-k8s
+  variables:
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-mid-on-demand"
+  script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - make k8s-uninstall-chart
+  environment:
+    name: $CI_PROJECT_NAME/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      # This repetition is needed for gitlab to parse the namespace correctly
+      namespace: $KUBE_NAMESPACE
+    action: stop
+  when: manual
+  allow_failure: true # need to keep this to unlock the pipeline
+
+mid-on-demand-deploy-mini-skampi:
+  stage: on-demand
+  tags:
+    - ska-k8s
+  variables:
+    DISH_SIMULATION_ENABLED: "false"
+    SDP_SIMULATION_ENABLED: "false"
+    CSP_SIMULATION_ENABLED: "false"
+    SUBARRAY_COUNT: 2
+    DISH_TANGO_HOST: "tango-databaseds"
+    PORT: "10000"
+    DISH_INDEX_1: "001"
+    DISH_INDEX_36: "036"
+    DISH_INDEX_63: "063"
+    DISH_INDEX_100: "100"
+    DISH_NAMESPACE_1: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX_1"
+    DISH_NAMESPACE_2: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX_36"
+    DISH_NAMESPACE_3: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX_63"
+    DISH_NAMESPACE_4: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX_100"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-tmc-test"
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-tmc-test"
+    TARANTA_ENABLED: "true"
+    KUBE_NAMESPACE_SDP: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-tmc-test-sdp"
+  script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - make k8s-install-chart
+    - chmod u=rwx,go=rx tests/scripts/sdp_data_copy.sh
+    - ${PWD}/tests/scripts/sdp_data_copy.sh create_pod
+    - make taranta-link
+  needs:
+    - on-demand-dish-lmc-dish001
+    - on-demand-dish-lmc-dish036
+    - on-demand-dish-lmc-dish063
+    - on-demand-dish-lmc-dish100
+  environment:
+    name: $CI_PROJECT_NAME/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      # This repetition is needed for gitlab to parse the namespace correctly
+      namespace: $KUBE_NAMESPACE
+    on_stop: mid-on-demand-destroy-mini-skampi
+  when: manual
+  allow_failure: true # need to keep this to unlock the pipeline
+
+
+
+
+on-demand-dish-lmc-dish001:
+  extends:
+    - dish-lmc-dish001
+  stage: on-demand
+  variables:
+    DISH_INDEX: "001"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+    TARANTA_ENABLED: "true"
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-on-demand-dish-lmc-001
+    action: stop
+  when: manual
+
+stop-on-demand-dish-lmc-001:
+    extends:
+      - stop-k8s-dish-lmc-001
+    stage: on-demand
+    variables:
+      KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-001"
+      DISH_HELM_RELEASE: "4.1.0"
+      K8S_DISH_LMC_CHART: "ska-dish-lmc"
+
+on-demand-dish-lmc-dish036:
+  extends:
+    - on-demand-dish-lmc-dish001
+  variables:
+    DISH_INDEX: "036"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+    TARANTA_ENABLED: "true"
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-on-demand-dish-lmc-036
+    action: stop
+  when: manual
+
+stop-on-demand-dish-lmc-036:
+  extends:
+    - stop-k8s-dish-lmc-001
+  stage: on-demand
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-036"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+
+on-demand-dish-lmc-dish063:
+  extends:
+    - on-demand-dish-lmc-dish001
+  variables:
+    DISH_INDEX: "063"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+    TARANTA_ENABLED: "true"
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-on-demand-dish-lmc-063
+    action: stop
+  when: manual
+
+stop-on-demand-dish-lmc-063:
+  extends:
+    - stop-k8s-dish-lmc-001
+  stage: on-demand
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-063"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+
+on-demand-dish-lmc-dish100:
+  extends:
+    - on-demand-dish-lmc-dish001
+  variables:
+    DISH_INDEX: "100"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-$DISH_INDEX"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+    TARANTA_ENABLED: "true"
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-on-demand-dish-lmc-100
+    action: stop
+  when: manual
+
+stop-on-demand-dish-lmc-100:
+  extends:
+    - stop-k8s-dish-lmc-001
+  stage: on-demand
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-dish-lmc-100"
+    DISH_HELM_RELEASE: "4.1.0"
+    K8S_DISH_LMC_CHART: "ska-dish-lmc"
+
+
+
+mid-on-demand-destroy-mini-skampi:
+  stage: on-demand
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-tmc-test"
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-on-demand-tmc-test"
+  script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - make k8s-uninstall-chart
+    - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
+    - ${PWD}/tests/scripts/sdp_data_copy.sh delete_pod
+    - make k8s-delete-namespace
+  environment:
+    name: $CI_PROJECT_NAME/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      # This repetition is needed for gitlab to parse the namespace correctly
+      namespace: $KUBE_NAMESPACE
+    action: stop
+  when: manual
+  allow_failure: true # need to keep this to unlock the pipeline
+

@@ -1,0 +1,52 @@
+k8s-test-dish-lmc:
+  stage: test
+  extends:
+    - k8s-test
+  tags:
+    - ska-k8s
+  variables:
+    DISH_SIMULATION_ENABLED: "false"
+    SUBARRAY_COUNT: 2
+    DISH_TANGO_HOST: "tango-databaseds"
+    PORT: "10000"
+    DISH_INDEX_1: "001"
+    DISH_INDEX_36: "036"
+    DISH_INDEX_63: "063"
+    DISH_INDEX_100: "100"
+    DISH_NAMESPACE_1: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_1"
+    DISH_NAMESPACE_2: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_36"
+    DISH_NAMESPACE_3: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_63"
+    DISH_NAMESPACE_4: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_100"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
+  script:
+    - make cred SERVICE_ACCOUNT=$DISH_LMC_SERVICE_ACCOUNT
+    - make k8s-install-chart
+    - make k8s-wait
+    - make k8s-test MARK=tmc_dish
+  needs:
+    - dish-lmc-dish001
+    - dish-lmc-dish036
+    - dish-lmc-dish063
+    - dish-lmc-dish100
+    - k8s-test-csp-dish
+  after_script:
+    - ls -al
+    - ls -al build
+    - ls -al tests
+    - pip3 install -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+    - make k8s-uninstall-chart
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-dish-lmc
+
+stop-k8s-test-dish-lmc:
+  extends:
+  - stop-k8s-test
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
+  script:
+    - make k8s-uninstall-chart
+    - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
+    - make k8s-delete-namespace

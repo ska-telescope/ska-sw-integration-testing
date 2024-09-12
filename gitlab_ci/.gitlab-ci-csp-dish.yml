@@ -1,0 +1,54 @@
+k8s-test-csp-dish:
+  extends:
+    - k8s-test
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    DISH_SIMULATION_ENABLED: "false"
+    CSP_SIMULATION_ENABLED: "false"
+    SUBARRAY_COUNT: 2
+    DISH_TANGO_HOST: "tango-databaseds"
+    PORT: "10000"
+    DISH_INDEX_1: "001"
+    DISH_INDEX_36: "036"
+    DISH_INDEX_63: "063"
+    DISH_INDEX_100: "100"
+    DISH_NAMESPACE_1: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_1"
+    DISH_NAMESPACE_2: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_36"
+    DISH_NAMESPACE_3: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_63"
+    DISH_NAMESPACE_4: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-$DISH_INDEX_100"
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-test-mid-csp-dish"
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-test-mid-csp-dish"
+  script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - make k8s-install-chart
+    - make k8s-wait
+    - make k8s-test MARK=tmc_csp_dish
+  needs:
+    - dish-lmc-dish001
+    - dish-lmc-dish036
+    - dish-lmc-dish063
+    - dish-lmc-dish100
+  environment:
+    name: $CI_PROJECT_NAME/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      # This repetition is needed for gitlab to parse the namespace correctly
+      namespace: $KUBE_NAMESPACE
+    on_stop: stop-k8s-test-csp-dish
+  allow_failure: false # need to keep this to unlock the pipeline
+
+
+stop-k8s-test-csp-dish:
+  stage: test
+  extends:
+    - mid-on-demand-destroy-mini-skampi
+  variables:
+    KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-test-mid-csp-dish"
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-test-mid-csp-dish"
+  script:
+  - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+  - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+  - make k8s-uninstall-chart
+  - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all

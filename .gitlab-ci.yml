@@ -72,6 +72,15 @@ include:
 # - project: 'ska-telescope/templates-repository'
 #   file: 'gitlab-ci/includes/xray-publish.gitlab-ci.yml'
 
+- local: '/gitlab_ci/.gitlab-ci-on-demand.yml'
+- local: '/gitlab_ci/.gitlab-ci-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-csp-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-sdp.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-csp.yml'
+- local: '/gitlab_ci/.gitlab-ci-integration.yml'
+- local: '/gitlab_ci/.gitlab-ci-staging.yml'
+
 
 k8s-test:
   tags:
@@ -83,6 +92,12 @@ k8s-test:
     COUNT: 1
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA'
     ADDMARK: ""
+  before_script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - 'make help | grep k8s-test'
+    - make k8s-install-chart
+    - make k8s-wait
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
