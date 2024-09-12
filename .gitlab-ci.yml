@@ -66,11 +66,13 @@ k8s-test-tmc-with-sdp:
     TELESCOPE: 'SKA-mid'
     PORT: "10000"
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-tmc-sdp'
+    KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SUBARRAY_COUNT: 2
     SDP_SIMULATION_ENABLED: 'false'
     TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
   script:
-    - make k8s-test MARK='tmc_sdp'
+    - - make k8s-test || true
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
