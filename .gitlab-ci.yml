@@ -21,11 +21,6 @@ stages:
 # Include CI templates
 include:
 
-# Python packages build,lint, test and publish
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/python.gitlab-ci.yml'
-
-
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
