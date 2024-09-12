@@ -51,3 +51,7 @@ stop-k8s-test-mid-with-csp:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-csp-mid'
   script:
     - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-mid-with-csp
+    auto_stop_in: 1 minute
