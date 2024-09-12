@@ -1,0 +1,88 @@
+# GitLab CI in conjunction with GitLab Runner can use Docker Engine to test and build any application.
+# Docker, when used with GitLab CI, runs each job in a separate and isolated container using the predefined image that is set up in .gitlab-ci.yml.
+# In this case we use the latest python docker image to build and test this project.
+image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_DRIVER: overlay2
+
+# cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
+# If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
+cache:
+  paths:
+    - build
+
+# The YAML file defines a set of jobs with constraints stating when they should be run.
+# You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
+# In this case we have only the test job which produce an artifacts (it must be placed into a directory called "public")
+# It is also specified that only the master branch will be subject of this job.
+
+stages:
+  - on-demand
+  - test
+  - integration
+  - publish
+  - staging
+  - pages
+  - scan
+  - lifecycle
+
+include:
+
+# Release Automation
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+
+# Python packages build,lint, test and publish
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+
+# k8s steps
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+
+# integration job
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/deploy.integration.gitlab-ci.yml'
+
+# staging job
+- project: "ska-telescope/templates-repository"
+  file: "gitlab-ci/includes/deploy.staging.gitlab-ci.yml"
+
+# Create Gitlab CI badges from CI metrics
+# https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+
+# # Publish bdd test results on Jira.
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/xray-publish.gitlab-ci.yml'
+
+- local: '/gitlab_ci/.gitlab-ci-on-demand.yml'
+- local: '/gitlab_ci/.gitlab-ci-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-csp-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-dish.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-sdp.yml'
+- local: '/gitlab_ci/.gitlab-ci-tmc-csp.yml'
+- local: '/gitlab_ci/.gitlab-ci-integration.yml'
+- local: '/gitlab_ci/.gitlab-ci-staging.yml'
+
+
+k8s-test:
+  tags:
+    - ska-k8s
+  variables:
+    SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA"
+    DISH_SIMULATION_ENABLED: "true"
+    SUBARRAY_COUNT: 2
+    COUNT: 1
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA'
+    ADDMARK: ""
+  before_script:
+    - make cred SERVICE_ACCOUNT=$SERVICE_ACCOUNT
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - 'make help | grep k8s-test'
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
