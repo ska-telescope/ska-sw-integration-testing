@@ -8,7 +8,9 @@ from ska_control_model import ObsState
 from ska_telmodel.schema import validate as telmodel_validate
 
 from Mid.tests.conftest import MID_DELAY_JSON, MID_DELAYMODEL_VERSION
-from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.central_node_mid import (
+    CentralNodeWrapperMid,
+)
 from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
 from Mid.tests.resources.test_harness.event_recorder import EventRecorder
 from Mid.tests.resources.test_harness.helpers import (

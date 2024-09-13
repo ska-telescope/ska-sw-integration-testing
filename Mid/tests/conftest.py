@@ -16,7 +16,9 @@ from ska_tango_testing.mock.tango.event_callback import (
 )
 from tango import DevState
 
-from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.central_node_mid import (
+    CentralNodeWrapperMid,
+)
 from Mid.tests.resources.test_harness.constant import centralnode, csp_master
 from Mid.tests.resources.test_harness.event_recorder import EventRecorder
 from Mid.tests.resources.test_harness.helpers import (

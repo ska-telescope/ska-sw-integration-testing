@@ -8,7 +8,9 @@ from ska_control_model import ObsState
 from ska_tango_base.control_model import HealthState
 from ska_tango_testing.mock.placeholders import Anything
 
-from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.central_node_mid import (
+    CentralNodeWrapperMid,
+)
 from Mid.tests.resources.test_harness.event_recorder import EventRecorder
 from Mid.tests.resources.test_harness.helpers import (
     generate_eb_pb_ids,

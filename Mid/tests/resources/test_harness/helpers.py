@@ -23,7 +23,9 @@ from Mid.tests.resources.test_harness.utils.common_utils import (
 )
 from Mid.tests.resources.test_harness.utils.enums import SimulatorDeviceType
 from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter, watch
-from Mid.tests.resources.test_support.common_utils.common_helpers import Resource
+from Mid.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 from Mid.tests.resources.test_support.constant import (
     csp_subarray1,
     sdp_subarray1,

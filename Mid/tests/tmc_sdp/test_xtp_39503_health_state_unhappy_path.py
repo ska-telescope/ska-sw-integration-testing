@@ -7,7 +7,9 @@ from pytest_bdd import given, parsers, scenario, then, when
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 
-from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.central_node_mid import (
+    CentralNodeWrapperMid,
+)
 from Mid.tests.resources.test_harness.constant import (
     centralnode,
     csp_master,

@@ -8,7 +8,9 @@ from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from tango import DevState
 
-from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.central_node_mid import (
+    CentralNodeWrapperMid,
+)
 from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
 from Mid.tests.resources.test_harness.event_recorder import EventRecorder
 from Mid.tests.resources.test_harness.helpers import (

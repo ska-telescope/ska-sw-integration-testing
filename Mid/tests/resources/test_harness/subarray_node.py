@@ -44,7 +44,10 @@ from Mid.tests.resources.test_harness.utils.constant import (
     ON,
     READY,
 )
-from Mid.tests.resources.test_harness.utils.enums import DishMode, SubarrayObsState
+from Mid.tests.resources.test_harness.utils.enums import (
+    DishMode,
+    SubarrayObsState,
+)
 from Mid.tests.resources.test_harness.utils.obs_state_resetter import (
     ObsStateResetterFactory,
 )
@@ -58,7 +61,9 @@ from Mid.tests.resources.test_harness.utils.sync_decorators import (
     sync_restart,
 )
 from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter
-from Mid.tests.resources.test_support.common_utils.common_helpers import Resource
+from Mid.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

@@ -12,7 +12,9 @@ from Mid.tests.resources.test_harness.helpers import (
     prepare_json_args_for_commands,
     wait_and_validate_device_attribute_value,
 )
-from Mid.tests.resources.test_support.common_utils.result_code import ResultCode
+from Mid.tests.resources.test_support.common_utils.result_code import (
+    ResultCode,
+)
 
 
 @pytest.mark.skip(reason="enable this test case once SKB-401 is fixed")

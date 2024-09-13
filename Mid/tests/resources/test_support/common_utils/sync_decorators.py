@@ -6,7 +6,9 @@ from contextlib import contextmanager
 from ska_ser_logging import configure_logging
 
 from Mid.tests.conftest import TIMEOUT
-from Mid.tests.resources.test_support.common_utils.base_utils import DeviceUtils
+from Mid.tests.resources.test_support.common_utils.base_utils import (
+    DeviceUtils,
+)
 from Mid.tests.resources.test_support.common_utils.common_helpers import (
     Resource,
     Waiter,
