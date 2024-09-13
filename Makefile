@@ -122,7 +122,8 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include .make/oci.mk
 -include .make/xray.mk
 -include PrivateRules.mak
--include resources/alarmhandler.mk
+
+k8s_test_folder = Mid/tests
 
 # to create SDP namespace
 k8s-pre-install-chart:
