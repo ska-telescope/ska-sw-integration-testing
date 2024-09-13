@@ -1,62 +1,57 @@
-# GitLab CI in conjunction with GitLab Runner can use Docker Engine to test and build any application.
-# Docker, when used with GitLab CI, runs each job in a separate and isolated container using the predefined image that is set up in .gitlab-ci.yml.
-# In this case we use the latest python docker image to build and test this project.
+# Use a predefined Docker image to build and test the project.
 image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: recursive # Ensures that git submodules are recursively checked out if any.
 
-# cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
-# If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
+# Cache configuration to store build files between jobs to speed up consecutive pipelines.
 cache:
   paths:
     - build
 
-# The YAML file defines a set of jobs with constraints stating when they should be run.
-# You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
-# In this case we have only the test job which produce an artifacts (it must be placed into a directory called "public")
-# It is also specified that only the master branch will be subject of this job.
-
+# Define the pipeline stages.
 stages:
   - test
 
+# Job to test TMC with CSP components.
 k8s-test-tmc-with-csp:
-  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: test
   tags:
-    - ska-k8s
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
   variables:
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-csp-mid'
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-csp-mid' # Dynamic Kubernetes namespace creation based on project and commit.
     MARK: 'tmc_csp'
-    CSP_SIMULATION_ENABLED: 'false'
+    CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
   script:
-    - make k8s-test || true
+    - make k8s-test || true # Run tests and ignore failures for debugging.
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-mid-with-csp
-    auto_stop_in: 1 minute
+    name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    on_stop: stop-k8s-test-mid-with-csp # Specify stop job.
+    auto_stop_in: 1 minute # Automatically stop environment after a minute.
   rules:
-    - exists:
-        - Mid/tests/**/*
+    - exists: 
+        - Mid/tests/**/* # Only run if test files for Mid exist.
 
-
+# Job to stop the test environment for TMC with CSP.
 stop-k8s-test-mid-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
-  when: manual
+  when: manual # Manual job to stop the environment.
   tags:
     - ska-k8s
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-csp-mid'
   script:
-    - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
+    - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-with-csp
     auto_stop_in: 1 minute
-    action: stop
+    action: stop # Stop action triggers the deletion.
 
+# Job to test TMC with SDP components.
 k8s-test-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
@@ -67,21 +62,21 @@ k8s-test-tmc-with-sdp:
     PORT: "10000"
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-tmc-sdp'
     KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
-    SUBARRAY_COUNT: 2
-    SDP_SIMULATION_ENABLED: 'false'
+    SUBARRAY_COUNT: 2 # Set subarray count for testing.
+    SDP_SIMULATION_ENABLED: 'false' # Disable SDP simulation.
     TARANTA_ENABLED: 'true'
     MARK: tmc_sdp
   script:
-    - - make k8s-test || true
+    - make k8s-test || true
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
     auto_stop_in: 1 minute
   rules:
-    - exists:
+    - exists: 
         - Mid/tests/**/*
 
-
+# Job to stop the test environment for TMC with SDP.
 stop-k8s-test-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
@@ -90,8 +85,8 @@ stop-k8s-test-tmc-with-sdp:
     - ska-k8s
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-tmc-sdp'
+    KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SDP_SIMULATION_ENABLED: 'false'
-    KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp' 
   script:
     - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
   environment:
@@ -100,6 +95,7 @@ stop-k8s-test-tmc-with-sdp:
     auto_stop_in: 1 minute
     action: stop
 
+# Job to test Dish-LMC with Kubernetes.
 k8s-test-dish-lmc:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
@@ -126,9 +122,10 @@ k8s-test-dish-lmc:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc
   rules:
-    - exists:
+    - exists: 
         - Mid/tests/**/*
 
+# Job to stop the test environment for Dish-LMC.
 stop-k8s-test-dish-lmc:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
@@ -144,3 +141,109 @@ stop-k8s-test-dish-lmc:
     on_stop: stop-k8s-test-dish-lmc
     auto_stop_in: 1 minute
     action: stop
+
+# Job to test TMC with CSP for the SKA-low telescope.
+k8s-test-tmc-low-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+    KUBE_NAMESPACE_CSP: 'integration-ska-tmc-low-csp'
+    MARK: 'tmc_csp'
+    COUNT: 1
+    CSP_SIMULATION_ENABLED: 'false'
+  script:
+    - make k8s-test || true
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low-with-csp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Low/tests/**/*
+
+# Job to stop the test environment for TMC with CSP (SKA-low).
+stop-k8s-test-low-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+  script:
+    - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low-with-csp
+    auto_stop_in: 1 minute
+    action: stop
+
+# Job to test TMC with SDP for the SKA-low telescope.
+k8s-test-tmc-low-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    KUBE_NAMESPACE_SDP: 'integration-ska-tmc-low-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
+  script:
+    - make k8s-test || true
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-low-with-sdp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Low/tests/**/*
+
+# Job to stop the test environment for TMC with SDP (SKA-low).
+stop-k8s-test-tmc-low-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    KUBE_NAMESPACE_SDP: 'integration-ska-tmc-low-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+  script:
+    - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-low-with-sdp
+    auto_stop_in: 1 minute
+    action: stop
+    
+k8s-test-tmc-low-with-mccs:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
+    KUBE_NAMESPACE_MCCS: 'integration-ska-tmc-low-mccs'
+    MCCS_SIMULATION_ENABLED: 'false'
+  script:
+    - - make k8s-test || true
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-low-with-mccs
+
+stop-k8s-test-tmc-low--with-mccs:
+  name: test/$CI_COMMIT_REF_SLUG
+  on_stop: stop-k8s-test-tmc-low-with-mccs
+  auto_stop_in: 1 minute
+  action: stop
