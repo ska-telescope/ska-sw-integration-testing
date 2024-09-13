@@ -123,19 +123,12 @@ k8s-test-dish-lmc:
     DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
   script:
     - make k8s-test MARK=tmc_dish
-  needs:
-    - dish-lmc-dish001
-    - dish-lmc-dish036
-    - dish-lmc-dish063
-    - dish-lmc-dish100
-    - k8s-test-csp-dish
   after_script:
     - ls -al
     - ls -al build
     - ls -al tests
     - pip3 install -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
-    - make k8s-uninstall-chart
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc
