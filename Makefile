@@ -92,8 +92,8 @@ ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3
 # name of the pod running the k8s_tests
 K8S_TEST_RUNNER = test-runner-$(HELM_RELEASE)
 
-CI_PROJECT_PATH_SLUG ?= ska-tmc-integration
-CI_ENVIRONMENT_SLUG ?= ska-tmc-integration
+CI_PROJECT_PATH_SLUG ?= ska-sw-integration-testing
+CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
 CSP_SIMULATION_ENABLED ?= true
 SDP_SIMULATION_ENABLED ?= true
 DISH_SIMULATION_ENABLED ?= true
@@ -211,7 +211,7 @@ cred:
 
 
 test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output tests/requirements.txt
+	@poetry export --without-hashes --dev --format requirements.txt --output Mid/tests/requirements.txt
 
 k8s-pre-test: test-requirements
 
