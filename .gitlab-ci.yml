@@ -38,7 +38,7 @@ k8s-test-tmc-with-csp:
     MARK: 'tmc_csp'
     CSP_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK=tmc_csp1
+    - make k8s-test MARK=tmc_csp
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-with-csp
