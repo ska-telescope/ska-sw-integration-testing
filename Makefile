@@ -17,8 +17,7 @@ DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
 FILE ?= tests## A specific test file to pass to pytest
-ADD_ARGS ?= ## Additional args to pass to pytest
-FILE_NAME?= alarm_rules.txt
+ADD_ARGS ?= ## Additional args to pass to pytestt
 
 
 # ----------------------------------------------------------------------------
@@ -40,20 +39,11 @@ endif
 
 # ----------------------------------------------------------------------------
 
-# KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
-# using Helm.  If this does not already exist it will be created
-ifneq ($(CI_JOB_ID),)
-KUBE_NAMESPACE ?= ci-$(CI_PROJECT_NAME)-$(CI_COMMIT_SHORT_SHA)
-endif
 # HELM_RELEASE is the release that all Kubernetes resources will be labelled
 # with
 HELM_RELEASE ?= test
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
-HELM_CHART=ska-tmc-testing-$(DEPLOYMENT_TYPE)
-UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
-K8S_CHARTS ?= ska-tmc-$(DEPLOYMENT_TYPE) ska-tmc-testing-$(DEPLOYMENT_TYPE)## list of charts
-K8S_CHART ?= $(HELM_CHART)
 
 DISH_TANGO_HOST ?= tango-databaseds
 COUNT ?= 1 ## Number of times the tests should run
@@ -74,19 +64,14 @@ CI_REGISTRY ?= gitlab.com
 # K8S_TEST_IMAGE_TO_TEST ?= artefact.skao.int/ska-tango-images-tango-itango:9.3.12## docker image that will be run for testing purpose
 K8S_TEST_IMAGE_TO_TEST ?= harbor.skao.int/production/ska-tango-images-pytango-builder:9.4.2 
 
-TARANTA_ENABLED ?= false
 
 CI_PROJECT_DIR ?= .
 
 XAUTHORITY ?= $(HOME)/.Xauthority
 THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | head -n1)
 DISPLAY ?= $(THIS_HOST):0
-JIVE ?= false# Enable jive
-TARANTA ?= false
-MINIKUBE ?= false ## Minikube or not
-FAKE_DEVICES ?= false ## Install fake devices or not
 
-ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.10
+ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.5.0
 
 # Test runner - run to completion job in K8s
 # name of the pod running the k8s_tests
@@ -106,44 +91,6 @@ endif
 
 
 PYTHON_VARS_AFTER_PYTEST ?= -m '$(MARK) $(ADDMARK)' $(ADD_ARGS) $(FILE) --count=$(COUNT)
-CUSTOM_VALUES1 ?=
-CUSTOM_VALUES2 ?=
-ifeq ($(CSP_SIMULATION_ENABLED),false)
-CUSTOM_VALUES1 =	--set tmc-mid.deviceServers.mocks.csp=$(CSP_SIMULATION_ENABLED)\
-	--set ska-csp-lmc-mid.enabled=true
-endif
-
-ifeq ($(SDP_SIMULATION_ENABLED),false)
-CUSTOM_VALUES2=	--set tmc-mid.deviceServers.mocks.sdp=$(SDP_SIMULATION_ENABLED)\
-	--set global.sdp_master="$(SDP_MASTER)"\
-	--set global.sdp_subarray_prefix="$(SDP_SUBARRAY_PREFIX)"\
-	--set ska-sdp.proccontrol.replicas=$(SDP_PROCCONTROL_REPLICAS)\
-	--set global.sdp.processingNamespace=$(KUBE_NAMESPACE_SDP)\
-	--set ska-sdp.kafka.clusterDomain=$(CLUSTER_DOMAIN) \
-	--set ska-sdp.kafka.zookeeper.clusterDomain=$(CLUSTER_DOMAIN) \
-	--set ska-sdp.enabled=true\
-	--set ska-sdp.lmc.loadBalancer=true\
-	--set tmc-mid.subarray_count=1\
-	--set ska-sdp.lmc.nsubarray=1
-endif
-
-K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
-	--set global.tango_host=$(TANGO_HOST) \
-	--set ska-tango-base.display=$(DISPLAY) \
-	--set ska-tango-base.xauthority=$(XAUTHORITY) \
-	--set ska-tango-base.jive.enabled=$(JIVE) \
-	--set global.exposeAllDS=false \
-	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
-	--set global.operator=true \
-	--set ska-taranta.enabled=$(TARANTA_ENABLED)\
-	--set global.namespace_dish.dish_names[0]="$(DISH_NAME_1)"\
-	--set global.namespace_dish.dish_names[1]="$(DISH_NAME_36)"\
-	--set global.namespace_dish.dish_names[2]="$(DISH_NAME_63)"\
-	--set global.namespace_dish.dish_names[3]="$(DISH_NAME_100)"\
-	--set tmc-mid.deviceServers.mocks.dish=$(DISH_SIMULATION_ENABLED)\
-	--set tmc-mid.subarray_count=$(SUBARRAY_COUNT)\
-	$(CUSTOM_VALUES1)\
-	$(CUSTOM_VALUES2)
 
 PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 							 TANGO_HOST=$(TANGO_HOST) \
@@ -200,14 +147,6 @@ endif
 
 taranta-link:
 	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
-
-alarm-handler-configurator-link:
-	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/alarm-handler/"
-
-
-cred:
-	make k8s-namespace
-	curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/master/scripts/namespace_auth.sh | bash -s $(SERVICE_ACCOUNT) $(KUBE_NAMESPACE) || true
 
 
 test-requirements:
