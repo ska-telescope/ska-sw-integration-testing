@@ -3,14 +3,14 @@ import pytest
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 
-from tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from Mid.tests.resources.test_harness.event_recorder import EventRecorder
+from Mid.tests.resources.test_harness.helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
-from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
-from tests.resources.test_harness.utils.common_utils import JsonFactory
+from Mid.tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
+from Mid.tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
 @pytest.mark.tmc_csp

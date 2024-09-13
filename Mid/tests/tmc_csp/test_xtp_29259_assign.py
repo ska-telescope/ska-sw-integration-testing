@@ -6,8 +6,8 @@ import pytest
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 
-from tests.resources.test_harness.constant import COMMAND_COMPLETED
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
+from Mid.tests.resources.test_harness.helpers import (
     prepare_json_args_for_centralnode_commands,
 )
 

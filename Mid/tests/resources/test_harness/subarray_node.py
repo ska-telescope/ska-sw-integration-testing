@@ -9,7 +9,7 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
 
-from tests.resources.test_harness.constant import (
+from Mid.tests.resources.test_harness.constant import (
     COMMAND_COMPLETED,
     DISH_001_CALIBRATION_DATA,
     DISH_036_CALIBRATION_DATA,
@@ -31,24 +31,24 @@ from tests.resources.test_harness.constant import (
     tmc_sdp_subarray_leaf_node,
     tmc_subarraynode1,
 )
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.helpers import (
     SIMULATED_DEVICES_DICT,
     check_subarray_obs_state,
     generate_eb_pb_ids,
     prepare_json_args_for_commands,
     wait_and_validate_device_attribute_value,
 )
-from tests.resources.test_harness.utils.constant import (
+from Mid.tests.resources.test_harness.utils.constant import (
     ABORTED,
     IDLE,
     ON,
     READY,
 )
-from tests.resources.test_harness.utils.enums import DishMode, SubarrayObsState
-from tests.resources.test_harness.utils.obs_state_resetter import (
+from Mid.tests.resources.test_harness.utils.enums import DishMode, SubarrayObsState
+from Mid.tests.resources.test_harness.utils.obs_state_resetter import (
     ObsStateResetterFactory,
 )
-from tests.resources.test_harness.utils.sync_decorators import (
+from Mid.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_configure,
@@ -57,8 +57,8 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_release_resources,
     sync_restart,
 )
-from tests.resources.test_harness.utils.wait_helpers import Waiter
-from tests.resources.test_support.common_utils.common_helpers import Resource
+from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter
+from Mid.tests.resources.test_support.common_utils.common_helpers import Resource
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

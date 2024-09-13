@@ -2,7 +2,7 @@
 
 from ska_control_model import ObsState
 
-from tests.resources.test_support.common_utils.result_code import (
+from Mid.tests.resources.test_support.common_utils.result_code import (
     FaultType,
     ResultCode,
 )

@@ -5,7 +5,7 @@ import pytest
 from pytest_bdd import parsers, scenario, then, when
 from tango import DevState
 
-from tests.resources.test_support.enum import DishMode
+from Mid.tests.resources.test_support.enum import DishMode
 
 
 @pytest.mark.tmc_dish

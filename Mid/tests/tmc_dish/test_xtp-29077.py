@@ -9,11 +9,11 @@ from pytest_bdd import given, scenario, then, when
 from tango import DevState
 from tango.db import DbDevInfo
 
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.helpers import (
     wait_and_validate_device_attribute_value,
 )
-from tests.resources.test_harness.utils.enums import SimulatorDeviceType
-from tests.resources.test_support.enum import DishMode
+from Mid.tests.resources.test_harness.utils.enums import SimulatorDeviceType
+from Mid.tests.resources.test_support.enum import DishMode
 
 
 @pytest.mark.skip(

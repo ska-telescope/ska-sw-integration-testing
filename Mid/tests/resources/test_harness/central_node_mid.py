@@ -10,8 +10,8 @@ from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
 from tango.db import Database
 
-from tests.resources.test_harness.central_node import CentralNodeWrapper
-from tests.resources.test_harness.constant import (
+from Mid.tests.resources.test_harness.central_node import CentralNodeWrapper
+from Mid.tests.resources.test_harness.constant import (
     COMMAND_COMPLETED,
     DEFAULT_DISH_VCC_CONFIG,
     centralnode,
@@ -32,15 +32,15 @@ from tests.resources.test_harness.constant import (
     tmc_sdp_master_leaf_node,
     tmc_subarraynode1,
 )
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.event_recorder import EventRecorder
+from Mid.tests.resources.test_harness.helpers import (
     SIMULATED_DEVICES_DICT,
     generate_eb_pb_ids,
     wait_csp_master_off,
 )
-from tests.resources.test_harness.utils.common_utils import JsonFactory
-from tests.resources.test_harness.utils.enums import DishMode
-from tests.resources.test_harness.utils.sync_decorators import (
+from Mid.tests.resources.test_harness.utils.common_utils import JsonFactory
+from Mid.tests.resources.test_harness.utils.enums import DishMode
+from Mid.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_load_dish_cfg,
@@ -49,8 +49,8 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_set_to_off,
     sync_set_to_standby,
 )
-from tests.resources.test_harness.utils.wait_helpers import Waiter
-from tests.resources.test_support.common_utils.common_helpers import Resource
+from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter
+from Mid.tests.resources.test_support.common_utils.common_helpers import Resource
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

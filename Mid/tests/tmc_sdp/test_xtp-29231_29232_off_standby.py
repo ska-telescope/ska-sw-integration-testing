@@ -3,8 +3,8 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 
-from tests.resources.test_harness.helpers import get_master_device_simulators
-from tests.resources.test_harness.utils.enums import DishMode
+from Mid.tests.resources.test_harness.helpers import get_master_device_simulators
+from Mid.tests.resources.test_harness.utils.enums import DishMode
 
 
 @pytest.mark.tmc_sdp

@@ -7,13 +7,13 @@ import pytest
 from pytest_bdd import parsers, scenario, when
 from ska_ser_logging import configure_logging
 
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.helpers import (
     check_subarray_instance,
     prepare_json_args_for_commands,
     update_scan_id,
     update_scan_type,
 )
-from tests.resources.test_harness.utils.common_utils import (
+from Mid.tests.resources.test_harness.utils.common_utils import (
     check_configure_successful_csp,
     check_scan_successful_csp,
 )

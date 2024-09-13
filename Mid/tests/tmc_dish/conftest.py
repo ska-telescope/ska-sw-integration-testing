@@ -4,7 +4,7 @@ tests."""
 from pytest_bdd import given, parsers
 from tango import DevState
 
-from tests.resources.test_support.enum import DishMode
+from Mid.tests.resources.test_support.enum import DishMode
 
 
 @given(

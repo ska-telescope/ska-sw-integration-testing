@@ -1,6 +1,6 @@
 from typing import Any
 
-from tests.resources.test_harness.utils.common_utils import (
+from Mid.tests.resources.test_harness.utils.common_utils import (
     JsonFactory,
     wait_added_for_skb372,
 )

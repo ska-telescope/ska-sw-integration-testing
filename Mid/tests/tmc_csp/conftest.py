@@ -9,14 +9,14 @@ from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from tango import DevState
 
-from tests.resources.test_harness.constant import COMMAND_COMPLETED
-from tests.resources.test_harness.helpers import (
+from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
+from Mid.tests.resources.test_harness.helpers import (
     check_subarray_instance,
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
     update_scan_id,
 )
-from tests.resources.test_harness.utils.common_utils import (
+from Mid.tests.resources.test_harness.utils.common_utils import (
     check_scan_successful_csp,
 )
 
