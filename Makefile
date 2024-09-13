@@ -12,11 +12,11 @@ DISH_NAMESPACE_4 ?= dish-lmc-4
 KUBE_NAMESPACE ?= ska-tmc-integration
 KUBE_NAMESPACE_SDP ?= ska-tmc-integration-sdp
 K8S_TIMEOUT ?= 800s
-PYTHON_LINT_TARGET ?= tests/
+PYTHON_LINT_TARGET ?= Mid/tests/
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
-FILE ?= tests## A specific test file to pass to pytest
+FILE ?= Mid/tests## A specific test file to pass to pytest
 ADD_ARGS ?= ## Additional args to pass to pytestt
 
 
@@ -112,7 +112,7 @@ PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 
 K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
-						$(PYTHON_VARS_AFTER_PYTEST) ./tests \
+						$(PYTHON_VARS_AFTER_PYTEST) ./Mid/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
 
 -include .make/base.mk
