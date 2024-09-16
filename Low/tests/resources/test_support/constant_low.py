@@ -1,6 +1,5 @@
 """This module contain constants for low devices"""
 from ska_control_model import ObsState, ResultCode
-
 from tests.resources.test_support.common_utils.result_code import FaultType
 
 centralnode = "ska_low/tm_central/central_node"

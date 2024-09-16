@@ -6,7 +6,6 @@ from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
-
 from tests.resources.test_harness.constant import (
     device_dict_low,
     low_centralnode,

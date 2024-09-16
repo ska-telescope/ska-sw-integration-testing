@@ -3,6 +3,7 @@ import json
 
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
+from resources.test_support.common_utils.result_code import ResultCode
 from ska_control_model import ObsState
 from tango import DevState
 from tests.resources.test_harness.event_recorder import EventRecorder
@@ -11,7 +12,6 @@ from tests.resources.test_harness.helpers import (
     prepare_json_args_for_commands,
     set_receive_address,
 )
-from tests.resources.test_support.common_utils.result_code import ResultCode
 
 
 @pytest.mark.tmc_mccs

@@ -9,7 +9,6 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DeviceProxy, DevState
-
 from tests.resources.test_harness.constant import (
     RESET_DEFECT,
     device_dict_low,

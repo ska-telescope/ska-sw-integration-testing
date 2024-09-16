@@ -1,12 +1,12 @@
 """Test TMC-MCCS Abort functionality in Scanning obstate"""
 import pytest
 from pytest_bdd import given, scenario, then
-from ska_control_model import ObsState
-from tango import DevState
-from tests.resources.test_harness.helpers import (
+from resources.test_harness.helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
+from ska_control_model import ObsState
+from tango import DevState
 
 
 @pytest.mark.tmc_mccs

@@ -4,7 +4,6 @@ import logging
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy
-
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )

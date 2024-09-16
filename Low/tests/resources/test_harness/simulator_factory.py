@@ -4,7 +4,6 @@ import logging
 
 from ska_ser_logging import configure_logging
 from tango import DeviceProxy
-
 from tests.resources.test_harness.constant import SIMULATOR_DEVICE_FQDN_DICT
 from tests.resources.test_harness.utils.enums import SimulatorDeviceType
 

@@ -9,7 +9,6 @@ from assertpy import assert_that
 from ska_control_model import ObsState, ResultCode
 from ska_ser_logging import configure_logging
 from tango import DeviceProxy, DevState
-
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 from tests.resources.test_support.common_utils.common_helpers import Resource
 from tests.resources.test_support.common_utils.sync_decorators import (

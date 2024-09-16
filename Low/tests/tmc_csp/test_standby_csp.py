@@ -1,8 +1,8 @@
 """Test module for TMC-SDP ShutDown functionality"""
 import pytest
 from pytest_bdd import given, scenario, then, when
+from resources.test_harness.helpers import get_master_device_simulators
 from tango import DevState
-from tests.resources.test_harness.helpers import get_master_device_simulators
 
 
 @pytest.mark.tmc_csp

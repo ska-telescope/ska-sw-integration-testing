@@ -5,17 +5,17 @@ import json
 
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState, ResultCode
-from ska_tango_testing.mock.placeholders import Anything
-from tango import DevState
-from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from resources.test_harness.central_node_low import CentralNodeWrapperLow
+from resources.test_harness.event_recorder import EventRecorder
+from resources.test_harness.helpers import (
     check_for_device_event,
     get_assign_json_id,
     get_device_simulator_with_given_name,
     update_eb_pb_ids,
 )
+from ska_control_model import ObsState, ResultCode
+from ska_tango_testing.mock.placeholders import Anything
+from tango import DevState
 
 
 @pytest.mark.tmc_sdp

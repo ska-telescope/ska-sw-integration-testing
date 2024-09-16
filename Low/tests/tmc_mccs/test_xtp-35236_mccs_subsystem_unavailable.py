@@ -3,15 +3,15 @@ import json
 
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState
-from ska_tango_base.commands import ResultCode
-from ska_tango_testing.mock.placeholders import Anything
-from tango import DevState
-from tests.resources.test_harness.constant import (
+from resources.test_harness.constant import (
     mccs_controller,
     mccs_master_leaf_node,
     tmc_low_subarraynode1,
 )
+from ska_control_model import ObsState
+from ska_tango_base.commands import ResultCode
+from ska_tango_testing.mock.placeholders import Anything
+from tango import DevState
 from tests.resources.test_harness.helpers import (
     get_device_simulator_with_given_name,
 )

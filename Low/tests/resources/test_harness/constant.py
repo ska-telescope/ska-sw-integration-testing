@@ -3,7 +3,6 @@
 import json
 
 from ska_control_model import ObsState, ResultCode
-
 from tests.resources.test_harness.utils.enums import (
     FaultType,
     SimulatorDeviceType,

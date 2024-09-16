@@ -1,12 +1,12 @@
 """Test module for TMC-MCCS Scan functionality"""
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState
-from tango import DevState
-from tests.resources.test_support.common_utils.tmc_helpers import (
+from resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
+from ska_control_model import ObsState
+from tango import DevState
 
 
 @pytest.mark.skip(reason="MCCS v0.14.0 would solve the start_time key error")

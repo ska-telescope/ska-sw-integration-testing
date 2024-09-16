@@ -4,6 +4,7 @@ import logging
 
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
+from resources.test_support.common_utils.result_code import ResultCode
 from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from tango import DevState
@@ -12,7 +13,6 @@ from tests.resources.test_harness.helpers import (
     prepare_json_args_for_commands,
     set_receive_address,
 )
-from tests.resources.test_support.common_utils.result_code import ResultCode
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

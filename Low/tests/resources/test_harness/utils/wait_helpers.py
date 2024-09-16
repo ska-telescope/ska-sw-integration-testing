@@ -2,7 +2,6 @@ import logging
 from datetime import datetime
 
 from ska_ser_logging import configure_logging
-
 from tests.resources.test_support.common_utils.common_helpers import (
     AttributeWatcher,
     Resource,
