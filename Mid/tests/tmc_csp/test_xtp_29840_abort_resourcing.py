@@ -20,7 +20,7 @@ from tests.resources.test_harness.helpers import (
 # stuck in ABORTING
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_29840_abort_resourcing.feature",
+    "../../features/tmc_csp/xtp_29840_abort_resourcing.feature",
     "Abort assigning CSP using TMC",
 )
 def test_tmc_csp_abort_in_resourcing(central_node_mid, simulator_factory):
