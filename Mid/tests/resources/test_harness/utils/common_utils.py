@@ -4,9 +4,8 @@ import time
 from os.path import dirname, join
 
 from ska_control_model import ObsState
-
-from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
-from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
+from tests.resources.test_harness.utils.wait_helpers import Waiter
 
 
 def get_subarray_input_json(slug):

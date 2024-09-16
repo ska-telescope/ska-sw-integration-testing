@@ -1,8 +1,6 @@
 """State Control module -local depedencies"""
-from Mid.tests.conftest import LOGGER
-from Mid.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
+from tests.conftest import LOGGER
+from tests.resources.test_support.common_utils.common_helpers import Resource
 
 
 class BaseTelescopeControl:

@@ -2,8 +2,7 @@
 import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
-
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.helpers import (
     get_master_device_simulators,
     wait_csp_master_off,
 )

@@ -2,10 +2,7 @@
 import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
-
-from Mid.tests.resources.test_harness.helpers import (
-    get_master_device_simulators,
-)
+from tests.resources.test_harness.helpers import get_master_device_simulators
 
 
 @pytest.mark.tmc_csp

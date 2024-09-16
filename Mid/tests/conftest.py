@@ -15,26 +15,23 @@ from ska_tango_testing.mock.tango.event_callback import (
     MockTangoEventCallbackGroup,
 )
 from tango import DevState
-
-from Mid.tests.resources.test_harness.central_node_mid import (
-    CentralNodeWrapperMid,
-)
-from Mid.tests.resources.test_harness.constant import centralnode, csp_master
-from Mid.tests.resources.test_harness.event_recorder import EventRecorder
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from tests.resources.test_harness.constant import centralnode, csp_master
+from tests.resources.test_harness.event_recorder import EventRecorder
+from tests.resources.test_harness.helpers import (
     CSP_SIMULATION_ENABLED,
     get_device_simulators,
     prepare_json_args_for_centralnode_commands,
     wait_and_validate_device_attribute_value,
 )
-from Mid.tests.resources.test_harness.simulator_factory import SimulatorFactory
-from Mid.tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
-from Mid.tests.resources.test_harness.tmc_mid import TMCMid
-from Mid.tests.resources.test_harness.utils.common_utils import (
+from tests.resources.test_harness.simulator_factory import SimulatorFactory
+from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
+from tests.resources.test_harness.tmc_mid import TMCMid
+from tests.resources.test_harness.utils.common_utils import (
     JsonFactory,
     SharedContext,
 )
-from Mid.tests.resources.test_harness.utils.enums import ResultCode
+from tests.resources.test_harness.utils.enums import ResultCode
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

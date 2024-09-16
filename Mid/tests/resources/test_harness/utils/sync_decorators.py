@@ -1,10 +1,8 @@
 import functools
 from contextlib import contextmanager
 
-from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter
-from Mid.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
+from tests.resources.test_harness.utils.wait_helpers import Waiter
+from tests.resources.test_support.common_utils.common_helpers import Resource
 
 TIMEOUT = 1000
 

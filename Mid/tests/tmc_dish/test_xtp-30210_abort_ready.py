@@ -3,13 +3,12 @@
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_tango_base.control_model import ObsState
-
-from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
+from tests.resources.test_harness.helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
-from Mid.tests.resources.test_support.enum import DishMode, PointingState
+from tests.resources.test_support.enum import DishMode, PointingState
 
 
 @pytest.mark.tmc_dish

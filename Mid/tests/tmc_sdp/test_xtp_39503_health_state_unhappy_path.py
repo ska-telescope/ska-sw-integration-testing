@@ -6,22 +6,19 @@ import pytest
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
-
-from Mid.tests.resources.test_harness.central_node_mid import (
-    CentralNodeWrapperMid,
-)
-from Mid.tests.resources.test_harness.constant import (
+from tests.resources.test_harness.central_node_mid import CentralNodeWrapperMid
+from tests.resources.test_harness.constant import (
     centralnode,
     csp_master,
     csp_subarray1,
     dish_master1,
     sdp_master,
 )
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.helpers import (
     get_device_simulator_with_given_name,
     wait_until_devices_operational,
 )
-from Mid.tests.resources.test_harness.simulator_factory import SimulatorFactory
+from tests.resources.test_harness.simulator_factory import SimulatorFactory
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
