@@ -231,7 +231,7 @@ charts/*/charts/*
 *.eggs
 *.egg-info
 dist
-build
+.build
 eggs
 parts
 bin

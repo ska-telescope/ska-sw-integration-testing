@@ -123,7 +123,10 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include .make/xray.mk
 -include PrivateRules.mak
 
+
 k8s_test_folder = Low/tests
+k8s_test_src_dir = Low/
+
 
 # to create SDP namespace
 k8s-pre-install-chart:
