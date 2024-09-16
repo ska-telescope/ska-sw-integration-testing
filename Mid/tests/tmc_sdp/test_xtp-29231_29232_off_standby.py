@@ -24,7 +24,7 @@ def test_tmc_sdp_off():
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-29232_standby.feature",
+    "../../features/tmc_sdp/xtp-29232_standby.feature",
     "Standby the telescope having TMC and SDP subsystems",
 )
 def test_tmc_sdp_standby():
