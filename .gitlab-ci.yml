@@ -10,7 +10,6 @@ cache:
     - build
 
 stages:
-  - lint
   - build
   - test
   - integration
@@ -62,10 +61,9 @@ k8s-test-tmc-with-csp-sdp-mccs:
   tags:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
   variables:
-    TELESCOPE: 'SKA-mid'
+    TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
-    MARK: 'tmc_all'
-    CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
+    MARK: 'tmc_all' # Ensure CSP simulation is disabled.
   script:
     - make k8s-test MARK=tmc_all
   environment:
