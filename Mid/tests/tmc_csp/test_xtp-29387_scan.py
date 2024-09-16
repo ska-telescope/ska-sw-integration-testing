@@ -14,7 +14,7 @@ from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 @pytest.mark.tmc_csp
 @scenario(
-    "/app/Mid/features/tmc_csp/xtp_29387_scan.feature",
+    "Mid/features/tmc_csp/xtp_29387_scan.feature",
     "TMC executes a Scan command on CSP subarray.",
 )
 def test_scan_command():
