@@ -12,7 +12,7 @@ from tests.resources.test_support.enum import DishMode
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-30209_abort_idle.feature",
+    "../../features/tmc_dish/xtp-30209_abort_idle.feature",
     "TMC executes Abort command on DISH.LMC when TMC Subarray is in IDLE",
 )
 def test_tmc_dish_abort_in_idle():

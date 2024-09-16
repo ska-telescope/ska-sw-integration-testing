@@ -13,7 +13,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-29382_configure.feature",
+    "../../features/tmc_sdp/xtp-29382_configure.feature",
     "Configure a SDP subarray for a scan using TMC",
 )
 def test_tmc_sdp_configure():

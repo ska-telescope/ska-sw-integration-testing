@@ -20,7 +20,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 )
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-42581_configure_unhappy.feature",
+    "../../features/tmc_dish/xtp-42581_configure_unhappy.feature",
     "Testing of successive configure functionality with same receiver_band",
 )
 def test_tmc_dish_successive_configure_with_same_receiver_band():

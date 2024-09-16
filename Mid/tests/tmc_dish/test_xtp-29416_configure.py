@@ -15,7 +15,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-29416_configure.feature",
+    "../../features/tmc_dish/xtp-29416_configure.feature",
     "Configure the telescope having TMC and Dish Subsystems",
 )
 def test_tmc_dish_configure():

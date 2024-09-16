@@ -13,7 +13,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp_29399_abort_scanning.feature",
+    "../../features/tmc_sdp/xtp_29399_abort_scanning.feature",
     "Abort scanning SDP using TMC",
 )
 def test_tmc_sdp_abort_in_scanning():

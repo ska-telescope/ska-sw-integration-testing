@@ -8,7 +8,7 @@ from tests.resources.test_harness.utils.enums import DishMode
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-29231_off.feature",
+    "../../features/tmc_sdp/xtp-29231_off.feature",
     "Switch off the telescope having TMC and SDP subsystems",
 )
 def test_tmc_sdp_off():

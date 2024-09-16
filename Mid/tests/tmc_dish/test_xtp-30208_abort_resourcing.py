@@ -12,7 +12,7 @@ from tests.resources.test_support.enum import DishMode
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-30208_abort_resourcing.feature",
+    "../../features/tmc_dish/xtp-30208_abort_resourcing.feature",
     "TMC executes Abort command on DISH.LMC when TMC Subarray in Resourcing",
 )
 def test_tmc_dish_abort_in_resourcing():

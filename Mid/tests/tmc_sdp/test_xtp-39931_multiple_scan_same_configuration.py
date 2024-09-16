@@ -12,7 +12,8 @@ LOGGER = logging.getLogger(__name__)
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-39931_multiple_scan_same_configuration.feature",
+    "../../features/tmc_sdp/xtp-39931_multiple_scan_same_configuration."
+    "feature",
     "TMC Mid executes multiple scan with same configuration successfully",
 )
 def test_tmc_sdp_successive_scan_sequences():

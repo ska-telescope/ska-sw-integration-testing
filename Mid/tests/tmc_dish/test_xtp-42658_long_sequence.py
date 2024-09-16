@@ -26,7 +26,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-42658_long_sequence.feature",
+    "../../features/tmc_dish/xtp-42658_long_sequence.feature",
     "TMC executes long sequence of commands successfully",
 )
 def test_tmc_dish_long_sequence_functionality():

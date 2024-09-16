@@ -8,7 +8,7 @@ from tests.resources.test_support.enum import DishMode
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-29351_off.feature",
+    "../../features/tmc_dish/xtp-29351_off.feature",
     "Shut down with TMC and DISH devices",
 )
 def test_tmc_dish_shutdown_telescope():

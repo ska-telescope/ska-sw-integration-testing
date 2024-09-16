@@ -13,7 +13,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-30210_abort_ready.feature",
+    "../../features/tmc_dish/xtp-30210_abort_ready.feature",
     "TMC executes Abort command on DISH.LMC when TMC Subarray is in READY",
 )
 def test_tmc_dish_abort_in_ready():

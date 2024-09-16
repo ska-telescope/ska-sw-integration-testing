@@ -11,7 +11,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-32452_assign_release_assign_sequence.feature",
+    "../../features/tmc_sdp/xtp-32452_assign_release_assign_sequence.feature",
     "Validate second AssignResources command  after "
     "first successful AssignResources and ReleaseResources are executed",
 )

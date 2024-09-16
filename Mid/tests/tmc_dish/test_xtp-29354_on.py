@@ -9,7 +9,7 @@ from tests.resources.test_support.enum import DishMode
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-29354_on.feature",
+    "../../features/tmc_dish/xtp-29354_on.feature",
     "Start up Telescope with TMC and DISH devices",
 )
 def test_tmc_dish_startup_telescope():

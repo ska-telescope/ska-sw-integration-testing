@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp-35244_long_sequence_configure_scan.feature",
+    "../../features/tmc_sdp/xtp-35244_long_sequence_configure_scan.feature",
     "TMC Mid executes configure-scan sequence of commands successfully",
 )
 def test_tmc_sdp_long_sequences():

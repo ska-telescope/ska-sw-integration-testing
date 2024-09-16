@@ -14,7 +14,7 @@ from tango.db import DbDevInfo
 )
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-55713_telescope_healthstate.feature",
+    "../../features/tmc_dish/xtp-55713_telescope_healthstate.feature",
     "Verify CentralNode TelescopeHealthState",
 )
 def test_tmc_TMC_healthstate():

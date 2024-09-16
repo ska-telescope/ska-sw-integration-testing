@@ -19,7 +19,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../features/tmc_dish/xtp-42757_successive_scan.feature",
+    "../../features/tmc_dish/xtp-42757_successive_scan.feature",
     "Testing of successive Scan functionality for tmc-dish interface",
 )
 def test_tmc_dish_successive_scan_with_different_scan_duration():

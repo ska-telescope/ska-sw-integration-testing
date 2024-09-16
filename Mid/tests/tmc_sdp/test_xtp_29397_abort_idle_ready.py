@@ -16,7 +16,7 @@ from tests.resources.test_harness.utils.common_utils import (
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../features/tmc_sdp/xtp_29397_abort_idle_ready.feature",
+    "../../features/tmc_sdp/xtp_29397_abort_idle_ready.feature",
     "TMC executes an Abort on SDP subarray",
 )
 def test_tmc_sdp_abort_in_given_obsstate():
