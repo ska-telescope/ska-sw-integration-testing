@@ -13,20 +13,17 @@ from ska_tango_base.commands import ResultCode
 from ska_tango_base.control_model import HealthState
 from ska_tango_testing.mock.placeholders import Anything
 from tango import Database, DeviceProxy
-
-from Mid.tests.resources.test_harness.constant import device_dict
-from Mid.tests.resources.test_harness.event_recorder import EventRecorder
-from Mid.tests.resources.test_harness.simulator_factory import SimulatorFactory
-from Mid.tests.resources.test_harness.utils.common_utils import (
+from tests.resources.test_harness.constant import device_dict
+from tests.resources.test_harness.event_recorder import EventRecorder
+from tests.resources.test_harness.simulator_factory import SimulatorFactory
+from tests.resources.test_harness.utils.common_utils import (
     JsonFactory,
     get_subarray_input_json,
 )
-from Mid.tests.resources.test_harness.utils.enums import SimulatorDeviceType
-from Mid.tests.resources.test_harness.utils.wait_helpers import Waiter, watch
-from Mid.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-from Mid.tests.resources.test_support.constant import (
+from tests.resources.test_harness.utils.enums import SimulatorDeviceType
+from tests.resources.test_harness.utils.wait_helpers import Waiter, watch
+from tests.resources.test_support.common_utils.common_helpers import Resource
+from tests.resources.test_support.constant import (
     csp_subarray1,
     sdp_subarray1,
     tmc_csp_subarray_leaf_node,

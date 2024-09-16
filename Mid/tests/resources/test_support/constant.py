@@ -1,8 +1,7 @@
 """This module have all required constants for ska-tmc-integration"""
 
 from ska_control_model import ObsState
-
-from Mid.tests.resources.test_support.common_utils.result_code import (
+from tests.resources.test_support.common_utils.result_code import (
     FaultType,
     ResultCode,
 )

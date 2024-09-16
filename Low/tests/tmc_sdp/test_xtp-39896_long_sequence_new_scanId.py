@@ -5,7 +5,6 @@ import json
 
 import pytest
 from pytest_bdd import parsers, scenario, when
-
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import (

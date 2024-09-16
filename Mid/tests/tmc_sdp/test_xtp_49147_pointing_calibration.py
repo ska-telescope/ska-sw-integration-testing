@@ -4,17 +4,14 @@ import json
 import pytest
 from pytest_bdd import parsers, scenario, then, when
 from ska_control_model import ObsState
-
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.helpers import (
     get_device_simulators,
     is_last_pointing_data_updated,
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
     wait_and_validate_device_attribute_value,
 )
-from Mid.tests.resources.test_support.common_utils.result_code import (
-    ResultCode,
-)
+from tests.resources.test_support.common_utils.result_code import ResultCode
 
 
 @pytest.mark.skip(reason="enable this test case once SKB-401 is fixed")

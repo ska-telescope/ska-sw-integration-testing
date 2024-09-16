@@ -4,8 +4,7 @@ import json
 
 import numpy as np
 from ska_control_model import ObsState
-
-from Mid.tests.resources.test_harness.utils.enums import (
+from tests.resources.test_harness.utils.enums import (
     FaultType,
     ResultCode,
     SimulatorDeviceType,

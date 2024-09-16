@@ -6,7 +6,6 @@ import pytest
 from pytest_bdd import given, scenario, then
 from ska_control_model import ObsState
 from tango import DevState
-
 from tests.resources.test_harness.helpers import set_receive_address
 from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (

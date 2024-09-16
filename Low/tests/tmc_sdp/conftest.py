@@ -6,7 +6,6 @@ from pytest_bdd import given, parsers, then, when
 from ska_tango_base.commands import ResultCode
 from ska_tango_base.control_model import ObsState
 from tango import DevState
-
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import (

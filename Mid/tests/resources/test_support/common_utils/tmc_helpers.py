@@ -7,14 +7,9 @@ from typing import Optional, Tuple
 
 from ska_ser_logging import configure_logging
 from tango import DeviceProxy, DevState
-
-from Mid.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-from Mid.tests.resources.test_support.common_utils.result_code import (
-    ResultCode,
-)
-from Mid.tests.resources.test_support.common_utils.sync_decorators import (
+from tests.resources.test_support.common_utils.common_helpers import Resource
+from tests.resources.test_support.common_utils.result_code import ResultCode
+from tests.resources.test_support.common_utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_assigning,
@@ -30,19 +25,19 @@ from Mid.tests.resources.test_support.common_utils.sync_decorators import (
     sync_set_to_standby,
     sync_telescope_on,
 )
-from Mid.tests.resources.test_support.common_utils.telescope_controls import (
+from tests.resources.test_support.common_utils.telescope_controls import (
     BaseTelescopeControl,
 )
-from Mid.tests.resources.test_support.constant import (
+from tests.resources.test_support.constant import (
     DEVICE_OBS_STATE_ABORT_INFO as MID_OBS_STATE_ABORT_INFO,
 )
-from Mid.tests.resources.test_support.constant import (
+from tests.resources.test_support.constant import (
     DEVICE_OBS_STATE_EMPTY_INFO as MID_OBS_STATE_EMPTY_INFO,
 )
-from Mid.tests.resources.test_support.constant import (
+from tests.resources.test_support.constant import (
     DEVICE_OBS_STATE_IDLE_INFO as MID_OBS_STATE_IDLE_INFO,
 )
-from Mid.tests.resources.test_support.constant import (
+from tests.resources.test_support.constant import (
     DEVICE_STATE_STANDBY_INFO as MID_OBS_STATE_STANDBY_INFO,
 )
 

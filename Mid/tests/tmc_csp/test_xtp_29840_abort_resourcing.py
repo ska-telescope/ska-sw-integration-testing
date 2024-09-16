@@ -6,8 +6,7 @@ import time
 import pytest
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
-
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.helpers import (
     get_master_device_simulators,
     prepare_json_args_for_centralnode_commands,
 )

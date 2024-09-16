@@ -6,7 +6,6 @@ import pytest
 from pytest_bdd import given, parsers, scenario, when
 from ska_tango_base.control_model import HealthState
 from tango import DevState
-
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import mccs_controller
 from tests.resources.test_harness.helpers import (

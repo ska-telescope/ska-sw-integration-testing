@@ -7,7 +7,6 @@ from ska_control_model import ObsState
 from ska_tango_base.commands import ResultCode
 from ska_tango_testing.mock.placeholders import Anything
 from tango import DevState
-
 from tests.resources.test_harness.constant import (
     mccs_controller,
     mccs_master_leaf_node,

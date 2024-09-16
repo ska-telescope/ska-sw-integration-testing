@@ -8,12 +8,11 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 from tango.db import DbDevInfo
-
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.helpers import (
     wait_and_validate_device_attribute_value,
 )
-from Mid.tests.resources.test_harness.utils.enums import SimulatorDeviceType
-from Mid.tests.resources.test_support.enum import DishMode
+from tests.resources.test_harness.utils.enums import SimulatorDeviceType
+from tests.resources.test_support.enum import DishMode
 
 
 @pytest.mark.skip(
@@ -231,11 +230,13 @@ def move_telescope_to_off_state(central_node_mid):
 
 @then("the Central Node is still running")
 def recheck_if_central_node_running(central_node_mid):
+    """rechecks if central node device is running"""
     assert central_node_mid.central_node.ping() > 0
 
 
 @then("the telescope is in OFF state")
 def check_if_telescope_is_in_off_state(central_node_mid):
+    """Verifies if telescope state is in off state"""
     for dish_id in ["SKA036", "SKA063", "SKA100"]:
         assert (
             central_node_mid.dish_master_dict[dish_id].dishMode

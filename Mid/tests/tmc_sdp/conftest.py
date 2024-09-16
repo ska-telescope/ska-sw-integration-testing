@@ -9,16 +9,15 @@ from pytest_bdd import given, parsers, then, when
 from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from tango import DevState
-
-from Mid.tests.resources.test_harness.constant import COMMAND_COMPLETED
-from Mid.tests.resources.test_harness.helpers import (
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
+from tests.resources.test_harness.helpers import (
     check_subarray_instance,
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
     update_scan_id,
     update_scan_type,
 )
-from Mid.tests.resources.test_harness.utils.common_utils import (
+from tests.resources.test_harness.utils.common_utils import (
     check_configure_successful,
     check_obsstate_sdp_in_first_configure,
     check_scan_successful,

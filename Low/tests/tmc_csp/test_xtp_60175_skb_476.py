@@ -14,7 +14,6 @@ from ska_control_model import ObsState
 from ska_tango_base.commands import ResultCode
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
-
 from tests.resources.test_harness.central_node_with_csp_low import (
     CentralNodeCspWrapperLow,
 )

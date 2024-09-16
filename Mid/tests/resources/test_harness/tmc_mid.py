@@ -3,8 +3,7 @@
 import time
 
 from tango import DeviceProxy
-
-from Mid.tests.resources.test_harness.constant import tmc_csp_master_leaf_node
+from tests.resources.test_harness.constant import tmc_csp_master_leaf_node
 
 from .central_node_mid import CentralNodeWrapperMid
 
