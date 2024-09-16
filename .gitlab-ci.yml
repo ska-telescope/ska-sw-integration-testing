@@ -66,7 +66,7 @@ k8s-test-tmc-with-sdp:
   variables:
     TELESCOPE: 'SKA-mid'
     PORT: "10000"
-    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-tmc-sdp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
     KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SUBARRAY_COUNT: 2 # Set subarray count for testing.
     SDP_SIMULATION_ENABLED: 'false' # Disable SDP simulation.
@@ -90,7 +90,7 @@ stop-k8s-test-tmc-with-sdp:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-tmc-sdp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
     KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
