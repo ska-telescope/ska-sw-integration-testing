@@ -78,9 +78,9 @@ k8s-test-tmc-with-sdp:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
     auto_stop_in: 1 minute
-  rules:
-    - exists: 
-        - Mid/tests/**/*
+  # rules:
+  #   - exists: 
+  #       - Mid/tests/**/*
 
 # Job to stop the test environment for TMC with SDP.
 stop-k8s-test-tmc-with-sdp:
