@@ -3,7 +3,8 @@
 Scenario: Starting up low telescope
     Given low telescope
     When I turn telescope to ON state
-    Then the central node goes to state ON
+    Then the SDP, CSP and MCCS goes to ON state
+    And the telescope goes to state ON
 
 Scenario: Switch off the low telescope
     Given low telescope
