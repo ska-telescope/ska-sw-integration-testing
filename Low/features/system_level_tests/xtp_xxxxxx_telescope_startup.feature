@@ -1,5 +1,3 @@
-
-
 Scenario: Starting up low telescope
     Given low telescope
     When I turn telescope to ON state
