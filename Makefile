@@ -16,7 +16,7 @@ PYTHON_LINT_TARGET ?= Mid/tests/
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
-FILE ?= Mid## A specific test file to pass to pytest
+FILE ?= Mid/tests## A specific test file to pass to pytest
 ADD_ARGS ?= ## Additional args to pass to pytestt
 
 
@@ -123,7 +123,8 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include .make/xray.mk
 -include PrivateRules.mak
 
-k8s_test_folder = Mid
+k8s_test_folder = Mid/tests
+k8s_test_src_dir = Mid/
 
 # to create SDP namespace
 k8s-pre-install-chart:
