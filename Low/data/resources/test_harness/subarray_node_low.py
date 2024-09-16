@@ -7,7 +7,7 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
 
-from tests.resources.test_harness.constant import (
+from Low.tests.resources.test_harness.constant import (
     device_dict_low,
     low_centralnode,
     low_csp_master,
@@ -21,24 +21,24 @@ from tests.resources.test_harness.constant import (
     pst,
     tmc_low_subarraynode1,
 )
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.event_recorder import EventRecorder
+from Low.tests.resources.test_harness.helpers import (
     SIMULATED_DEVICES_DICT,
     check_subarray_obs_state,
     update_eb_pb_ids,
 )
-from tests.resources.test_harness.utils.common_utils import JsonFactory
-from tests.resources.test_harness.utils.constant import (
+from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
+from Low.tests.resources.test_harness.utils.constant import (
     ABORTED,
     IDLE,
     ON,
     READY,
 )
-from tests.resources.test_harness.utils.enums import SubarrayObsState
-from tests.resources.test_harness.utils.obs_state_resetter_low import (
+from Low.tests.resources.test_harness.utils.enums import SubarrayObsState
+from Low.tests.resources.test_harness.utils.obs_state_resetter_low import (
     ObsStateResetterFactory,
 )
-from tests.resources.test_harness.utils.sync_decorators import (
+from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_configure,
@@ -47,7 +47,7 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_release_resources,
     sync_restart,
 )
-from tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import Resource
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

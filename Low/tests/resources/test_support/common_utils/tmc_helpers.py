@@ -10,9 +10,9 @@ from ska_control_model import ObsState, ResultCode
 from ska_ser_logging import configure_logging
 from tango import DeviceProxy, DevState
 
-from tests.resources.test_harness.utils.common_utils import JsonFactory
-from tests.resources.test_support.common_utils.common_helpers import Resource
-from tests.resources.test_support.common_utils.sync_decorators import (
+from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
+from Low.tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_assigning,
@@ -28,29 +28,29 @@ from tests.resources.test_support.common_utils.sync_decorators import (
     sync_set_to_standby,
     sync_telescope_on,
 )
-from tests.resources.test_support.common_utils.telescope_controls import (
+from Low.tests.resources.test_support.common_utils.telescope_controls import (
     BaseTelescopeControl,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     DEVICE_OBS_STATE_ABORT_INFO as LOW_OBS_STATE_ABORT_INFO,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     DEVICE_OBS_STATE_EMPTY_INFO as LOW_OBS_STATE_EMPTY_INFO,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     DEVICE_OBS_STATE_IDLE_INFO as LOW_OBS_STATE_IDLE_INFO,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     DEVICE_STATE_STANDBY_INFO as LOW_OBS_STATE_STANDBY_INFO,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     INTERMEDIATE_CONFIGURING_OBS_STATE_DEFECT,
     INTERMEDIATE_STATE_DEFECT,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     csp_subarray1 as csp_subarray1_low,
 )
-from tests.resources.test_support.constant_low import (
+from Low.tests.resources.test_support.constant_low import (
     sdp_subarray1 as sdp_subarray1_low,
 )
 

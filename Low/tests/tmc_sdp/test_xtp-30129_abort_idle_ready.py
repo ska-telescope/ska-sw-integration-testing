@@ -6,12 +6,12 @@ from pytest_bdd import given, parsers, scenario, then
 from ska_control_model import ObsState
 from tango import DevState
 
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
     update_eb_pb_ids,
 )
-from tests.resources.test_support.common_utils.result_code import ResultCode
+from Low.tests.resources.test_support.common_utils.result_code import ResultCode
 
 
 @pytest.mark.tmc_sdp

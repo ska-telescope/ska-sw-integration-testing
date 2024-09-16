@@ -10,7 +10,7 @@ from ska_tango_base.control_model import HealthState
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DeviceProxy, DevState
 
-from tests.resources.test_harness.constant import (
+from Low.tests.resources.test_harness.constant import (
     RESET_DEFECT,
     device_dict_low,
     low_centralnode,
@@ -28,10 +28,10 @@ from tests.resources.test_harness.constant import (
     pst,
     tmc_low_subarraynode1,
 )
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
-from tests.resources.test_harness.utils.common_utils import JsonFactory
-from tests.resources.test_harness.utils.sync_decorators import (
+from Low.tests.resources.test_harness.event_recorder import EventRecorder
+from Low.tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
+from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
+from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,
     sync_release_resources,
@@ -39,7 +39,7 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_set_to_off,
     sync_set_to_on,
 )
-from tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import Resource
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

@@ -7,9 +7,9 @@ from ska_tango_base.commands import ResultCode
 from ska_tango_base.control_model import ObsState
 from tango import DevState
 
-from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from Low.tests.resources.test_harness.event_recorder import EventRecorder
+from Low.tests.resources.test_harness.helpers import (
     check_subarray_instance,
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
@@ -17,10 +17,10 @@ from tests.resources.test_harness.helpers import (
     update_scan_id,
     update_scan_type,
 )
-from tests.resources.test_harness.subarray_node_low import (
+from Low.tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
-from tests.resources.test_harness.utils.common_utils import (
+from Low.tests.resources.test_harness.utils.common_utils import (
     JsonFactory,
     check_configure_successful,
     check_scan_successful,

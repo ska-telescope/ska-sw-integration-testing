@@ -15,18 +15,18 @@ from ska_tango_base.commands import ResultCode
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
 
-from tests.resources.test_harness.central_node_with_csp_low import (
+from Low.tests.resources.test_harness.central_node_with_csp_low import (
     CentralNodeCspWrapperLow,
 )
-from tests.resources.test_harness.subarray_node_with_csp_low import (
+from Low.tests.resources.test_harness.subarray_node_with_csp_low import (
     SubarrayNodeCspWrapperLow,
 )
-from tests.resources.test_harness.utils.common_utils import JsonFactory
-from tests.resources.test_support.common_utils.tmc_helpers import (
+from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
+from Low.tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
-from tests.resources.test_support.constant_low import TIMEOUT
+from Low.tests.resources.test_support.constant_low import TIMEOUT
 
 
 @scenario(

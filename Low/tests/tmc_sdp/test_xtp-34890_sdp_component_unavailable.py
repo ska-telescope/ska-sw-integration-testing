@@ -8,8 +8,8 @@ from ska_control_model import ObsState
 from ska_tango_testing.mock.placeholders import Anything
 from tango import DevState
 
-from tests.resources.test_harness.helpers import update_eb_pb_ids
-from tests.resources.test_support.common_utils.tmc_helpers import (
+from Low.tests.resources.test_harness.helpers import update_eb_pb_ids
+from Low.tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
 

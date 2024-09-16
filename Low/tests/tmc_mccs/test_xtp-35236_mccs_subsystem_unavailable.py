@@ -8,15 +8,15 @@ from ska_tango_base.commands import ResultCode
 from ska_tango_testing.mock.placeholders import Anything
 from tango import DevState
 
-from tests.resources.test_harness.constant import (
+from Low.tests.resources.test_harness.constant import (
     mccs_controller,
     mccs_master_leaf_node,
     tmc_low_subarraynode1,
 )
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.helpers import (
     get_device_simulator_with_given_name,
 )
-from tests.resources.test_support.common_utils.tmc_helpers import (
+from Low.tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
     wait_for_attribute_update,
 )

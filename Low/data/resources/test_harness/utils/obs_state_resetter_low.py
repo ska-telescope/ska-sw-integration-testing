@@ -1,6 +1,6 @@
 from typing import Any
 
-from tests.resources.test_harness.utils.common_utils import JsonFactory
+from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
 class ObsStateResetter:

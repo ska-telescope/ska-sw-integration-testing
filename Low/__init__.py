@@ -2,7 +2,7 @@
 """
 from assertpy import add_extension
 
-from tests.resources.test_harness.utils.assertions import (
+from Low.tests.resources.test_harness.utils.assertions import (
     has_desired_result_code_message_in_lrcr_event,
 )
 

@@ -6,12 +6,12 @@ from pytest_bdd import given, scenario, then
 from ska_control_model import ObsState
 from tango import DevState
 
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.helpers import (
     get_device_simulators,
     prepare_json_args_for_centralnode_commands,
     update_eb_pb_ids,
 )
-from tests.resources.test_harness.utils.enums import SimulatorDeviceType
+from Low.tests.resources.test_harness.utils.enums import SimulatorDeviceType
 
 
 @pytest.mark.tmc_sdp

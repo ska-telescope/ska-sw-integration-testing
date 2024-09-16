@@ -5,12 +5,12 @@ import pytest
 from pytest_bdd import given, parsers, scenario, when
 from ska_tango_base.control_model import HealthState
 
-from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.constant import low_sdp_master
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from Low.tests.resources.test_harness.constant import low_sdp_master
+from Low.tests.resources.test_harness.helpers import (
     get_device_simulator_with_given_name,
 )
-from tests.resources.test_harness.simulator_factory import SimulatorFactory
+from Low.tests.resources.test_harness.simulator_factory import SimulatorFactory
 
 
 @pytest.mark.tmc_sdp_unhappy_path

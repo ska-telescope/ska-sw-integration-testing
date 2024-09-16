@@ -4,8 +4,8 @@ from pytest_bdd import given, scenario, then
 from ska_control_model import ObsState
 from tango import DevState
 
-from tests.resources.test_harness.helpers import set_receive_address
-from tests.resources.test_support.common_utils.tmc_helpers import (
+from Low.tests.resources.test_harness.helpers import set_receive_address
+from Low.tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )

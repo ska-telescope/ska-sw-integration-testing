@@ -6,16 +6,16 @@ import json
 import pytest
 from pytest_bdd import parsers, scenario, when
 
-from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.event_recorder import EventRecorder
-from tests.resources.test_harness.helpers import (
+from Low.tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from Low.tests.resources.test_harness.event_recorder import EventRecorder
+from Low.tests.resources.test_harness.helpers import (
     prepare_json_args_for_commands,
     update_scan_id,
 )
-from tests.resources.test_harness.subarray_node_low import (
+from Low.tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
-from tests.resources.test_harness.utils.common_utils import (
+from Low.tests.resources.test_harness.utils.common_utils import (
     JsonFactory,
     check_scan_successful,
 )
