@@ -249,7 +249,7 @@ k8s-test-tmc-low-with-mccs:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-low-with-mccs
 
-stop-k8s-test-tmc-low--with-mccs:
+stop-k8s-test-tmc-low-with-mccs:
   name: test/$CI_COMMIT_REF_SLUG
   on_stop: stop-k8s-test-tmc-low-with-mccs
   auto_stop_in: 1 minute
