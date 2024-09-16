@@ -23,7 +23,7 @@ assigned_resources = []
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_40072_succesive_assignresources.feature",
+    "../../features/tmc_csp/xtp_40072_succesive_assignresources.feature",
     "Validate succesive AssignResources command",
 )
 def test_tmc_csp_sucessive_assignresources_functionality():

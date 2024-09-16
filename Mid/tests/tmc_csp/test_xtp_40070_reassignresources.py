@@ -20,7 +20,7 @@ from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_40072_succesive_assignresources.feature",
+    "../../features/tmc_csp/xtp_40072_succesive_assignresources.feature",
     "Validate second AssignResources command after "
     "first successful AssignResources and ReleaseResources are executed",
 )

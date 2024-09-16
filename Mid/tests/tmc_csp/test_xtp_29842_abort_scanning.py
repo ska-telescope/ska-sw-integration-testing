@@ -11,7 +11,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_29842_abort_scanning.feature",
+    "../../features/tmc_csp/xtp_29842_abort_scanning.feature",
     "Abort scanning CSP using TMC",
 )
 def test_tmc_csp_abort_in_scanning(central_node_mid, simulator_factory):

@@ -14,7 +14,7 @@ LOGGER = logging.getLogger(__name__)
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_29394_endscan.feature",
+    "../../features/tmc_csp/xtp_29394_endscan.feature",
     "TMC executes a EndScan command on CSP subarray.",
 )
 def test_tmc_csp_endscan_functionality():

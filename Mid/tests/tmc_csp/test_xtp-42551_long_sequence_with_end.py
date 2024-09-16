@@ -23,7 +23,7 @@ LOGGER = logging.getLogger(__name__)
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",
+    "../../features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",
     "TMC Mid executes multiple scans with different configurations,"
     " intermittently ending configurations",
 )

@@ -22,7 +22,7 @@ LOGGER = logging.getLogger(__name__)
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",
+    "../../features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",
     "TMC Mid executes multiple scan with same configuration successfully",
 )
 def test_tmc_csp_successive_scan_sequences():

@@ -23,7 +23,7 @@ from tests.resources.test_harness.utils.common_utils import (
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../features/tmc_csp/xtp_58590_verify_skb_413.feature",
+    "../../features/tmc_csp/xtp_58590_verify_skb_413.feature",
     "Verify SKB-413 with TMC as entrypoint",
 )
 def test_verify_skb_413() -> None:
