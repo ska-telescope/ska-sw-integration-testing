@@ -84,6 +84,7 @@ class CentralNodeWrapperMid(CentralNodeWrapper):
             SIMULATED_DEVICES_DICT["csp_and_sdp"]
             or SIMULATED_DEVICES_DICT["sdp"]
         ) and not SIMULATED_DEVICES_DICT["all_mocks"]:
+            logging.info("inside if")
             dish_fqdn001 = REAL_DISH1_FQDN
             dish_fqdn036 = REAL_DISH36_FQDN
             dish_fqdn063 = REAL_DISH63_FQDN
@@ -95,7 +96,7 @@ class CentralNodeWrapperMid(CentralNodeWrapper):
                 "mid-dish/simulator-spfrx/SKA001",
             )
             spfrx_proxy = DeviceProxy(self.spfrx_fqdn)
-
+            logging.info("--------------log2")
             # Create Dish1 admin device proxy
             spfrx1_admin_dev_name = spfrx_proxy.adm_name()
             self.spfrx1_admin_dev_proxy = DeviceProxy(spfrx1_admin_dev_name)
