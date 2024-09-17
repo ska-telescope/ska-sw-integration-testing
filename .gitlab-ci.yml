@@ -74,7 +74,7 @@ k8s-test-tmc-with-sdp:
   script:
     - make k8s-test MARK=tmc_sdp
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/sdp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
     auto_stop_in: 1 minute
   rules:
@@ -95,7 +95,7 @@ stop-k8s-test-tmc-with-sdp:
   script:
     - make k8s-test MARK=tmc_sdp
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/sdp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
     auto_stop_in: 1 minute
     action: stop
