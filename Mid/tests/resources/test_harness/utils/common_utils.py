@@ -42,6 +42,7 @@ def get_centralnode_input_json(slug):
         "..",
         "..",
         "..",
+        "..",
         "data",
         "centralnode",
         f"{slug}.json",
