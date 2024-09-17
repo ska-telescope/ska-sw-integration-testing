@@ -32,7 +32,7 @@ k8s-test-tmc-with-csp:
   script:
     - make k8s-test MARK=tmc_csp
   environment:
-    name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    name: test/csp$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-mid-with-csp # Specify stop job.
     auto_stop_in: 1 minute # Automatically stop environment after a minute.
   rules:
@@ -51,7 +51,7 @@ stop-k8s-test-mid-with-csp:
   script:
     - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/csp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-with-csp
     auto_stop_in: 1 minute
     action: stop # Stop action triggers the deletion.
