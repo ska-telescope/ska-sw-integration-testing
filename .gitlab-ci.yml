@@ -94,11 +94,11 @@ stop-k8s-test-tmc-with-sdp:
     SDP_SIMULATION_ENABLED: 'false'
   script:
     - make k8s-test MARK=tmc_sdp
-  environment:
-    name: test/sdp$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-sdp
-    auto_stop_in: 1 minute
-    action: stop
+  # environment:
+  #   name: test/sdp$CI_COMMIT_REF_SLUG
+  #   on_stop: stop-k8s-test-tmc-with-sdp
+  #   auto_stop_in: 1 minute
+  #   action: stop
 
 # Job to test Dish-LMC with Kubernetes.
 k8s-test-dish-lmc:
