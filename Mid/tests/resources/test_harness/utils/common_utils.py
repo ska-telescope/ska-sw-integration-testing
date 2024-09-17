@@ -20,6 +20,7 @@ def get_subarray_input_json(slug):
         "..",
         "..",
         "..",
+        "..",
         "data",
         "subarray",
         f"{slug}.json",
