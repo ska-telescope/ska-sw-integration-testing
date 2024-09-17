@@ -125,7 +125,7 @@ k8s-test-dish-lmc:
   script:
     - make k8s-test MARK=tmc_dish
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/dish$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc
   rules:
     - exists: 
@@ -141,9 +141,9 @@ stop-k8s-test-dish-lmc:
   variables:
     KUBE_NAMESPACE: "ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
   script:
-    - kubectl delete pod test-runner-test -n $KUBE_NAMESPACE
+    - make k8s-test MARK=tmc_dish
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/dish$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc
     auto_stop_in: 1 minute
     action: stop
