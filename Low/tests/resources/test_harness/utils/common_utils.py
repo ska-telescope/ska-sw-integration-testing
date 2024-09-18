@@ -131,6 +131,7 @@ def get_subarray_input_json(slug):
         "..",
         "..",
         "..",
+        "..",
         "data",
         "subarray",
         f"{slug}.json",
@@ -149,6 +150,7 @@ def get_centralnode_input_json(slug):
     """
     assign_json_file_path = join(
         dirname(__file__),
+        "..",
         "..",
         "..",
         "..",
