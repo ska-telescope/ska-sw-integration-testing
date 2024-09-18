@@ -8,7 +8,7 @@ from Low.tests.resources.test_harness.helpers import get_master_device_simulator
 
 @pytest.mark.tmc_all
 @scenario(
-    "../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
+    "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
     "Starting up low telescope",
 )
 def test_tmc_startup_telescope():
