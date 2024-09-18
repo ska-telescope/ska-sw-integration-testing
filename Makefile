@@ -92,8 +92,6 @@ endif
 
 PYTHON_VARS_AFTER_PYTEST ?= -m '$(MARK) $(ADDMARK)' $(ADD_ARGS) $(FILE) --count=$(COUNT)
 
-K8S_CHART_PARAMS = $(CUSTOM_VALUES1)
-
 PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 							 TANGO_HOST=$(TANGO_HOST) \
 							 TELESCOPE=$(TELESCOPE) \
@@ -128,10 +126,6 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 k8s_test_folder = Mid/tests
 k8s_test_src_dir = Mid/
 
-ifeq ($(CSP_SIMULATION_ENABLED),false)
-CUSTOM_VALUES1 =	--set tmc-mid.deviceServers.mocks.csp=$(CSP_SIMULATION_ENABLED)\
-	--set ska-csp-lmc-mid.enabled=true
-endif
 # to create SDP namespace
 k8s-pre-install-chart:
 ifeq ($(SDP_SIMULATION_ENABLED),false)

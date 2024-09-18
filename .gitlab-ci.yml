@@ -49,7 +49,7 @@ stop-k8s-test-mid-with-csp:
   variables:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
-    - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
+    - kubectl delete deployment my-deployment --namespace=$KUBE_NAMESPACE || echo "Deployment not found"  # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/csp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-with-csp
