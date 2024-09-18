@@ -143,7 +143,7 @@ stop-k8s-test-dish-lmc:
     - make k8s-test MARK=tmc_dish
   environment:
     name: test/dish$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-dish-lmc
+    on_stop: stop-k8s-test-dish-lmc 
     auto_stop_in: 1 minute
     action: stop
 
