@@ -66,7 +66,7 @@ k8s-test-tmc-with-csp-sdp-mccs:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
     MARK: 'tmc_all' # Ensure CSP simulation is disabled.
   script:
-    - make k8s-test MARK=tmc_all
+    - make k8s-test MARK='tmc_all'
   environment:
     name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-low-all # Specify stop job.
