@@ -1,5 +1,5 @@
 Scenario: Starting up low telescope
-    Given low telescope
+    Given a low telescope
     When I turn telescope to ON state
     Then the SDP, CSP and MCCS goes to ON state
     And the telescope goes to state ON

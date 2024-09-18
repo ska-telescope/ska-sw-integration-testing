@@ -17,7 +17,7 @@ def test_tmc_startup_telescope():
     """
 
 
-@given("Given low telescope")
+@given("a low telescope")
 def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
     """
     Given a TMC
