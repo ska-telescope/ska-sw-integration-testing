@@ -21,8 +21,8 @@ def get_subarray_input_json(slug):
         "..",
         "..",
         "..",
-        "..",
         "data",
+        "TMC",
         "subarray",
         f"{slug}.json",
     )
@@ -44,8 +44,8 @@ def get_centralnode_input_json(slug):
         "..",
         "..",
         "..",
-        "..",
         "data",
+        "TMC",
         "centralnode",
         f"{slug}.json",
     )
