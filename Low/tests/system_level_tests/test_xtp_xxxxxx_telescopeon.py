@@ -3,7 +3,7 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 
-from Low.tests.resources.test_harness.helpers import get_master_device_simulators
+from Low.tests.resources.test_harness.helpers import get_master_device_simulators, set_admin_mode_values_mccs
 
 
 @pytest.mark.tmc_all
@@ -11,10 +11,12 @@ from Low.tests.resources.test_harness.helpers import get_master_device_simulator
     "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
     "Starting up low telescope",
 )
-def test_tmc_startup_telescope():
+def test_tmc_startup_telescope(central_node_low):
     """
     Test case to verify StartUp functionality
     """
+    central_node_low.csp_master.adminMode = 0
+    set_admin_mode_values_mccs()
 
 
 @given("an low telescope")
