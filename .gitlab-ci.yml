@@ -63,7 +63,7 @@ k8s-test-tmc-with-csp-sdp-mccs:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
   variables:
     TELESCOPE: 'SKA-low'
-    KUBE_NAMESPACE: 'ci-ska-low-integration-5da87846-integration-low'
+    KUBE_NAMESPACE: 'ci-ska-low-integration-2f60c3cf-integration-low'
     MARK: 'tmc_all' # Ensure CSP simulation is disabled.
   script:
     - make k8s-test MARK='tmc_all'
@@ -83,7 +83,7 @@ stop-k8s-test-low-all:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'ci-ska-low-integration-5da87846-integration-low'
+    KUBE_NAMESPACE: 'ci-ska-low-integration-2f60c3cf-integration-low'
   script:
     - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
   environment:
