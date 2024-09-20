@@ -646,6 +646,7 @@ def retry_communication(device_proxy: DeviceProxy, timeout: int = 30) -> None:
 def set_admin_mode_values_mccs():
     """Set the adminMode values of MCCS devices."""
     max_retries: int = 3
+    LOGGER.info("was I here anyway")
     if MCCS_SIMULATION_ENABLED.lower() == "false":
         LOGGER.info("I was here ,but did I set the adminmode")
         controller = tango.DeviceProxy(mccs_controller)
