@@ -87,6 +87,8 @@ stop-k8s-test-low-all:
     - ska-k8s
   variables:
     KUBE_NAMESPACE: 'ci-ska-low-integration-07d2ff70-integration-low'
+  script:
+    - make k8s-uninstall-chart
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-low-all
