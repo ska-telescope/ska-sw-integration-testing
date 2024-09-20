@@ -12,7 +12,7 @@ DISH_NAMESPACE_4 ?= dish-lmc-4
 KUBE_NAMESPACE ?= ska-tmc-integration
 KUBE_NAMESPACE_SDP ?= ska-tmc-integration-sdp
 K8S_TIMEOUT ?= 800s
-PYTHON_LINT_TARGET ?= Mid/tests/ 
+PYTHON_LINT_TARGET ?= Low/tests/  
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
@@ -50,10 +50,10 @@ COUNT ?= 1 ## Number of times the tests should run
 CLUSTER_DOMAIN ?= cluster.local
 PORT ?= 10000
 SUBARRAY_COUNT ?= 1
-# DISH_NAME_1 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_1).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA001
-# DISH_NAME_36 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_2).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA036
-# DISH_NAME_63 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_3).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA063
-# DISH_NAME_100 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_4).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA100
+DISH_NAME_1 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_1).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA001
+DISH_NAME_36 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_2).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA036
+DISH_NAME_63 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_3).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA063
+DISH_NAME_100 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_4).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA100
 CSP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-csp/control/0
 CSP_SUBARRAY_PREFIX ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-csp/subarray
 SDP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-sdp/control/0
@@ -79,9 +79,10 @@ K8S_TEST_RUNNER = test-runner-$(HELM_RELEASE)
 
 CI_PROJECT_PATH_SLUG ?= ska-sw-integration-testing
 CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
-CSP_SIMULATION_ENABLED ?= false
-SDP_SIMULATION_ENABLED ?= false
-MCCS_SIMULATION_ENABLED ?= false
+CSP_SIMULATION_ENABLED ?= true
+SDP_SIMULATION_ENABLED ?= true
+MCCS_SIMULATION_ENABLED ?= true
+DISH_SIMULATION_ENABLED ?= true
 SDP_PROCCONTROL_REPLICAS ?= 1
 
 ifeq ($(MAKECMDGOALS),k8s-test)
@@ -98,7 +99,8 @@ PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 							 CLUSTER_DOMAIN=$(CLUSTER_DOMAIN) \
 							 CSP_SIMULATION_ENABLED=$(CSP_SIMULATION_ENABLED) \
 							 SDP_SIMULATION_ENABLED=$(SDP_SIMULATION_ENABLED) \
-							 MCCS_SIMULATION_ENABLED=$(DISH_SIMULATION_ENABLED) \
+							 MCCS_SIMULATION_ENABLED=$(MCCS_SIMULATION_ENABLED) \
+							 DISH_SIMULATION_ENABLED=$(DISH_SIMULATION_ENABLED) \
 							 DISH_NAMESPACE_1=$(DISH_NAMESPACE_1) \
 							 DISH_NAMESPACE_2=$(DISH_NAMESPACE_2) \
 							 DISH_NAMESPACE_3=$(DISH_NAMESPACE_3) \
@@ -123,10 +125,8 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include .make/xray.mk
 -include PrivateRules.mak
 
-
 k8s_test_folder = Low/tests
 k8s_test_src_dir = Low/
-
 
 # to create SDP namespace
 k8s-pre-install-chart:
