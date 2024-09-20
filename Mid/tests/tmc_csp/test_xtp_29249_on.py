@@ -8,7 +8,7 @@ from tests.resources.test_harness.helpers import (
 )
 
 
-@pytest.mark.tmc_csp1
+@pytest.mark.tmc_csp
 @scenario(
     "../../features/tmc_csp/xtp_29249_on.feature",
     "StartUp Telescope with TMC and CSP devices",
