@@ -65,9 +65,9 @@ k8s-test-tmc-with-csp-sdp-mccs:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'ci-ska-low-integration-7547a53a-integration-low'
     MARK: 'tmc_all' # Ensure CSP simulation is disabled.
-    CSP_SIMULATION_ENABLED: false
-    SDP_SIMULATION_ENABLED: false
-    MCCS_SIMULATION_ENABLED: false
+    CSP_SIMULATION_ENABLED: 'false'
+    SDP_SIMULATION_ENABLED: 'false'
+    MCCS_SIMULATION_ENABLED: 'false'
   script:
     - make k8s-test MARK='tmc_all'
   environment:
