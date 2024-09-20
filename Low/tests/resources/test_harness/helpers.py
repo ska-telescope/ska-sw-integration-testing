@@ -32,7 +32,9 @@ from Low.tests.resources.test_harness.event_recorder import EventRecorder
 from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
 from Low.tests.resources.test_harness.utils.enums import SimulatorDeviceType
 from Low.tests.resources.test_harness.utils.wait_helpers import Waiter, watch
-from Low.tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -513,6 +515,9 @@ def get_simulated_devices_info() -> dict:
         "sdp_and_mccs": all(
             [is_sdp_simulated, is_mccs_simulated, not is_csp_simulated]
         ),  # real CSP.LMC enabled
+        "sdp_mccs_csp": all(
+            [not is_sdp_simulated, not is_mccs_simulated, not is_csp_simulated]
+        ),
         "all_mocks": all(
             [
                 is_csp_simulated,

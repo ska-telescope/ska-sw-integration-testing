@@ -39,7 +39,9 @@ from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_set_to_off,
     sync_set_to_on,
 )
-from Low.tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -437,7 +439,38 @@ class CentralNodeWrapperLow(object):
                     json.dumps((int(ResultCode.OK), "Command Completed")),
                 ),
             )
-
+        elif SIMULATED_DEVICES_DICT["sdp_mccs_csp"]:
+            LOGGER.info(
+                "Invoking TelescopeOn command with csp and sdp simulated"
+            )
+            # Set adminMode to Online for mccs_master
+            if self.mccs_master.adminMode != AdminMode.ONLINE:
+                self.mccs_master.adminMode = AdminMode.ONLINE
+            # Set adminMode to Online for mccs_subarray
+            if self.mccs_subarray1.adminMode != AdminMode.ONLINE:
+                self.mccs_subarray1.adminMode = AdminMode.ONLINE
+            # Set adminMode to Online for csp_master
+            if self.csp_master.adminMode != AdminMode.ONLINE:
+                self.csp_master.adminMode = AdminMode.ONLINE
+            # Set adminMode to Online for csp_subarray
+            if self.csp_subarray1.adminMode != AdminMode.ONLINE:
+                self.csp_subarray1.adminMode = AdminMode.ONLINE
+            time.sleep(3)
+            _, unique_id = self.central_node.TelescopeOn()
+            assert_that(self.event_tracer).described_as(
+                "FAILED ASSUMPTION AFTER ON COMMAND: "
+                "Central Node device"
+                f"({self.central_node.dev_name()}) "
+                "is expected have longRunningCommand as"
+                '(unique_id,(ResultCode.OK,"Command Completed"))',
+            ).within_timeout(TIMEOUT).has_change_event_occurred(
+                self.central_node,
+                "longRunningCommandResult",
+                (
+                    unique_id[0],
+                    json.dumps((int(ResultCode.OK), "Command Completed")),
+                ),
+            )
         elif SIMULATED_DEVICES_DICT["csp_and_sdp"]:
             LOGGER.info(
                 "Invoking TelescopeOn command with csp and sdp simulated"
