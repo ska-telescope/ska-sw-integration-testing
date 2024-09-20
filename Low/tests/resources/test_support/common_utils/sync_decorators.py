@@ -5,7 +5,9 @@ from contextlib import contextmanager
 
 from ska_ser_logging import configure_logging
 
-from Low.tests.resources.test_support.common_utils.base_utils import DeviceUtils
+from Low.tests.resources.test_support.common_utils.base_utils import (
+    DeviceUtils,
+)
 from Low.tests.resources.test_support.common_utils.common_helpers import (
     Resource,
     Waiter,

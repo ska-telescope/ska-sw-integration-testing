@@ -5,7 +5,6 @@ from tango import DevState
 
 from Low.tests.resources.test_harness.helpers import (
     get_master_device_simulators,
-    set_admin_mode_values_mccs,
 )
 
 

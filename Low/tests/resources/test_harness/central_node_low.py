@@ -29,7 +29,10 @@ from Low.tests.resources.test_harness.constant import (
     tmc_low_subarraynode1,
 )
 from Low.tests.resources.test_harness.event_recorder import EventRecorder
-from Low.tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT, set_admin_mode_values_mccs
+from Low.tests.resources.test_harness.helpers import (
+    SIMULATED_DEVICES_DICT,
+    set_admin_mode_values_mccs,
+)
 from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
 from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
@@ -440,17 +443,7 @@ class CentralNodeWrapperLow(object):
                 ),
             )
         elif SIMULATED_DEVICES_DICT["sdp_mccs_csp"]:
-            LOGGER.info(
-                "Invoking TelescopeOn command with csp,sdp,mccs real"
-            )
-            
-            # Set adminMode to Online for mccs_master
-            if self.mccs_master.adminMode != AdminMode.ONLINE:
-                self.mccs_master.adminMode = AdminMode.ONLINE
-            # Set adminMode to Online for mccs_subarray
-            if self.mccs_subarray1.adminMode != AdminMode.ONLINE:
-                self.mccs_subarray1.adminMode = AdminMode.ONLINE
-            set_admin_mode_values_mccs()
+            LOGGER.info("Invoking TelescopeOn command with csp,sdp,mccs real")
             # Set adminMode to Online for csp_master
             if self.csp_master.adminMode != AdminMode.ONLINE:
                 self.csp_master.adminMode = AdminMode.ONLINE

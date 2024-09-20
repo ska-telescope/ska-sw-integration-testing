@@ -47,7 +47,9 @@ from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_release_resources,
     sync_restart,
 )
-from Low.tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

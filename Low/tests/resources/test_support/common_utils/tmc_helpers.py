@@ -11,7 +11,9 @@ from ska_ser_logging import configure_logging
 from tango import DeviceProxy, DevState
 
 from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
-from Low.tests.resources.test_support.common_utils.common_helpers import Resource
+from Low.tests.resources.test_support.common_utils.common_helpers import (
+    Resource,
+)
 from Low.tests.resources.test_support.common_utils.sync_decorators import (
     sync_abort,
     sync_assign_resources,

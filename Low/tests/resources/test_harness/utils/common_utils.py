@@ -7,7 +7,9 @@ from typing import List
 from ska_control_model import ObsState
 
 from Low.tests.resources.test_harness.utils.wait_helpers import Waiter
-from Low.tests.resources.test_support.common_utils.result_code import ResultCode
+from Low.tests.resources.test_support.common_utils.result_code import (
+    ResultCode,
+)
 
 TIMEOUT = 200
 
