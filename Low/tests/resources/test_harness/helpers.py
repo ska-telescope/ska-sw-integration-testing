@@ -647,6 +647,7 @@ def set_admin_mode_values_mccs():
     """Set the adminMode values of MCCS devices."""
     max_retries: int = 3
     if MCCS_SIMULATION_ENABLED.lower() == "false":
+        LOGGER.info("I was here ,but did I set the adminmode")
         controller = tango.DeviceProxy(mccs_controller)
         if controller.adminMode != AdminMode.ONLINE:
             db = tango.Database()
@@ -664,6 +665,7 @@ def set_admin_mode_values_mccs():
                 else:
                     device = tango.DeviceProxy(device_trl)
                     retry: int = 0
+                    LOGGER.info("Setting the admin mode")
                     while (
                         device.adminMode != AdminMode.ONLINE
                         and retry <= max_retries
