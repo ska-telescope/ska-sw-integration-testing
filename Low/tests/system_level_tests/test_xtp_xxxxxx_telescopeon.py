@@ -3,7 +3,10 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 
-from Low.tests.resources.test_harness.helpers import get_master_device_simulators, set_admin_mode_values_mccs
+from Low.tests.resources.test_harness.helpers import (
+    get_master_device_simulators,
+    set_admin_mode_values_mccs,
+)
 
 
 @pytest.mark.tmc_all
@@ -11,12 +14,10 @@ from Low.tests.resources.test_harness.helpers import get_master_device_simulator
     "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
     "Starting up low telescope",
 )
-def test_tmc_startup_telescope(central_node_low):
+def test_tmc_startup_telescope():
     """
     Test case to verify StartUp functionality
     """
-    central_node_low.csp_master.adminMode = 0
-    set_admin_mode_values_mccs()
 
 
 @given("an low telescope")
@@ -28,6 +29,8 @@ def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
         simulator_factory: fixture for SimulatorFactory class,
         which provides simulated subarray and master devices
     """
+    # central_node_low.csp_master.adminMode = 0
+    # set_admin_mode_values_mccs()
     (_, sdp_master_sim, _) = get_master_device_simulators(simulator_factory)
 
     assert central_node_low.central_node.ping() > 0
