@@ -63,7 +63,7 @@ k8s-test-tmc-with-csp-sdp-mccs:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
   variables:
     TELESCOPE: 'SKA-low'
-    KUBE_NAMESPACE: 'ci-ska-low-integration-69f05ede-integration-low'
+    KUBE_NAMESPACE: 'ci-ska-low-integration-7547a53a-integration-low'
     MARK: 'tmc_all' # Ensure CSP simulation is disabled.
     CSP_SIMULATION_ENABLED: false
     SDP_SIMULATION_ENABLED: false
@@ -86,7 +86,7 @@ stop-k8s-test-low-all:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'ci-ska-low-integration-69f05ede-integration-low'
+    KUBE_NAMESPACE: 'ci-ska-low-integration-7547a53a-integration-low'
   script:
     - make k8s-uninstall-chart
   environment:
