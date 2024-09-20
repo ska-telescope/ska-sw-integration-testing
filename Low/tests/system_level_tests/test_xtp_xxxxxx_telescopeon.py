@@ -45,7 +45,7 @@ def move_telescope_to_on(central_node_low):
     central_node_low.move_to_on()
 
 
-@then("Then the SDP, CSP and MCCS goes to ON state")
+@then("the SDP, CSP and MCCS goes to ON state")
 def check_devices_is_on(central_node_low, subarray_node_low, event_recorder):
     """A method to check devices states."""
     event_recorder.subscribe_event(central_node_low.csp_master, "State")
