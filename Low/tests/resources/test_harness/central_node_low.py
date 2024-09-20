@@ -29,10 +29,7 @@ from Low.tests.resources.test_harness.constant import (
     tmc_low_subarraynode1,
 )
 from Low.tests.resources.test_harness.event_recorder import EventRecorder
-from Low.tests.resources.test_harness.helpers import (
-    SIMULATED_DEVICES_DICT,
-    set_admin_mode_values_mccs,
-)
+from Low.tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
 from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
 from Low.tests.resources.test_harness.utils.sync_decorators import (
     sync_abort,
