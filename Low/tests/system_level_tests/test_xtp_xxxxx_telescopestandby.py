@@ -46,6 +46,7 @@ def check_tmc_csp_state_is_on(
     event_recorder.subscribe_event(
         subarray_node_low.subarray_devices["csp_subarray"], "State"
     )
+    central_node_low.move_to_on()
     assert event_recorder.has_change_event_occurred(
         central_node_low.csp_master,
         "State",
