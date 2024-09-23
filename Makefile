@@ -189,7 +189,7 @@ REPORT_JSON_RESULT_FILE ?= build/report.json
 XRAY_TEST_RESULT_FILE ?= build/cucumber.json
 
 # configuration file for ska-ser-xray to publish the test results to Jira
-XRAY_EXECUTION_CONFIG_FILE ?= Low/xray-config.json
+XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
 
 # target file name for the BDD test report in HTML format
 # Leave or set to empty to disable the HTML BDD test report generation
@@ -222,6 +222,10 @@ PUBLISH_HTML_REPORT_TO_JIRA_SCRIPT ?= helper_scripts/publish_test_report.py
 # if the HTML report is enabled and 
 # the script to publish the HTML report to Jira is available,
 # then publish a link to the HTML report to Jira
+xray-do-publish:
+	CONFIGURATION_URL=$(CONFIG_CAPTURE_BRANCH) xray-upload -f $(XRAY_TEST_RESULT_FILE) \
+	 -e $(XRAY_EXECUTION_CONFIG_FILE) $(XRAY_EXTRA_OPTS)
+
 xray-post-publish:
 	if [ -f "$(HTML_REPORT_TARGET_FILE)" ] && [ -f "$(PUBLISH_HTML_REPORT_TO_JIRA_SCRIPT)" ]; then \
 		echo "Publishing the BDD HTML test report to the Jira test execution issue"; \
