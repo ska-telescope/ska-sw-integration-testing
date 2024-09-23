@@ -1,14 +1,21 @@
 """Test module for TMC StartUp functionality"""
-# import pytest
+import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 
+from Low.tests.resources.test_harness.central_node_low import (
+    CentralNodeWrapperLow,
+)
 from Low.tests.resources.test_harness.helpers import (
     get_master_device_simulators,
 )
+from Low.tests.resources.test_harness.simulator_factory import SimulatorFactory
+from Low.tests.resources.test_harness.subarray_node_low import (
+    SubarrayNodeWrapperLow,
+)
 
 
-# @pytest.mark.tmc_all
+@pytest.mark.real_device
 @scenario(
     "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
     "Starting up low telescope",
@@ -19,8 +26,12 @@ def test_tmc_startup_telescope():
     """
 
 
-@given("an low telescope")
-def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
+@given("a low telescope")
+def given_the_sut(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    simulator_factory: SimulatorFactory,
+) -> None:
     """
     Given a TMC
 
@@ -28,8 +39,6 @@ def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
         simulator_factory: fixture for SimulatorFactory class,
         which provides simulated subarray and master devices
     """
-    # central_node_low.csp_master.adminMode = 0
-    # set_admin_mode_values_mccs()
     (_, sdp_master_sim, _) = get_master_device_simulators(simulator_factory)
 
     assert central_node_low.central_node.ping() > 0
@@ -38,14 +47,18 @@ def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
     assert sdp_master_sim.ping() > 0
 
 
-@when("I turn telescope to ON state")
-def move_telescope_to_on(central_node_low):
+@when("I invoke the ON command on the telescope")
+def move_telescope_to_on(central_node_low: CentralNodeWrapperLow):
     """A method to turn on the telescope."""
     central_node_low.move_to_on()
 
 
 @then("the SDP, CSP and MCCS goes to ON state")
-def check_devices_is_on(central_node_low, subarray_node_low, event_recorder):
+def check_devices_is_on(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_recorder,
+):
     """A method to check devices states."""
     event_recorder.subscribe_event(central_node_low.csp_master, "State")
     event_recorder.subscribe_event(
@@ -91,8 +104,10 @@ def check_devices_is_on(central_node_low, subarray_node_low, event_recorder):
     )
 
 
-@then("the telescope goes to state ON")
-def check_telescope_state(central_node_low, event_recorder):
+@then("the telescope goes to ON state")
+def check_telescope_state(
+    central_node_low: CentralNodeWrapperLow, event_recorder
+):
     """A method to check CentralNode.telescopeState"""
     event_recorder.subscribe_event(
         central_node_low.central_node, "telescopeState"

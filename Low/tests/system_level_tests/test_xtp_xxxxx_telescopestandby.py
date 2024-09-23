@@ -3,12 +3,19 @@ import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
 
+from Low.tests.resources.test_harness.central_node_low import (
+    CentralNodeWrapperLow,
+)
 from Low.tests.resources.test_harness.helpers import (
     get_master_device_simulators,
 )
+from Low.tests.resources.test_harness.simulator_factory import SimulatorFactory
+from Low.tests.resources.test_harness.subarray_node_low import (
+    SubarrayNodeWrapperLow,
+)
 
 
-@pytest.mark.tmc_all
+@pytest.mark.real_device
 @scenario(
     "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
     "Standby the low telescope",
@@ -24,8 +31,12 @@ def test_standby_telescope():
     """
 
 
-@given("an low telescope")
-def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
+@given("a low telescope")
+def given_the_sut(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    simulator_factory: SimulatorFactory,
+) -> None:
     """
     Given a TMC and CSP in ON state
     """
@@ -37,8 +48,12 @@ def given_the_sut(central_node_low, subarray_node_low, simulator_factory):
     assert sdp_master_sim.ping() > 0
 
 
-@given("an Telescope consisting of SDP, CSP and MCCS that is ON")
-def check_state_is_on(central_node_low, subarray_node_low, event_recorder):
+@given("a telescope consisting of SDP, CSP and MCCS that is ON")
+def check_state_is_on(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_recorder,
+):
     """A method to check CentralNode.telescopeState"""
     event_recorder.subscribe_event(central_node_low.csp_master, "State")
     event_recorder.subscribe_event(
@@ -93,14 +108,16 @@ def check_state_is_on(central_node_low, subarray_node_low, event_recorder):
     )
 
 
-@when("I invoke standby command on the telescope")
-def move_to_standby(central_node_low):
+@when("I invoke STANDBY command on the telescope")
+def move_to_standby(central_node_low: CentralNodeWrapperLow):
     """A method to put CSP to STANDBY"""
     central_node_low.set_standby()
 
 
-@then("the telescope goes to Standby state")
-def check_telescope_state_standby(central_node_low, event_recorder):
+@then("the telescope goes to STANDBY state")
+def check_telescope_state_standby(
+    central_node_low: CentralNodeWrapperLow, event_recorder
+):
     """A method to check CentralNode.telescopeState"""
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,

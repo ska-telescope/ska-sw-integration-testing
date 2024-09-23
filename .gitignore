@@ -273,11 +273,7 @@ unit-tests.xml
 # Miscellaneous
 .DS_Store
 gilab_values.yaml
-charts/ska-tmc-leafnodes/Chart.lock
 output.yaml
-charts/ska-tmc-leafnodes/charts/
-charts/ska-tmc-testing-low/Chart.lock
-charts/ska-tmc-testing-low/charts/
 code-coverage
 pytest-logs.txt
 kubeconfig

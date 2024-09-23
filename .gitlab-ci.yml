@@ -57,32 +57,32 @@ include:
 
 
 k8s-test-tmc-with-csp-sdp-mccs:
-  image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
-    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+    - ska-k8s
   variables:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'ci-ska-low-integration-7547a53a-integration-low'
-    MARK: 'tmc_all' # Ensure CSP simulation is disabled.
+    MARK: 'real_devicel' 
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK='tmc_all'
+    - make k8s-test MARK='real_device'
   environment:
-    name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
-    on_stop: stop-k8s-test-low-all # Specify stop job.
-    auto_stop_in: 1 minute # Automatically stop environment after a minute.
-  # rules:
-  #   - exists: 
-  #       - Mid/tests/**/* # Only run if test files for Mid exist.
+    name: test/$CI_COMMIT_REF_SLUG 
+    on_stop: stop-k8s-test-low-all 
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Mid/tests/**/* # Only run if test files for Mid exist.
 
 # Job to stop the test environment for TMC with CSP.
 stop-k8s-test-low-all:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
-  when: manual # Manual job to stop the environment.
+  when: manual 
   tags:
     - ska-k8s
   variables:
@@ -93,8 +93,8 @@ stop-k8s-test-low-all:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-low-all
     auto_stop_in: 1 minute
-    action: stop # Stop action triggers the deletion.
-
+    action: stop 
+    
 # # Job to test TMC with SDP components.
 # k8s-test-tmc-with-sdp:
 #   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
