@@ -189,7 +189,7 @@ REPORT_JSON_RESULT_FILE ?= build/report.json
 XRAY_TEST_RESULT_FILE ?= build/cucumber.json
 
 # configuration file for ska-ser-xray to publish the test results to Jira
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
+XRAY_EXECUTION_CONFIG_FILE ?= Low/xray-config.json
 
 # target file name for the BDD test report in HTML format
 # Leave or set to empty to disable the HTML BDD test report generation
