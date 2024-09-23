@@ -11,9 +11,9 @@ from Low.tests.resources.test_harness.helpers import (
 @pytest.mark.tmc_all
 @scenario(
     "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
-    "Standby the low telescope",
+    "Switch off the low telescope",
 )
-def test_standby_telescope():
+def test_off_telescope():
     """
     Test case to verify TMC-CSP Standby functionality
     Glossary:
@@ -93,13 +93,13 @@ def check_state_is_on(central_node_low, subarray_node_low, event_recorder):
     )
 
 
-@when("I invoke standby command on the telescope")
-def move_to_standby(central_node_low):
+@when("I switch off the telescope")
+def move_to_off(central_node_low):
     """A method to put CSP to STANDBY"""
-    central_node_low.set_standby()
+    central_node_low.move_to_off()
 
 
-@then("the telescope goes to Standby state")
+@then("the SDP,CSP and MCCS must be OFF")
 def check_telescope_state_standby(central_node_low, event_recorder):
     """A method to check CentralNode.telescopeState"""
     assert event_recorder.has_change_event_occurred(
