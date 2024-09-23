@@ -515,9 +515,6 @@ def get_simulated_devices_info() -> dict:
         "sdp_and_mccs": all(
             [is_sdp_simulated, is_mccs_simulated, not is_csp_simulated]
         ),  # real CSP.LMC enabled
-        "sdp_mccs_csp": all(
-            [not is_sdp_simulated, not is_mccs_simulated, not is_csp_simulated]
-        ),
         "all_mocks": all(
             [
                 is_csp_simulated,
