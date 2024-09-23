@@ -184,9 +184,9 @@ endif
 # Jira ticket of the test execution.
 
 # target file names for the cucumber-related test results json files
-CUCUMBER_JSON_RESULT_FILE ?= build/cucumber.json
-REPORT_JSON_RESULT_FILE ?= build/report.json
-XRAY_TEST_RESULT_FILE ?= build/cucumber.json
+CUCUMBER_JSON_RESULT_FILE ?= ../build/cucumber.json
+REPORT_JSON_RESULT_FILE ?= ../build/report.json
+XRAY_TEST_RESULT_FILE ?= ../build/cucumber.json
 
 # configuration file for ska-ser-xray to publish the test results to Jira
 XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
