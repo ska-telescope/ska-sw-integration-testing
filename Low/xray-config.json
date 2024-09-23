@@ -2,7 +2,7 @@
   "test_plans": [
     {
       "select_from_tag": {
-        "XTP": "Number"
+        "XTP-64112": "XTP-64112"
       }
     }
   ],
@@ -16,7 +16,7 @@
   "chart_info": {
     "env": "DEPLOYMENT_CONFIGURATION",
     "maps_to": {
-      "default": "charts/ska-tmc-low/Chart.yaml"
+      "default": "charts/ska-low-integration/Chart.yaml"
     }
   },
   "test_report": "build/report.json",
@@ -31,7 +31,7 @@
       "test_environments": "customfield_11925"
     }
   },
-  "description": "Test execution results as generated from https://gitlab.com/ska-telescope/ska-tmc/ska-tmc-low-integration\n",
+  "description": "Test execution results as generated from https://gitlab.com/ska-telescope/ska-tmc/ska-low-integration\n",
   "test_environments": [
     {
       "env": "TEST_ENV",

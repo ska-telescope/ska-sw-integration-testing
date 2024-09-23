@@ -15,12 +15,12 @@ from Low.tests.resources.test_harness.subarray_node_low import (
 )
 
 
-@pytest.mark.real_device
+@pytest.mark.skip(reason="OFF commands fail as CSP is always ON")
 @scenario(
-    "../../features/system_level_tests/xtp_xxxxxx_telescope_startup.feature",
-    "Standby the low telescope",
+    "../../features/system_level_tests/xtp_64112_telescope_startup.feature",
+    "Switch off the low telescope",
 )
-def test_standby_telescope():
+def test_off_telescope():
     """
     Test case to verify TMC-CSP Standby functionality
     Glossary:
@@ -31,12 +31,12 @@ def test_standby_telescope():
     """
 
 
-@given("a low telescope")
+@given("an low telescope")
 def given_the_sut(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     simulator_factory: SimulatorFactory,
-) -> None:
+):
     """
     Given a TMC and CSP in ON state
     """
@@ -48,7 +48,7 @@ def given_the_sut(
     assert sdp_master_sim.ping() > 0
 
 
-@given("a telescope consisting of SDP, CSP and MCCS that is ON")
+@given("an Telescope consisting of SDP, CSP and MCCS that is ON")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -108,13 +108,13 @@ def check_state_is_on(
     )
 
 
-@when("I invoke STANDBY command on the telescope")
-def move_to_standby(central_node_low: CentralNodeWrapperLow):
+@when("I switch off the telescope")
+def move_to_off(central_node_low: CentralNodeWrapperLow):
     """A method to put CSP to STANDBY"""
-    central_node_low.set_standby()
+    central_node_low.move_to_off()
 
 
-@then("the telescope goes to STANDBY state")
+@then("the SDP,CSP and MCCS must be OFF")
 def check_telescope_state_standby(
     central_node_low: CentralNodeWrapperLow, event_recorder
 ):
