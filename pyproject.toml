@@ -6,7 +6,7 @@ authors = []
 license = ""
 
 include = [
-    { path = 'tests'}
+    { path = 'Low/tests'}
 ]
 
 [[tool.poetry.source]]
