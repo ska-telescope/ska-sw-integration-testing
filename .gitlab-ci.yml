@@ -66,6 +66,13 @@ k8s-test-tmc-with-csp-sdp-mccs:
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-all-real"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-low-all 
