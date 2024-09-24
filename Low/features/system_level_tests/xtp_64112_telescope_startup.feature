@@ -7,7 +7,7 @@ Scenario: Starting up low telescope
 
 @XTP-64119 @XTP-64122 @TEAM_HIMALAYA
 Scenario: Switch off the low telescope
-    Given an low telescope
+    Given a low telescope
     And an Telescope consisting of SDP, CSP and MCCS that is ON
     When I switch off the telescope
     Then the SDP,CSP and MCCS must be OFF 

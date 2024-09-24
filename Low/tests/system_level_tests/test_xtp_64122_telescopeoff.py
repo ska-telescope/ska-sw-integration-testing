@@ -31,7 +31,7 @@ def test_off_telescope():
     """
 
 
-@given("an low telescope")
+@given("a low telescope")
 def given_the_sut(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
