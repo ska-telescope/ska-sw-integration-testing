@@ -97,8 +97,6 @@ stop-k8s-test-tmc-with-sdp:
     auto_stop_in: 1 minute
     action: stop
 
-
-
 k8s-test-tmc-with-mccs:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
