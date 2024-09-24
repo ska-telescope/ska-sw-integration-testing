@@ -109,7 +109,7 @@ k8s-test-dish-lmc:
   variables:
     DISH_SIMULATION_ENABLED: "false"
     SUBARRAY_COUNT: 2
-    DISH_TANGO_HOST: "tango-databaseds"
+    DISH_TANGO_HOST: "databaseds"
     PORT: "10000"
     DISH_INDEX_1: "001"
     DISH_INDEX_36: "036"
