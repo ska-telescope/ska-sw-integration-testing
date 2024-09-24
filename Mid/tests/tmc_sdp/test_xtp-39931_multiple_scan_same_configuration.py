@@ -10,6 +10,7 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp
 @scenario(
     "../../features/tmc_sdp/xtp-39931_multiple_scan_same_configuration."

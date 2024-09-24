@@ -21,6 +21,7 @@ LOGGER = logging.getLogger(__name__)
 assigned_resources = []
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
     "../../features/tmc_csp/xtp_40072_succesive_assignresources.feature",

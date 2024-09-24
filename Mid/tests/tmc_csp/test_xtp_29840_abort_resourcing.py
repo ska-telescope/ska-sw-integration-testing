@@ -12,7 +12,7 @@ from tests.resources.test_harness.helpers import (
 )
 
 
-@pytest.mark.skip(reason="Random failure")
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 # Random failure, SubarrayNode timed out, CORBA command timeout while
 # invoking Abort command
 # SubarrayNode receives obsstate IDLE event before Abort is successful on

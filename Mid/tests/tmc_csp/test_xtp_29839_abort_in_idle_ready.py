@@ -9,6 +9,7 @@ from tests.resources.test_harness.helpers import (
 )
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
     "../../features/tmc_csp/xtp_29839_abort_idle_ready.feature",

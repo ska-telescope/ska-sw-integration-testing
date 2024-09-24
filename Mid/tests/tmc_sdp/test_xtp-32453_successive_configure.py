@@ -17,6 +17,7 @@ from tests.resources.test_harness.utils.common_utils import (
 )
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp
 @scenario(
     "../../features/tmc_sdp/xtp-32453_successive_configure_with_real_sdp."

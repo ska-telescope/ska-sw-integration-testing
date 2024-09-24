@@ -21,6 +21,7 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
     "../../features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",

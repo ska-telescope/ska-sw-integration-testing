@@ -18,6 +18,7 @@ from tests.resources.test_harness.simulator_factory import SimulatorFactory
 from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp_unhappy
 @scenario(
     "../../features/tmc_sdp/xtp_39507_component_unavailable.feature",

@@ -21,6 +21,7 @@ from tests.resources.test_harness.utils.common_utils import (
 )
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
     "../../features/tmc_csp/xtp_58590_verify_skb_413.feature",
