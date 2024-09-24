@@ -49,11 +49,9 @@ stop-k8s-test-mid-with-csp:
   variables:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
-    - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
     name: test/csp$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-mid-with-csp
-    auto_stop_in: 1 minute
     action: stop # Stop action triggers the deletion.
 
 # Job to test TMC with SDP components.
@@ -93,11 +91,9 @@ stop-k8s-test-tmc-with-sdp:
     # KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
     name: test/sdp$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-sdp
-    auto_stop_in: 1 minute
     action: stop
 
 # Job to test Dish-LMC with Kubernetes.
@@ -140,9 +136,7 @@ stop-k8s-test-dish-lmc:
   variables:
     KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
   script:
-    - make k8s-test MARK=tmc_dish
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
     name: test/dish$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-dish-lmc 
-    auto_stop_in: 1 minute
     action: stop
