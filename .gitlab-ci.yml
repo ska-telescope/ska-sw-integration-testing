@@ -49,7 +49,7 @@ stop-k8s-test-mid-with-csp:
   variables:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
-    -make k8s-uninstall-chart # Delete the test runner pod in the Kubernetes namespace.
+    - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/csp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-with-csp
@@ -93,7 +93,7 @@ stop-k8s-test-tmc-with-sdp:
     # KUBE_NAMESPACE_SDP: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-uninstall-chart
+    - kubectl delete pod
   environment:
     name: test/sdp$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
@@ -140,7 +140,7 @@ stop-k8s-test-dish-lmc:
   variables:
     KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
   script:
-    - make k8s-uninstall-chart
+    - make k8s-test MARK=tmc_dish
   environment:
     name: test/dish$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc 
