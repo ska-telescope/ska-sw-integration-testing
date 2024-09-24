@@ -49,11 +49,9 @@ stop-k8s-test-low-with-csp:
   variables:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
   script:
-    - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE} # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-low-with-csp
-    auto_stop_in: 1 minute
     action: stop # Stop action triggers the deletion.
 
 # Job to test TMC with SDP components.
@@ -90,11 +88,9 @@ stop-k8s-test-tmc-with-sdp:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK=tmc_sdp
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
     name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-sdp
-    auto_stop_in: 1 minute
     action: stop
 
 k8s-test-tmc-with-mccs:
