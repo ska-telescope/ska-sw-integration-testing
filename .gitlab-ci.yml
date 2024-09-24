@@ -130,9 +130,7 @@ stop-k8s-test-tmc-with-mccs:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK=tmc_mccs
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
     name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-mccs
-    auto_stop_in: 1 minute
     action: stop
