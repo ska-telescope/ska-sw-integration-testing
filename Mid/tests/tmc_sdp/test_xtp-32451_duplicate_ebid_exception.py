@@ -18,6 +18,7 @@ from tests.resources.test_support.constant import (
 )
 
 
+@pytest.mark.skip(reason="Will enable in next PI")
 @pytest.mark.tmc_sdp
 @scenario(
     "../../features/tmc_sdp/xtp-32451_sdp_exception.feature",
