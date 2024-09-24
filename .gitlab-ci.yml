@@ -1,0 +1,140 @@
+# Use a predefined Docker image to build and test the project.
+image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive # Ensures that git submodules are recursively checked out if any.
+
+# Cache configuration to store build files between jobs to speed up consecutive pipelines.
+cache:
+  paths:
+    - build
+
+# Define the pipeline stages.
+stages:
+  - lint
+  - test
+
+include:
+# Python packages build,lint, test and publish
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+
+k8s-test-tmc-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
+  stage: test
+  tags:
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+    MARK: 'tmc_csp'
+    CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
+  script:
+    - make k8s-test MARK=tmc_csp
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    on_stop: stop-k8s-test-low-with-csp # Specify stop job.
+    auto_stop_in: 1 minute # Automatically stop environment after a minute.
+  rules:
+    - exists: 
+        - Low/tests/**/* # Only run if test files for low exist.
+
+# Job to stop the test environment for TMC with CSP.
+stop-k8s-test-low-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual # Manual job to stop the environment.
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+  script:
+    - make k8s-test MARK=tmc_csp # Delete the test runner pod in the Kubernetes namespace.
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low-with-csp
+    auto_stop_in: 1 minute
+    action: stop # Stop action triggers the deletion.
+
+# Job to test TMC with SDP components.
+k8s-test-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    SUBARRAY_COUNT: 2 
+    SDP_SIMULATION_ENABLED: 'false' 
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
+  script:
+    - make k8s-test MARK=tmc_sdp
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-sdp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Low/tests/**/*
+
+stop-k8s-test-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+  script:
+    - make k8s-test MARK=tmc_sdp
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-sdp
+    auto_stop_in: 1 minute
+    action: stop
+
+
+
+k8s-test-tmc-with-mccs:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
+    SUBARRAY_COUNT: 1 
+    MCCS_SIMULATION_ENABLED: 'false' 
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_mccs
+  script:
+    - make k8s-test MARK=tmc_mccs
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-mccs
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Low/tests/**/*
+
+stop-k8s-test-tmc-with-mccs:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
+    MCCS_SIMULATION_ENABLED: 'false'
+  script:
+    - make k8s-test MARK=tmc_mccs
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-mccs
+    auto_stop_in: 1 minute
+    action: stop
