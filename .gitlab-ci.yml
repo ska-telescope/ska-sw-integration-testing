@@ -45,6 +45,7 @@ stop-k8s-test-mid-with-csp:
   stage: test
   tags:
     - ska-k8s
+  when: manual
   variables:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
@@ -52,7 +53,6 @@ stop-k8s-test-mid-with-csp:
   environment:
     name: test/csp-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
-  when: manual # Manual job to stop the environment.
 
 # Job to test TMC with SDP components.
 k8s-test-tmc-with-sdp:
@@ -93,7 +93,6 @@ stop-k8s-test-tmc-with-sdp:
   environment:
     name: test/sdp-$CI_COMMIT_REF_SLUG
     action: stop
-  when: manual # Manual job to stop the environment.
 
 # Job to test Dish-LMC with Kubernetes.
 k8s-test-dish-lmc:
