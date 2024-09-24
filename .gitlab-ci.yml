@@ -93,6 +93,7 @@ stop-k8s-test-tmc-with-sdp:
   environment:
     name: test/sdp-$CI_COMMIT_REF_SLUG
     action: stop
+  when: manual # Manual job to stop the environment.
 
 # Job to test Dish-LMC with Kubernetes.
 k8s-test-dish-lmc:
