@@ -152,6 +152,10 @@ endif
 taranta-link:
 	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
 
+test-requirements:
+	@poetry export --without-hashes --dev --format requirements.txt --output Low/tests/requirements.txt
+
+k8s-pre-test: test-requirements 
 
 # ----------------------------------------------------------------------------
 # Trick to select a subset of the tests to run by their python name
