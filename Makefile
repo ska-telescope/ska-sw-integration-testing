@@ -154,6 +154,7 @@ taranta-link:
 
 
 test-requirements:
+	${POETRY_HOME}/bin/pip install --user poetry-plugin
 	@poetry export --without-hashes --with dev --format requirements.txt --output Low/tests/requirements.txt
 
 k8s-pre-test: test-requirements
