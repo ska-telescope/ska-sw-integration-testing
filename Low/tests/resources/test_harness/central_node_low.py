@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 """CentralNodelow"""
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 import json
 import logging
 import time
@@ -13,12 +10,7 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DeviceProxy, DevState
-<<<<<<< HEAD
-
-from Low.tests.resources.test_harness.constant import (
-=======
 from tests.resources.test_harness.constant import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     RESET_DEFECT,
     device_dict_low,
     low_centralnode,
@@ -36,17 +28,10 @@ from tests.resources.test_harness.constant import (
     pst,
     tmc_low_subarraynode1,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_harness.event_recorder import EventRecorder
-from Low.tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
-from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
-from Low.tests.resources.test_harness.utils.sync_decorators import (
-=======
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 from tests.resources.test_harness.utils.sync_decorators import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     sync_abort,
     sync_assign_resources,
     sync_release_resources,
@@ -54,13 +39,7 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_set_to_off,
     sync_set_to_on,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-=======
 from tests.resources.test_support.common_utils.common_helpers import Resource
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -458,10 +437,7 @@ class CentralNodeWrapperLow(object):
                     json.dumps((int(ResultCode.OK), "Command Completed")),
                 ),
             )
-<<<<<<< HEAD
-=======
 
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
         elif SIMULATED_DEVICES_DICT["csp_and_sdp"]:
             LOGGER.info(
                 "Invoking TelescopeOn command with csp and sdp simulated"
@@ -538,16 +514,6 @@ class CentralNodeWrapperLow(object):
             )
         else:
             LOGGER.info("Invoke TelescopeOn command with all real sub-systems")
-<<<<<<< HEAD
-            # Set adminMode to Online for csp_master
-            if self.csp_master.adminMode != AdminMode.ONLINE:
-                self.csp_master.adminMode = AdminMode.ONLINE
-            # Set adminMode to Online for csp_subarray
-            if self.csp_subarray1.adminMode != AdminMode.ONLINE:
-                self.csp_subarray1.adminMode = AdminMode.ONLINE
-            time.sleep(3)
-=======
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
             _, unique_id = self.central_node.TelescopeOn()
             assert_that(self.event_tracer).described_as(
                 "FAILED ASSUMPTION AFTER ON COMMAND: "

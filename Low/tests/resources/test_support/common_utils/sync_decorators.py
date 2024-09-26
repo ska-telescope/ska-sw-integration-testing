@@ -4,16 +4,8 @@ import logging
 from contextlib import contextmanager
 
 from ska_ser_logging import configure_logging
-<<<<<<< HEAD
-
-from Low.tests.resources.test_support.common_utils.base_utils import (
-    DeviceUtils,
-)
-from Low.tests.resources.test_support.common_utils.common_helpers import (
-=======
 from tests.resources.test_support.common_utils.base_utils import DeviceUtils
 from tests.resources.test_support.common_utils.common_helpers import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     Resource,
     Waiter,
     WaitForScan,

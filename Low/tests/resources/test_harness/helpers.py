@@ -13,12 +13,7 @@ from ska_tango_base.commands import ResultCode
 from ska_tango_base.control_model import HealthState
 from ska_tango_testing.mock.placeholders import Anything
 from tango import DeviceProxy
-<<<<<<< HEAD
-
-from Low.tests.resources.test_harness.constant import (
-=======
 from tests.resources.test_harness.constant import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     INTERMEDIATE_CONFIGURING_OBS_STATE_DEFECT,
     INTERMEDIATE_STATE_DEFECT,
     low_csp_subarray1,
@@ -32,21 +27,11 @@ from tests.resources.test_harness.constant import (
     mccs_subarray_leaf_node,
     tmc_low_subarraynode1,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_harness.event_recorder import EventRecorder
-from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
-from Low.tests.resources.test_harness.utils.enums import SimulatorDeviceType
-from Low.tests.resources.test_harness.utils.wait_helpers import Waiter, watch
-from Low.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-=======
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 from tests.resources.test_harness.utils.enums import SimulatorDeviceType
 from tests.resources.test_harness.utils.wait_helpers import Waiter, watch
 from tests.resources.test_support.common_utils.common_helpers import Resource
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -666,10 +651,6 @@ def set_admin_mode_values_mccs():
 
             device_trls = db.get_device_exported(mccs_prefix)
             devices = []
-<<<<<<< HEAD
-            LOGGER.info("Setting the admin mode")
-=======
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
             for device_trl in device_trls:
                 if "daq" in device_trl or "calibrationstore" in device_trl:
                     device = tango.DeviceProxy(device_trl)

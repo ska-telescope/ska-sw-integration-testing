@@ -1,13 +1,7 @@
 """
 Simple class for checking device ObsState
 """
-<<<<<<< HEAD
-from Low.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-=======
 from tests.resources.test_support.common_utils.common_helpers import Resource
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 
 class DeviceUtils:

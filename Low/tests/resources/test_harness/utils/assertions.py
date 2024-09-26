@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 """assertions"""
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 import json
 import logging
 from datetime import datetime

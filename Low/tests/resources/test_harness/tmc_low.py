@@ -2,12 +2,7 @@ import time
 
 import tango
 from tango import DeviceProxy
-<<<<<<< HEAD
-
-from Low.tests.resources.test_harness.constant import mccs_subarraybeam
-=======
 from tests.resources.test_harness.constant import mccs_subarraybeam
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 from .central_node_low import CentralNodeWrapperLow
 from .subarray_node_low import SubarrayNodeWrapperLow

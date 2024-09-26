@@ -6,12 +6,7 @@ from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
-<<<<<<< HEAD
-
-from Low.tests.resources.test_harness.constant import (
-=======
 from tests.resources.test_harness.constant import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     device_dict_low,
     low_centralnode,
     low_csp_master,
@@ -25,42 +20,24 @@ from tests.resources.test_harness.constant import (
     pst,
     tmc_low_subarraynode1,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_harness.event_recorder import EventRecorder
-from Low.tests.resources.test_harness.helpers import (
-=======
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     SIMULATED_DEVICES_DICT,
     check_subarray_obs_state,
     update_eb_pb_ids,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
-from Low.tests.resources.test_harness.utils.constant import (
-=======
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 from tests.resources.test_harness.utils.constant import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     ABORTED,
     IDLE,
     ON,
     READY,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_harness.utils.enums import SubarrayObsState
-from Low.tests.resources.test_harness.utils.obs_state_resetter_low import (
-    ObsStateResetterFactory,
-)
-from Low.tests.resources.test_harness.utils.sync_decorators import (
-=======
 from tests.resources.test_harness.utils.enums import SubarrayObsState
 from tests.resources.test_harness.utils.obs_state_resetter_low import (
     ObsStateResetterFactory,
 )
 from tests.resources.test_harness.utils.sync_decorators import (
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     sync_abort,
     sync_assign_resources,
     sync_configure,
@@ -69,13 +46,7 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_release_resources,
     sync_restart,
 )
-<<<<<<< HEAD
-from Low.tests.resources.test_support.common_utils.common_helpers import (
-    Resource,
-)
-=======
 from tests.resources.test_support.common_utils.common_helpers import Resource
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
