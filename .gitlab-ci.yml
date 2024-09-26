@@ -21,8 +21,14 @@ stages:
   - lifecycle
 
 include:
+<<<<<<< HEAD
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+=======
+# Python packages build,lint, test and publish
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+>>>>>>> 8eaaee1c2fffb61d50b81956e1c61617d13e82e1
 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
@@ -83,9 +89,9 @@ k8s-test-low:
 stop-k8s-test-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
-  when: manual 
   tags:
     - ska-k8s
+  when: manual
   variables:
     KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
   script:
@@ -93,3 +99,88 @@ stop-k8s-test-low:
   environment:
     name: test/low-$CI_COMMIT_REF_SLUG
     action: stop 
+
+# Job to test TMC with SDP components.
+k8s-test-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-mid'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    SUBARRAY_COUNT: 2 # Set subarray count for testing.
+    SDP_SIMULATION_ENABLED: 'false' # Disable SDP simulation.
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
+  script:
+    - make k8s-test MARK=tmc_sdp
+  environment:
+    name: test/sdp-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-sdp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - Mid/tests/**/*
+
+# Job to stop the test environment for TMC with SDP.
+stop-k8s-test-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+  script:
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+  environment:
+    name: test/sdp-$CI_COMMIT_REF_SLUG
+    action: stop
+
+# Job to test Dish-LMC with Kubernetes.
+k8s-test-dish-lmc:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    DISH_SIMULATION_ENABLED: "false"
+    SUBARRAY_COUNT: 2
+    DISH_TANGO_HOST: "databaseds"
+    PORT: "10000"
+    DISH_INDEX_1: "001"
+    DISH_INDEX_36: "036"
+    DISH_INDEX_63: "063"
+    DISH_INDEX_100: "100"
+    DISH_NAMESPACE_1: "integration-ska-mid-tmc-dish001"
+    DISH_NAMESPACE_2: "integration-ska-mid-tmc-dish036"
+    DISH_NAMESPACE_3: "integration-ska-mid-tmc-dish063"
+    DISH_NAMESPACE_4: "integration-ska-mid-tmc-dish100"
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
+  script:
+    - make k8s-test MARK=tmc_dish
+  environment:
+    name: test/dish-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-dish-lmc
+  rules:
+    - exists: 
+        - Mid/tests/**/*
+
+# Job to stop the test environment for Dish-LMC.
+stop-k8s-test-dish-lmc:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+  script:
+    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+  environment:
+    name: test/dish-$CI_COMMIT_REF_SLUG
+    action: stop

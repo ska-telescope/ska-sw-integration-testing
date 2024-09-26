@@ -12,7 +12,7 @@ DISH_NAMESPACE_4 ?= dish-lmc-4
 KUBE_NAMESPACE ?= ska-tmc-integration
 KUBE_NAMESPACE_SDP ?= ska-tmc-integration-sdp
 K8S_TIMEOUT ?= 800s
-PYTHON_LINT_TARGET ?= Low/tests/  
+PYTHON_LINT_TARGET ?= Mid/tests/ 
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
@@ -45,7 +45,7 @@ HELM_RELEASE ?= test
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 
-DISH_TANGO_HOST ?= tango-databaseds
+DISH_TANGO_HOST ?= databaseds
 COUNT ?= 1 ## Number of times the tests should run
 CLUSTER_DOMAIN ?= cluster.local
 PORT ?= 10000
@@ -93,6 +93,8 @@ endif
 
 PYTHON_VARS_AFTER_PYTEST ?= -m '$(MARK) $(ADDMARK)' $(ADD_ARGS) $(FILE) --count=$(COUNT)
 
+K8S_CHART_PARAMS = $(CUSTOM_VALUES1)
+
 PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 							 TANGO_HOST=$(TANGO_HOST) \
 							 TELESCOPE=$(TELESCOPE) \
@@ -126,9 +128,13 @@ XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
 -include .make/xray.mk
 -include PrivateRules.mak
 
-k8s_test_folder = Low/tests
-k8s_test_src_dir = Low/
+k8s_test_folder = Mid/tests
+k8s_test_src_dir = Mid/
 
+ifeq ($(CSP_SIMULATION_ENABLED),false)
+CUSTOM_VALUES1 =	--set tmc-mid.deviceServers.mocks.csp=$(CSP_SIMULATION_ENABLED)\
+	--set ska-csp-lmc-mid.enabled=true
+endif
 # to create SDP namespace
 k8s-pre-install-chart:
 ifeq ($(SDP_SIMULATION_ENABLED),false)
