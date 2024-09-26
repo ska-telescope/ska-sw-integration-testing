@@ -91,7 +91,7 @@ stop-k8s-test-low:
   script:
     - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
   environment:
-    name: test/low- $CI_COMMIT_REF_SLUG
+    name: test/low-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-low-all
     auto_stop_in: 1 minute
     action: stop 
