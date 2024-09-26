@@ -5,16 +5,8 @@ from os.path import dirname, join
 from typing import List
 
 from ska_control_model import ObsState
-<<<<<<< HEAD
-
-from Low.tests.resources.test_harness.utils.wait_helpers import Waiter
-from Low.tests.resources.test_support.common_utils.result_code import (
-    ResultCode,
-)
-=======
 from tests.resources.test_harness.utils.wait_helpers import Waiter
 from tests.resources.test_support.common_utils.result_code import ResultCode
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 TIMEOUT = 200
 
@@ -140,10 +132,7 @@ def get_subarray_input_json(slug):
         "..",
         "..",
         "data",
-<<<<<<< HEAD
-=======
         "TMC",
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
         "subarray",
         f"{slug}.json",
     )
@@ -166,10 +155,7 @@ def get_centralnode_input_json(slug):
         "..",
         "..",
         "data",
-<<<<<<< HEAD
-=======
         "TMC",
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
         "centralnode",
         f"{slug}.json",
     )
@@ -185,11 +171,7 @@ def update_receptors_in_assign_json(
     Update the list of receptors in the given JSON string.
 
     Args:
-<<<<<<< HEAD
-        assign_input_json (str): Input JSON string containing SDP resources.
-=======
         assign_input_json (str): Input JSON string containing SDP tests.
->>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
         receptor_list (List[str]): List of receptors to replace existing one.
 
     Returns:
