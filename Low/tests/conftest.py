@@ -16,7 +16,10 @@ from ska_tango_testing.mock.tango.event_callback import (
     MockTangoEventCallbackGroup,
 )
 from tango import DevState
-from Low.tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+
+from Low.tests.resources.test_harness.central_node_low import (
+    CentralNodeWrapperLow,
+)
 from Low.tests.resources.test_harness.central_node_with_csp_low import (
     CentralNodeCspWrapperLow,
 )
