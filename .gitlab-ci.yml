@@ -57,12 +57,12 @@ k8s-test-tmc-with-csp-sdp-mccs:
   variables:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
-    MARK: 'real_device' 
+    MARK: 'system_level_test'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK='real_device'
+    - make k8s-test MARK='system_level_test'
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
