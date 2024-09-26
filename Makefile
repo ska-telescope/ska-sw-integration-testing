@@ -86,7 +86,7 @@ DISH_SIMULATION_ENABLED ?= true
 SDP_PROCCONTROL_REPLICAS ?= 1
 
 ifeq ($(MAKECMDGOALS),k8s-test)
-ADD_ARGS +=  --true-context
+ADD_ARGS += --true-context
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g")
 endif
 
@@ -126,7 +126,7 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include PrivateRules.mak
 
 k8s_test_folder = Low/tests
-k8s_test_src_dir = Low/
+k8s_test_src_dir = Low
 
 # to create SDP namespace
 k8s-pre-install-chart:
@@ -153,7 +153,7 @@ taranta-link:
 	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
 
 test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output Low/tests/requirements.txt
+	@poetry export --without-hashes --with dev --format requirements.txt --output Low/tests/requirements.txt
 
 k8s-pre-test: test-requirements 
 
