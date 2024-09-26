@@ -103,7 +103,7 @@ k8s-test-tmc-with-csp-low:
         - Low/tests/**/* # Only run if test files for low exist.
 
 # Job to stop the test environment for TMC with CSP.
-stop-k8s-test-low-with-csp-low:
+stop-k8s-test-low-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   when: manual # Manual job to stop the environment.
@@ -142,7 +142,7 @@ k8s-test-tmc-with-sdp-low:
     - exists: 
         - Low/tests/**/*
 
-stop-k8s-test-tmc-with-sdp-low:
+stop-k8s-test-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   when: manual
@@ -249,7 +249,7 @@ stop-k8s-test-mid-with-csp:
   environment:
     name: test/csp-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
-    
+
 # Job to test TMC with SDP components.
 k8s-test-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
