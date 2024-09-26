@@ -2,10 +2,14 @@
 import logging
 
 from ska_ser_logging import configure_logging
+<<<<<<< HEAD
 
 from Low.tests.resources.test_support.common_utils.common_helpers import (
     Resource,
 )
+=======
+from tests.resources.test_support.common_utils.common_helpers import Resource
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

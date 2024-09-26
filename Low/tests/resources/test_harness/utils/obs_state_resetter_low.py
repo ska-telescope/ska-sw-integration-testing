@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 from typing import Any
 
 from Low.tests.resources.test_harness.utils.common_utils import JsonFactory
+=======
+"""obsstate resettter class"""
+from typing import Any
+
+from tests.resources.test_harness.utils.common_utils import JsonFactory
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 
 class ObsStateResetter:

@@ -1,7 +1,12 @@
+<<<<<<< HEAD
+=======
+"""sync decorators."""
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 import functools
 import os
 from contextlib import contextmanager
 
+<<<<<<< HEAD
 from Low.tests.resources.test_harness.utils.wait_helpers import Waiter
 from Low.tests.resources.test_support.common_utils.base_utils import (
     DeviceUtils,
@@ -9,6 +14,11 @@ from Low.tests.resources.test_support.common_utils.base_utils import (
 from Low.tests.resources.test_support.common_utils.common_helpers import (
     Resource,
 )
+=======
+from tests.resources.test_harness.utils.wait_helpers import Waiter
+from tests.resources.test_support.common_utils.base_utils import DeviceUtils
+from tests.resources.test_support.common_utils.common_helpers import Resource
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 MCCS_SIMULATION_ENABLED = os.getenv("MCCS_SIMULATION_ENABLED")
 if MCCS_SIMULATION_ENABLED.lower() == "false":
@@ -18,6 +28,11 @@ else:
 
 
 def sync_set_to_on(device_dict: dict):
+<<<<<<< HEAD
+=======
+    """sync decorators method"""
+
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     def decorator_sync_set_to_on(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+"""This module defines an enumerated type for a command result code."""
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 # -*- coding: utf-8 -*-
 #
 # This file is part of the SKA Control System project.
@@ -5,7 +9,11 @@
 # Distributed under the terms of the BSD 3-clause new license.
 # See LICENSE.txt for more info.
 #
+<<<<<<< HEAD
 """This module defines an enumerated type for a command result code."""
+=======
+
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 import enum
 

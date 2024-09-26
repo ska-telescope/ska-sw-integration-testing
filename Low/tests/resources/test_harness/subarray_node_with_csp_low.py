@@ -4,11 +4,18 @@ import logging
 from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy
+<<<<<<< HEAD
 
 from Low.tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from Low.tests.resources.test_harness.utils.enums import SubarrayObsState
+=======
+from tests.resources.test_harness.subarray_node_low import (
+    SubarrayNodeWrapperLow,
+)
+from tests.resources.test_harness.utils.enums import SubarrayObsState
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Define Constants
 """
 import json
@@ -5,6 +6,13 @@ import json
 from ska_control_model import ObsState, ResultCode
 
 from Low.tests.resources.test_harness.utils.enums import (
+=======
+"""Define Constants"""
+import json
+
+from ska_control_model import ObsState, ResultCode
+from tests.resources.test_harness.utils.enums import (
+>>>>>>> 891ce57dcad70fd26997252a96b4b9ff6215086a
     FaultType,
     SimulatorDeviceType,
 )
