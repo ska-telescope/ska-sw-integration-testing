@@ -12,7 +12,8 @@ from tests.resources.test_harness.subarray_node_low import (
 
 @pytest.mark.skip(reason="OFF commands fail as CSP is always ON")
 @scenario(
-    "../../Low/features/system_level_tests/xtp_64112_telescope_startup.feature",
+    "../../Low/features/system_level_tests/"
+    + "xtp_64112_telescope_startup.feature",
     "Switch off the low telescope",
 )
 def test_off_telescope():
