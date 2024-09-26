@@ -17,7 +17,7 @@ from Low.tests.resources.test_harness.subarray_node_low import (
 
 @pytest.mark.real_device
 @scenario(
-    "../../features/system_level_tests/xtp_64112_telescope_startup.feature",
+    "../features/system_level_tests/xtp_64112_telescope_startup.feature",
     "Starting up low telescope",
 )
 def test_tmc_startup_telescope():
