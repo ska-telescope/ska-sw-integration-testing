@@ -82,7 +82,7 @@ k8s-test-low:
 
 
 
-k8s-test-tmc-with-csp-low:
+k8s-test-low-tmc-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: test
   tags:
@@ -95,7 +95,7 @@ k8s-test-tmc-with-csp-low:
   script:
     - make k8s-test MARK=tmc_csp
   environment:
-    name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    name: test/csp-low-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-low-with-csp # Specify stop job.
     auto_stop_in: 1 minute # Automatically stop environment after a minute.
   rules:
@@ -115,11 +115,11 @@ stop-k8s-test-low-with-csp:
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE} # Delete the test runner pod in the Kubernetes namespace.
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/csp-low-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
 
 # Job to test TMC with SDP components.
-k8s-test-tmc-with-sdp-low:
+k8s-test-low-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
@@ -135,14 +135,14 @@ k8s-test-tmc-with-sdp-low:
   script:
     - make k8s-test MARK=tmc_sdp
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-sdp
+    name: test/sdp-low-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low-tmc-with-sdp
     auto_stop_in: 1 minute
   rules:
     - exists: 
         - Low/tests/**/*
 
-stop-k8s-test-tmc-with-sdp:
+stop-k8s-test-low-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   when: manual
@@ -155,7 +155,7 @@ stop-k8s-test-tmc-with-sdp:
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/sdp-low-$CI_COMMIT_REF_SLUG
     action: stop
 
 k8s-test-tmc-with-mccs:
@@ -174,7 +174,7 @@ k8s-test-tmc-with-mccs:
   script:
     - make k8s-test MARK=tmc_mccs
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/mccs-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-mccs
     auto_stop_in: 1 minute
   rules:
@@ -194,7 +194,7 @@ stop-k8s-test-tmc-with-mccs:
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: test/mccs-$CI_COMMIT_REF_SLUG
     action: stop
 
 
@@ -214,7 +214,7 @@ stop-k8s-test-low:
     action: stop 
 
 
-k8s-test-tmc-with-csp-mid:
+k8s-test-mid-tmc-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: test
   tags:
@@ -227,7 +227,7 @@ k8s-test-tmc-with-csp-mid:
   script:
     - make k8s-test MARK=tmc_csp
   environment:
-    name: test/csp-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    name: test/csp-mid-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-mid-with-csp # Specify stop job.
     auto_stop_in: 1 minute # Automatically stop environment after a minute.
   rules:
@@ -247,11 +247,11 @@ stop-k8s-test-mid-with-csp:
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
-    name: test/csp-$CI_COMMIT_REF_SLUG
+    name: test/csp-mid-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
 
 # Job to test TMC with SDP components.
-k8s-test-tmc-with-sdp:
+k8s-test-mid-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
@@ -267,8 +267,8 @@ k8s-test-tmc-with-sdp:
   script:
     - make k8s-test MARK=tmc_sdp
   environment:
-    name: test/sdp-$CI_COMMIT_REF_SLUG
-    on_stop: stop-k8s-test-tmc-with-sdp
+    name: test/sdp-mid-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-mid-tmc-with-sdp
     auto_stop_in: 1 minute
   rules:
     - exists: 
@@ -277,7 +277,7 @@ k8s-test-tmc-with-sdp:
 
 
 # Job to stop the test environment for TMC with SDP.
-stop-k8s-test-tmc-with-sdp-mid:
+stop-k8s-test-mid-tmc-with-sdp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
@@ -290,7 +290,7 @@ stop-k8s-test-tmc-with-sdp-mid:
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
-    name: test/sdp-$CI_COMMIT_REF_SLUG
+    name: test/sdp-mid-$CI_COMMIT_REF_SLUG
     action: stop
 
 # Job to test Dish-LMC with Kubernetes.
