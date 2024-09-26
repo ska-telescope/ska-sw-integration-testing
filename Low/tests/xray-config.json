@@ -2,7 +2,8 @@
   "test_plans": [
     {
       "select_from_tag": {
-        "XTP-64112": "XTP-64112"
+        "XTP-64112": "XTP-64112",
+        "default" : "XTP-64112"
       }
     }
   ],
