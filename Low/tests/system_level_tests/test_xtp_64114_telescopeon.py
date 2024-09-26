@@ -2,15 +2,10 @@
 import pytest
 from pytest_bdd import given, scenario, then, when
 from tango import DevState
-
-from Low.tests.resources.test_harness.central_node_low import (
-    CentralNodeWrapperLow,
-)
-from Low.tests.resources.test_harness.helpers import (
-    get_master_device_simulators,
-)
-from Low.tests.resources.test_harness.simulator_factory import SimulatorFactory
-from Low.tests.resources.test_harness.subarray_node_low import (
+from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.helpers import get_master_device_simulators
+from tests.resources.test_harness.simulator_factory import SimulatorFactory
+from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 
