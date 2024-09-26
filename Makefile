@@ -116,6 +116,7 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
 						$(PYTHON_VARS_AFTER_PYTEST) ./Low/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
+XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
 
 -include .make/base.mk
 -include .make/k8s.mk
@@ -126,7 +127,7 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include PrivateRules.mak
 
 k8s_test_folder = Low/tests
-k8s_test_src_dir = Low
+k8s_test_src_dir = Low/
 
 # to create SDP namespace
 k8s-pre-install-chart:
