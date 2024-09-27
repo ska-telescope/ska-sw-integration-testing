@@ -103,7 +103,10 @@ class CentralNodeWrapperLow(object):
                 self.subarray_node: ["longRunningCommandResult"],
             }
         )
-        if SIMULATED_DEVICES_DICT["sdp_and_mccs"]:
+        if (
+            SIMULATED_DEVICES_DICT["sdp_and_mccs"]
+            or SIMULATED_DEVICES_DICT["all_subsystems"]
+        ):
             self.pst = DeviceProxy(pst)
 
     def set_subarray_id(self, subarray_id):
@@ -513,6 +516,13 @@ class CentralNodeWrapperLow(object):
                 ),
             )
         else:
+            # Set adminMode to Online for csp_master
+            if self.csp_master.adminMode != AdminMode.ONLINE:
+                self.csp_master.adminMode = AdminMode.ONLINE
+            # Set adminMode to Online for csp_subarray
+            if self.csp_subarray1.adminMode != AdminMode.ONLINE:
+                self.csp_subarray1.adminMode = AdminMode.ONLINE
+            self.pst.On()
             LOGGER.info("Invoke TelescopeOn command with all real sub-systems")
             _, unique_id = self.central_node.TelescopeOn()
             assert_that(self.event_tracer).described_as(

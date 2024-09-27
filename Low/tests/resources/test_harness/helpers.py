@@ -519,6 +519,9 @@ def get_simulated_devices_info() -> dict:
                 is_mccs_simulated,
             ]
         ),
+        "all_subsystems": all(
+            not is_csp_simulated, not is_sdp_simulated, not is_mccs_simulated
+        ),
     }
 
 
