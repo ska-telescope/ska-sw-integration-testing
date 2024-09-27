@@ -1,5 +1,4 @@
 CAR_OCI_REGISTRY_HOST:=artefact.skao.int
-CAR_OCI_REGISTRY_HOST:=artefact.skao.int
 PROJECT = ska-sw-integration-testing
 TANGO_HOST ?= tango-databaseds:10000 ## TANGO_HOST connection to the Tango DSI
 TANGO_HOST_NAME ?= tango-databaseds
@@ -19,5 +18,5 @@ ifeq ($(TELESCOPE), SKA-low)
 else ifeq ($(TELESCOPE), SKA-mid)
     include Makefile-mid.mk
 else
-    $(error Invalid Ska environment variable. Please set Ska to 'low' or 'mid')
+    $(error Invalid Ska environment variable. Please set TELESCOPE to 'SKA-low' or 'SKA-mid')
 endif

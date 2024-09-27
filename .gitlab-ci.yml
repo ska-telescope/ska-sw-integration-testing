@@ -61,7 +61,7 @@ k8s-test-tmc-with-csp-low:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
   artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_ID-csp-low"
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-low-csp"
     paths:
       - "build/"
     reports:
@@ -111,7 +111,7 @@ k8s-test-tmc-with-sdp-low:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
   artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_ID-sdp-low"
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-low-sdp"
     paths:
       - "build/"
     reports:
