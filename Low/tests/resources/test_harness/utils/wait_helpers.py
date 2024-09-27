@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 
 from ska_ser_logging import configure_logging
+from tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
 from tests.resources.test_support.common_utils.common_helpers import (
     AttributeWatcher,
     Resource,
@@ -64,11 +65,18 @@ class Waiter:
                 "State", changed_to="OFF"
             )
         )
-        self.waits.append(
-            watch(Resource(self.central_node)).to_become(
-                "telescopeState", changed_to="OFF"
+        if not SIMULATED_DEVICES_DICT["all_subsystems"]:
+            self.waits.append(
+                watch(Resource(self.central_node)).to_become(
+                    "telescopeState", changed_to="OFF"
+                )
             )
-        )
+        else:
+            self.waits.append(
+                watch(Resource(self.central_node)).to_become(
+                    "telescopeState", changed_to="UNKNOWN"
+                )
+            )
 
         self.waits.append(
             watch(Resource(self.mccs_master)).to_become(
