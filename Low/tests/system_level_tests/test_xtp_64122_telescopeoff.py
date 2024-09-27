@@ -12,7 +12,7 @@ TIMEOUT = 100
 
 
 @scenario(
-    "../../Low/features/system_level_tests/"
+    "../../features/system_level_tests/"
     + "xtp_64112_telescope_startup.feature",
     "Switch off the low telescope",
 )
