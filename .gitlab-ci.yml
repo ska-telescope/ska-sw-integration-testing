@@ -20,6 +20,7 @@ include:
   file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
 
 python-lint-low:
+  extends: python-lint
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: lint
   tags:
@@ -28,6 +29,7 @@ python-lint-low:
     TELESCOPE: 'SKA-low'
 
 python-lint-mid:
+  extends: python-lint
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: lint
   tags:
