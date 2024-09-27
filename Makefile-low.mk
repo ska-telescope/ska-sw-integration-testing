@@ -102,7 +102,7 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						$(PYTHON_VARS_AFTER_PYTEST) ./Low/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
 
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
+XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
 
 -include .make/base.mk
 -include .make/k8s.mk
@@ -137,7 +137,7 @@ ifeq ($(SDP_SIMULATION_ENABLED),false)
 endif
 
 taranta-link:
-	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
+	@echo "# https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
 
 
 test-requirements:
@@ -175,8 +175,6 @@ CUCUMBER_JSON_RESULT_FILE ?= build/cucumber.json
 REPORT_JSON_RESULT_FILE ?= build/report.json
 XRAY_TEST_RESULT_FILE ?= build/cucumber.json
 
-# configuration file for ska-ser-xray to publish the test results to Jira
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 
 # target file name for the BDD test report in HTML format
 # Leave or set to empty to disable the HTML BDD test report generation
