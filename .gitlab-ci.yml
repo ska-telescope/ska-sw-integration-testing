@@ -19,6 +19,22 @@ include:
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
 
+python-lint-low:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: lint
+  tags:
+    - ska-default
+  variables:
+    TELESCOPE: 'SKA-low'
+
+python-lint-mid:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: lint
+  tags:
+    - ska-default
+  variables:
+    TELESCOPE: 'SKA-mid'
+
 k8s-test-tmc-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: test
