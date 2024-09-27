@@ -60,7 +60,7 @@ def given_the_sut(
     )
 
 
-@given("a telescope consisting of SDP, CSP and MCCS that is ON")
+@given("an Telescope consisting of SDP, CSP and MCCS that is ON")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,

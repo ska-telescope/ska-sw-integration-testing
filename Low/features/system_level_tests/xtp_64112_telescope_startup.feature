@@ -15,6 +15,6 @@ Scenario: Switch off the low telescope
 @XTP-64119 @XTP-64112 @TEAM_HIMALAYA
 Scenario: Standby the low telescope
     Given a low telescope
-    And a telescope consisting of SDP, CSP and MCCS that is ON
+    And an Telescope consisting of SDP, CSP and MCCS that is ON
     When I invoke STANDBY command on the telescope
     Then the telescope goes to STANDBY state
