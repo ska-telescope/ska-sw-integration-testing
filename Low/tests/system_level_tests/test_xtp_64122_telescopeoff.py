@@ -1,4 +1,5 @@
 """Test module for TMC-SDP ShutDown functionality"""
+import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
 from ska_tango_testing.integration import TangoEventTracer
@@ -11,8 +12,9 @@ from tests.resources.test_harness.subarray_node_low import (
 TIMEOUT = 100
 
 
+@pytest.mark.system_level_tests
 @scenario(
-    "../../features/system_level_tests/"
+    "./../../features/system_level_tests/"
     + "xtp_64112_telescope_startup.feature",
     "Switch off the low telescope",
 )

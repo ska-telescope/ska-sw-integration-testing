@@ -9,9 +9,9 @@ from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 TIMEOUT = 100
 
 
-@pytest.mark.system_level_test
+@pytest.mark.system_level_tests
 @scenario(
-    "../../features/system_level_tests/"
+    "./../../features/system_level_tests/"
     + "xtp_64112_telescope_startup.feature",
     "Standby the low telescope",
 )
