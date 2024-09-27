@@ -14,7 +14,7 @@ TIMEOUT = 100
 
 @pytest.mark.system_level_tests
 @scenario(
-    "../Low/features/system_level_tests/"
+    "../../Low/features/system_level_tests/"
     + "xtp_64112_telescope_startup.feature",
     "Starting up low telescope",
 )
