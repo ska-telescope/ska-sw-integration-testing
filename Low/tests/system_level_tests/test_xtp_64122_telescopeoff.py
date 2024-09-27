@@ -1,16 +1,16 @@
 """Test module for TMC-SDP ShutDown functionality"""
-import pytest
-from pytest_bdd import given, scenario, then, when
+from assertpy import assert_that
+from pytest_bdd import scenario, then, when
+from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.helpers import get_master_device_simulators
-from tests.resources.test_harness.simulator_factory import SimulatorFactory
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 
+TIMEOUT = 100
 
-@pytest.mark.skip(reason="OFF commands fail as CSP is always ON")
+
 @scenario(
     "../Low/features/system_level_tests/"
     + "xtp_64112_telescope_startup.feature",
@@ -27,83 +27,6 @@ def test_off_telescope():
     """
 
 
-@given("a low telescope")
-def given_the_sut(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    simulator_factory: SimulatorFactory,
-):
-    """
-    Given a TMC and CSP in ON state
-    """
-    (_, sdp_master_sim, _) = get_master_device_simulators(simulator_factory)
-
-    assert central_node_low.central_node.ping() > 0
-    assert central_node_low.sdp_master.ping() > 0
-    assert subarray_node_low.subarray_devices["sdp_subarray"].ping() > 0
-    assert sdp_master_sim.ping() > 0
-
-
-@given("an Telescope consisting of SDP, CSP and MCCS that is ON")
-def check_state_is_on(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    event_recorder,
-):
-    """A method to check CentralNode.telescopeState"""
-    event_recorder.subscribe_event(central_node_low.csp_master, "State")
-    event_recorder.subscribe_event(
-        subarray_node_low.subarray_devices["csp_subarray"], "State"
-    )
-    event_recorder.subscribe_event(
-        central_node_low.central_node, "telescopeState"
-    )
-    central_node_low.move_to_on()
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.csp_master,
-        "State",
-        DevState.ON,
-    )
-    assert event_recorder.has_change_event_occurred(
-        subarray_node_low.subarray_devices["csp_subarray"],
-        "State",
-        DevState.ON,
-    )
-    event_recorder.subscribe_event(central_node_low.sdp_master, "State")
-    event_recorder.subscribe_event(
-        central_node_low.subarray_devices["sdp_subarray"], "State"
-    )
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.sdp_master,
-        "State",
-        DevState.ON,
-    )
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.subarray_devices["sdp_subarray"],
-        "State",
-        DevState.ON,
-    )
-    event_recorder.subscribe_event(central_node_low.mccs_master, "State")
-    event_recorder.subscribe_event(
-        central_node_low.subarray_devices["mccs_subarray"], "State"
-    )
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.mccs_master,
-        "State",
-        DevState.ON,
-    )
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.subarray_devices["mccs_subarray"],
-        "State",
-        DevState.ON,
-    )
-    assert event_recorder.has_change_event_occurred(
-        central_node_low.central_node,
-        "telescopeState",
-        DevState.ON,
-    )
-
-
 @when("I switch off the telescope")
 def move_to_off(central_node_low: CentralNodeWrapperLow):
     """A method to put CSP to STANDBY"""
@@ -112,11 +35,59 @@ def move_to_off(central_node_low: CentralNodeWrapperLow):
 
 @then("the SDP,CSP and MCCS must be OFF")
 def check_telescope_state_standby(
-    central_node_low: CentralNodeWrapperLow, event_recorder
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
 ):
     """A method to check CentralNode.telescopeState"""
-    assert event_recorder.has_change_event_occurred(
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER OFF COMMAND: "
+        "SDP devices"
+        "are expected to be in State OFF",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_low.sdp_master,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        subarray_node_low.subarray_devices["sdp_subarray"],
+        "State",
+        DevState.OFF,
+    )
+
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER OFFCOMMAND: "
+        "MCCS devices"
+        "are expected to be in State OFF",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_low.mccs_master,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        subarray_node_low.subarray_devices["mccs_subarray"],
+        "State",
+        DevState.OFF,
+    )
+
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER OFF COMMAND: "
+        "CSP devices"
+        "are expected to be in State ON",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_low.csp_master,
+        "State",
+        DevState.ON,
+    ).has_change_event_occurred(
+        subarray_node_low.subarray_devices["csp_subarray"],
+        "State",
+        DevState.ON,
+    )
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER STANDBY COMMAND: "
+        "Central Node device"
+        f"({central_node_low.central_node.dev_name()}) "
+        "is expected to be in TelescopeState UNKNOWN",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_low.central_node,
         "telescopeState",
-        DevState.STANDBY,
+        DevState.UNKNOWN,
     )
