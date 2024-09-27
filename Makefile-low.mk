@@ -5,10 +5,6 @@ PROJECT = ska-sw-integration-testing
 TANGO_HOST ?= tango-databaseds:10000 ## TANGO_HOST connection to the Tango DSI
 TANGO_HOST_NAME ?= tango-databaseds
 TELESCOPE ?= SKA-low
-DISH_NAMESPACE_1 ?= dish-lmc-1
-DISH_NAMESPACE_2 ?= dish-lmc-2
-DISH_NAMESPACE_3 ?= dish-lmc-3
-DISH_NAMESPACE_4 ?= dish-lmc-4
 KUBE_NAMESPACE ?= ska-tmc-integration
 KUBE_NAMESPACE_SDP ?= ska-tmc-integration-sdp
 K8S_TIMEOUT ?= 800s
@@ -53,10 +49,6 @@ COUNT ?= 1 ## Number of times the tests should run
 CLUSTER_DOMAIN ?= cluster.local
 PORT ?= 10000
 SUBARRAY_COUNT ?= 1
-DISH_NAME_1 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_1).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA001
-DISH_NAME_36 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_2).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA036
-DISH_NAME_63 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_3).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA063
-DISH_NAME_100 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_4).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA100
 CSP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-csp/control/0
 CSP_SUBARRAY_PREFIX ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-csp/subarray
 SDP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/low-sdp/control/0
@@ -85,7 +77,6 @@ CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
 CSP_SIMULATION_ENABLED ?= true
 SDP_SIMULATION_ENABLED ?= true
 MCCS_SIMULATION_ENABLED ?= true
-DISH_SIMULATION_ENABLED ?= true
 SDP_PROCCONTROL_REPLICAS ?= 1
 
 ifeq ($(MAKECMDGOALS),k8s-test)
@@ -103,15 +94,6 @@ PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 							 CSP_SIMULATION_ENABLED=$(CSP_SIMULATION_ENABLED) \
 							 SDP_SIMULATION_ENABLED=$(SDP_SIMULATION_ENABLED) \
 							 MCCS_SIMULATION_ENABLED=$(MCCS_SIMULATION_ENABLED) \
-							 DISH_SIMULATION_ENABLED=$(DISH_SIMULATION_ENABLED) \
-							 DISH_NAMESPACE_1=$(DISH_NAMESPACE_1) \
-							 DISH_NAMESPACE_2=$(DISH_NAMESPACE_2) \
-							 DISH_NAMESPACE_3=$(DISH_NAMESPACE_3) \
-							 DISH_NAMESPACE_4=$(DISH_NAMESPACE_4) \
-							 DISH_NAME_1=$(DISH_NAME_1) \
-							 DISH_NAME_36=$(DISH_NAME_36) \
-							 DISH_NAME_63=$(DISH_NAME_63) \
-							 DISH_NAME_100=$(DISH_NAME_100) \
 							 KUBE_NAMESPACE=$(KUBE_NAMESPACE) \
 							 KUBE_NAMESPACE_SDP=$(KUBE_NAMESPACE_SDP)
 
@@ -119,6 +101,8 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
 						$(PYTHON_VARS_AFTER_PYTEST) ./Low/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
+
+XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 
 -include .make/base.mk
 -include .make/k8s.mk
@@ -192,7 +176,7 @@ REPORT_JSON_RESULT_FILE ?= build/report.json
 XRAY_TEST_RESULT_FILE ?= build/cucumber.json
 
 # configuration file for ska-ser-xray to publish the test results to Jira
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
+
 
 # target file name for the BDD test report in HTML format
 # Leave or set to empty to disable the HTML BDD test report generation

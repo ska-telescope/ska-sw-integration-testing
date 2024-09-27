@@ -45,7 +45,7 @@ python-lint-mid:
   rules:
   - when: always
 
-k8s-test-tmc-with-csp:
+k8s-test-tmc-with-csp-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: test
   tags:
@@ -57,6 +57,16 @@ k8s-test-tmc-with-csp:
     CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
   script:
     - make k8s-test MARK=tmc_csp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-csp-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-low-with-csp # Specify stop job.
@@ -82,7 +92,7 @@ stop-k8s-test-low-with-csp:
     action: stop # Stop action triggers the deletion.
 
 # Job to test TMC with SDP components.
-k8s-test-tmc-with-sdp:
+k8s-test-tmc-with-sdp-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
@@ -97,6 +107,16 @@ k8s-test-tmc-with-sdp:
     MARK: tmc_sdp
   script:
     - make k8s-test MARK=tmc_sdp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-sdp-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-sdp
@@ -121,7 +141,7 @@ stop-k8s-test-tmc-with-sdp:
     name: test/$CI_COMMIT_REF_SLUG
     action: stop
 
-k8s-test-tmc-with-mccs:
+k8s-test-tmc-with-mccs-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
   tags:
@@ -136,6 +156,16 @@ k8s-test-tmc-with-mccs:
     MARK: tmc_mccs
   script:
     - make k8s-test MARK=tmc_mccs
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mccs-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-tmc-with-mccs
@@ -199,6 +229,7 @@ stop-k8s-test-mid-with-csp:
   environment:
     name: test/csp-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
+
 
 # Job to test TMC with SDP components.
 k8s-test-tmc-with-sdp-mid:
