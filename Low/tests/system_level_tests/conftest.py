@@ -53,7 +53,7 @@ def given_the_sut(
                 "telescopeState",
             ],
             subarray_node_low.subarray_devices["csp_subarray"]: "State",
-            subarray_node_low.subarray_ydevices["sdp_subarray"]: "State",
+            subarray_node_low.subarray_devices["sdp_subarray"]: "State",
             subarray_node_low.subarray_devices["mccs_subarray"]: "State",
             central_node_low.sdp_master: "State",
             central_node_low.csp_master: "State",
