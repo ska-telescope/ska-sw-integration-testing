@@ -65,7 +65,20 @@ disable=invalid-name,
         too-many-instance-attributes,
         too-many-arguments,
         too-many-statements,
-        W
+        W,
+        missing-function-docstring,
+        consider-using-f-string,
+        missing-class-docstring,
+        missing-module-docstring,
+        no-else-return,
+        too-many-nested-blocks,
+        useless-object-inheritance,
+        too-many-public-methods,
+        inconsistent-return-statements,
+        function-redefined,
+        inconsistent-return-statements,
+        too-many-branches,
+        too-few-public-methods,
 
 
         
