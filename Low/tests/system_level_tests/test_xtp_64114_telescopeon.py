@@ -29,7 +29,7 @@ def move_telescope_to_on(central_node_low: CentralNodeWrapperLow):
 # @then("the SDP, CSP and MCCS goes to ON state") -> conftest
 
 
-@then("the telescope goes to ON state")
+@then("the telescope go to ON state")
 def check_telescope_state(
     central_node_low: CentralNodeWrapperLow, event_tracer: TangoEventTracer
 ):
