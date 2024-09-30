@@ -5,9 +5,6 @@ from pytest_bdd import scenario, then, when
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.subarray_node_low import (
-    SubarrayNodeWrapperLow,
-)
 
 TIMEOUT = 100
 
@@ -29,55 +26,7 @@ def move_telescope_to_on(central_node_low: CentralNodeWrapperLow):
     central_node_low.move_to_on()
 
 
-@then("the SDP, CSP and MCCS goes to ON state")
-def check_devices_is_on(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    event_tracer: TangoEventTracer,
-):
-    """A method to check devices states."""
-
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "CSP devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.csp_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["csp_subarray"],
-        "State",
-        DevState.ON,
-    )
-
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "SDP devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.sdp_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["sdp_subarray"],
-        "State",
-        DevState.ON,
-    )
-
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "MCCS devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.mccs_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["mccs_subarray"],
-        "State",
-        DevState.ON,
-    )
+# @then("the SDP, CSP and MCCS goes to ON state") -> conftest
 
 
 @then("the telescope goes to ON state")

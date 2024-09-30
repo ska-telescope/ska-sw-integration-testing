@@ -1,10 +1,8 @@
 from assertpy import assert_that
-from pytest_bdd import given
+from pytest_bdd import given, then
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.helpers import get_master_device_simulators
-from tests.resources.test_harness.simulator_factory import SimulatorFactory
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -16,7 +14,6 @@ TIMEOUT = 100
 def given_the_sut(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
-    simulator_factory: SimulatorFactory,
     event_tracer: TangoEventTracer,
 ) -> None:
     """
@@ -26,12 +23,10 @@ def given_the_sut(
         simulator_factory: fixture for SimulatorFactory class,
         which provides simulated subarray and master devices
     """
-    (_, sdp_master_sim, _) = get_master_device_simulators(simulator_factory)
 
     assert central_node_low.central_node.ping() > 0
     assert central_node_low.sdp_master.ping() > 0
     assert subarray_node_low.subarray_devices["sdp_subarray"].ping() > 0
-    assert sdp_master_sim.ping() > 0
     event_tracer.subscribe_event(central_node_low.csp_master, "State")
     event_tracer.subscribe_event(
         subarray_node_low.subarray_devices["csp_subarray"], "State"
@@ -60,6 +55,7 @@ def given_the_sut(
     )
 
 
+@then("the SDP, CSP and MCCS go to ON state")
 @given("an Telescope consisting of SDP, CSP and MCCS that is ON")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,

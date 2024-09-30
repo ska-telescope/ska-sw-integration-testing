@@ -25,13 +25,13 @@ def test_standby_telescope():
     """
 
 
-@when("I invoke STANDBY command on the telescope")
+@when("I invoke the STANDBY command on the telescope")
 def move_to_standby(central_node_low: CentralNodeWrapperLow):
     """A method to put telescope to STANDBY"""
     central_node_low.set_standby()
 
 
-@then("the telescope goes to STANDBY state")
+@then("the telescope go to STANDBY state")
 def check_telescope_state_standby(
     central_node_low: CentralNodeWrapperLow, event_tracer: TangoEventTracer
 ):
