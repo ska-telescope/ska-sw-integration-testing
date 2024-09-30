@@ -77,6 +77,24 @@ else
     $(error Invalid Ska environment variable. Please set TELESCOPE to 'SKA-low' or 'SKA-mid')
 endif
 
+
+-include .make/base.mk
+-include .make/k8s.mk
+-include .make/helm.mk
+-include .make/python.mk
+-include .make/oci.mk
+-include .make/xray.mk
+-include PrivateRules.mak
+
+CONFIG = $(TELESCOPE) | grep -oP '(-)\S+' | sed 's/^\(.\)/\U\1/'
+k8s_test_folder = $(CONFIG)/tests
+k8s_test_src_dir = $(CONFIG)/
+
+
+test-requirements:
+	@poetry export --without-hashes --dev --format requirements.txt --output $(CONFIG)/tests/requirements.txt
+
+k8s-pre-test: test-requirements
 # ----------------------------------------------------------------------------
 # Trick to select a subset of the tests to run by their python name
 # Very useful when debugging a single test

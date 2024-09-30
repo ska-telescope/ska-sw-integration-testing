@@ -48,20 +48,3 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
 						$(PYTHON_VARS_AFTER_PYTEST) ./Mid/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
-
--include .make/base.mk
--include .make/k8s.mk
--include .make/helm.mk
--include .make/python.mk
--include .make/oci.mk
--include .make/xray.mk
--include PrivateRules.mak
-
-k8s_test_folder = Mid/tests
-k8s_test_src_dir = Mid/
-
-test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output Mid/tests/requirements.txt
-
-k8s-pre-test: test-requirements
-

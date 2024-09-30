@@ -32,22 +32,7 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						
 XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
 
--include .make/base.mk
--include .make/k8s.mk
--include .make/helm.mk
--include .make/python.mk
--include .make/oci.mk
--include .make/xray.mk
--include PrivateRules.mak
 
-k8s_test_folder = Low/tests
-k8s_test_src_dir = Low/
-
-
-test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output Low/tests/requirements.txt
-
-k8s-pre-test: test-requirements
 
 
 
