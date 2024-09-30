@@ -163,14 +163,9 @@ class Monitor:
             is_eq_to_future_comparison = True
         else:
             if self.predicate is None:
-                if isinstance(self.future_value, list):
-                    is_eq_to_future_comparison = (
-                        self.current_value in self.future_value
-                    )
-                else:
-                    is_eq_to_future_comparison = (
-                        self.current_value == self.future_value
-                    )
+                is_eq_to_future_comparison = (
+                    self.current_value == self.future_value
+                )
             else:
                 is_eq_to_future_comparison = self.predicate(
                     self.current_value, self.future_value
