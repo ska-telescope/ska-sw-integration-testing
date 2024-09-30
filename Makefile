@@ -86,13 +86,13 @@ endif
 -include .make/xray.mk
 -include PrivateRules.mak
 
-CONFIG = $(TELESCOPE) | grep -oP '(-)\S+' | sed 's/^\(.\)/\U\1/'
+CONFIG = $(TELESCOPE) |grep -oP '(?<=-)\S+' | sed 's/^\(.\)/\U\1/'
 k8s_test_folder = $(CONFIG)/tests
 k8s_test_src_dir = $(CONFIG)/
 
 
 test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output $(CONFIG)/tests/requirements.txt
+	@poetry export --without-hashes --with dev --format requirements.txt --output $(CONFIG)/tests/requirements.txt
 
 k8s-pre-test: test-requirements
 # ----------------------------------------------------------------------------
