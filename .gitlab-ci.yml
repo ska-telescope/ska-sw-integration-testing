@@ -46,8 +46,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
 
-python-lint-mid:
-  extends: python-lint
+python-lint:
   variables:
     TELESCOPE: 'SKA-mid'
 
@@ -55,7 +54,7 @@ python-lint-low:
   extends: python-lint
   variables:
     TELESCOPE: 'SKA-low'
-    
+
 k8s-test-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   stage: test
@@ -63,7 +62,7 @@ k8s-test-low:
     - ska-k8s
   variables:
     TELESCOPE: 'SKA-low'
-    KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
+    KUB3E_NAMESPACE: 'ci-dev-ska-low-integration'
     MARK: 'system_level_tests'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
