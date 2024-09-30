@@ -7,8 +7,8 @@ license = ""
 package-mode = false
 
 include = [
-    { path = 'Low/tests'},
-    { path = 'Mid/tests'}
+    { path = 'low/tests'},
+    { path = 'mid/tests'}
 ]
 
 [[tool.poetry.source]]

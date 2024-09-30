@@ -1,9 +1,9 @@
 
 
-PYTHON_LINT_TARGET ?= Low/tests/
+PYTHON_LINT_TARGET ?= low/tests/
 
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
-FILE ?= Low/tests## A specific test file to pass to pytest
+FILE ?= low/tests## A specific test file to pass to pytest
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 
@@ -27,10 +27,10 @@ PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
 
 K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
-						$(PYTHON_VARS_AFTER_PYTEST) ./Low/tests \
+						$(PYTHON_VARS_AFTER_PYTEST) ./low/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
 						
-XRAY_EXECUTION_CONFIG_FILE ?= Low/tests/xray-config.json
+XRAY_EXECUTION_CONFIG_FILE ?= low/tests/xray-config.json
 
 
 
