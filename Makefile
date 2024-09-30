@@ -16,7 +16,7 @@ CLUSTER_DOMAIN ?= cluster.local
 HELM_RELEASE ?= test
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
-ADD_ARGS ?= ## Additional args to pass to pytestt
+
 # K8S_TEST_IMAGE_TO_TEST ?= artefact.skao.int/ska-tango-images-tango-itango:9.3.12## docker image that will be run for testing purpose
 K8S_TEST_IMAGE_TO_TEST ?= harbor.skao.int/production/ska-tango-images-pytango-builder:9.4.2 
 COUNT ?= 1 ## Number of times the tests should run
@@ -68,6 +68,14 @@ ADD_ARGS +=  --true-context
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g")
 endif
 
+-include .make/base.mk
+-include .make/k8s.mk
+-include .make/helm.mk
+-include .make/python.mk
+-include .make/oci.mk
+-include .make/xray.mk
+-include PrivateRules.mak
+
 ifeq ($(TELESCOPE), SKA-low)
     include Makefile-low.mk
 else ifeq ($(TELESCOPE), SKA-mid)
@@ -76,13 +84,7 @@ else
     $(error Invalid Ska environment variable. Please set TELESCOPE to 'SKA-low' or 'SKA-mid')
 endif
 
--include .make/base.mk
--include .make/k8s.mk
--include .make/helm.mk
--include .make/python.mk
--include .make/oci.mk
--include .make/xray.mk
--include PrivateRules.mak
+
 
 
 # ----------------------------------------------------------------------------
