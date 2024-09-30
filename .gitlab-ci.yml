@@ -62,7 +62,7 @@ k8s-test-low:
     - ska-k8s
   variables:
     TELESCOPE: 'SKA-low'
-    KUB3E_NAMESPACE: 'ci-dev-ska-low-integration'
+    KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
     MARK: 'system_level_tests'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
