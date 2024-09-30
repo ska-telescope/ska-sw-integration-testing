@@ -68,13 +68,6 @@ ADD_ARGS +=  --true-context
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g")
 endif
 
--include .make/base.mk
--include .make/k8s.mk
--include .make/helm.mk
--include .make/python.mk
--include .make/oci.mk
--include .make/xray.mk
--include PrivateRules.mak
 
 ifeq ($(TELESCOPE), SKA-low)
     include Makefile-low.mk
@@ -83,9 +76,6 @@ else ifeq ($(TELESCOPE), SKA-mid)
 else
     $(error Invalid Ska environment variable. Please set TELESCOPE to 'SKA-low' or 'SKA-mid')
 endif
-
-
-
 
 # ----------------------------------------------------------------------------
 # Trick to select a subset of the tests to run by their python name
