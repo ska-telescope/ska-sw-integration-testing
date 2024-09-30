@@ -34,7 +34,7 @@ def move_to_off(central_node_low: CentralNodeWrapperLow):
     central_node_low.move_to_off()
 
 
-@then("the SDP,CSP and MCCS must be OFF")
+@then("the SDP and MCCS must be OFF and CSP remains in ON state")
 def check_telescope_state_standby(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,

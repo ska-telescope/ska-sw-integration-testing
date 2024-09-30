@@ -10,7 +10,7 @@ Scenario: Switch off the low telescope
     Given a low telescope
     And an Telescope consisting of SDP, CSP and MCCS that is ON
     When I switch off the telescope
-    Then the SDP,CSP and MCCS must be OFF 
+    Then the SDP and MCCS must be OFF and CSP remains in ON state 
 
 @XTP-64119 @XTP-64112 @TEAM_HIMALAYA
 Scenario: Standby the low telescope
