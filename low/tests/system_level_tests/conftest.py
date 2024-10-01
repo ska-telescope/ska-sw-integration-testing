@@ -1,5 +1,5 @@
 from assertpy import assert_that
-from pytest_bdd import given, then
+from pytest_bdd import given
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -56,7 +56,6 @@ def given_the_sut(
     )
 
 
-@then("the SDP, CSP and MCCS go to ON state")
 @given("a Telescope consisting of SDP, CSP and MCCS that is ON")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
