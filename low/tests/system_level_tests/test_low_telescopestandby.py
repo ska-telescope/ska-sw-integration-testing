@@ -1,4 +1,4 @@
-"""Test module for TMC-SDP ShutDown functionality"""
+"""Test module for TMC-SDP Standby functionality (XTP-64119)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when

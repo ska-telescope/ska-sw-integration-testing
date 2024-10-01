@@ -1,4 +1,4 @@
-"""Test module for TMC-SDP ShutDown functionality"""
+"""Test module for TMC-SDP ShutDown functionality (XTP-64122)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
@@ -19,7 +19,7 @@ TIMEOUT = 100
 )
 def test_off_telescope():
     """
-    Test case to verify TMC-CSP Standby functionality
+    Test case to verify TMC-CSP OFF functionality
     Glossary:
         - "central_node_low": fixture for a TMC CentralNode under test
         - "simulator_factory": fixture for SimulatorFactory class,
@@ -30,7 +30,7 @@ def test_off_telescope():
 
 @when("I invoke the OFF command on the telescope")
 def move_to_off(central_node_low: CentralNodeWrapperLow):
-    """A method to put CSP to STANDBY"""
+    """A method to put CSP to OFF"""
     central_node_low.move_to_off()
 
 
