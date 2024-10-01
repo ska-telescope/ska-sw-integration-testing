@@ -20,8 +20,9 @@ def given_the_sut(
     Given a TMC
 
     Args:
-        simulator_factory: fixture for SimulatorFactory class,
-        which provides simulated subarray and master devices
+        central_node_low: fixture for a TMC CentralNode under test
+        subarray_node_low: fixture for a TMC SubarrayNode under test
+        event_tracer: fixture for EventTracer class
     """
 
     assert central_node_low.central_node.ping() > 0

@@ -22,8 +22,6 @@ def test_off_telescope():
     Test case to verify TMC-CSP OFF functionality
     Glossary:
         - "central_node_low": fixture for a TMC CentralNode under test
-        - "simulator_factory": fixture for SimulatorFactory class,
-        which provides simulated subarray and master devices
         - "event_recorder": fixture for EventRecorder class
     """
 
