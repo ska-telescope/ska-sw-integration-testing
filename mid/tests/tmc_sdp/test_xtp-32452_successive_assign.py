@@ -12,7 +12,10 @@ from tests.resources.test_harness.helpers import (
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp
 @scenario(
-    "../../mid/features/tmc_sdp/xtp-32452_assign_release_assign_sequence.feature",
+    (
+        "../../mid/features/tmc_sdp/"
+        "xtp-32452_assign_release_assign_sequence.feature"
+    ),
     "Validate second AssignResources command  after "
     "first successful AssignResources and ReleaseResources are executed",
 )

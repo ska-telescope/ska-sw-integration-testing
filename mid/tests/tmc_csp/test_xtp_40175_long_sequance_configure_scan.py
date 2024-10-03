@@ -23,7 +23,10 @@ LOGGER = logging.getLogger(__name__)
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
-    "../../mid/features/tmc_csp/xtp_40175_long_sequence_configure_scan.feature",
+    (
+        "../../mid/features/tmc_csp/"
+        "xtp_40175_long_sequence_configure_scan.feature"
+    ),
     "TMC Mid executes configure-scan sequence of commands successfully",
 )
 def test_tmc_csp_long_sequences():
