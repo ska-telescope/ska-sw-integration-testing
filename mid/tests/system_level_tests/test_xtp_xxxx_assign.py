@@ -3,10 +3,10 @@ from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
-    CSPFacade,  # CSP 
+    CSPFacade,  # CSP facade
 )
 from ska_integration_test_harness.facades.sdp_facade import (
-    SDPFacade,  # CSP facade
+    SDPFacade,  # SDP facade
 )
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
@@ -26,7 +26,7 @@ TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../../mid/features/system_level_tests/xtp_xxxxx_assign.feature",
+    "../../mid/features/system_level_tests/xtp_xxxxx_assign_release.feature",
     "Assign resources using TMC",
 )
 def test_assignresources_command():
