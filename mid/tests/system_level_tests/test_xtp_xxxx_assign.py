@@ -35,6 +35,15 @@ def test_assignresources_command():
     testing."""
 
 
+@given("I invoke the ON command on the telescope")
+def send_telescope_on_command(
+    event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
+):
+    """Send the TelescopeOn command to the telescope."""
+    event_tracer.clear_events()
+    central_node_facade.move_to_on(wait_termination=False)
+
+
 @given(parsers.parse("TMC subarray {subarray_id} is in EMPTY ObsState"))
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,

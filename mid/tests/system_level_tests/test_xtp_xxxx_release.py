@@ -34,6 +34,7 @@ def test_releaseresources_command():
     the ReleaseResources command with TMC,CSP and SDP devices for pairwise
     testing."""
 
+
 @given("I invoke the ON command on the telescope")
 def send_telescope_on_command(
     event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
@@ -43,7 +44,7 @@ def send_telescope_on_command(
     central_node_facade.move_to_on(wait_termination=False)
 
 
-@when(parsers.parse("TMC subarray {subarray_id} is in IDLE ObsState"))
+@given(parsers.parse("TMC subarray {subarray_id} is in IDLE ObsState"))
 def subarray_in_idle_obsstate(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCSubarrayNodeFacade,

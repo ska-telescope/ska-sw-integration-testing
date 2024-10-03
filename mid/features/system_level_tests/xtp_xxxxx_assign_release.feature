@@ -1,8 +1,7 @@
 # This BDD test performs AssignResources command flow on Mid integration
 
 Scenario: Assign resources to mid subarray
-    Given a mid telescope
-    And telescope is in ON state
+    the Telescope is in ON state
     And subarray <subarray_id> is in EMPTY ObsState
     When I assign resources to the subarray
     Then the CSP, SDP and TMC subarrays must be in IDLE obsState
