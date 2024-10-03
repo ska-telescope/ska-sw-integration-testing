@@ -382,7 +382,7 @@ k8s-test-mid:
     - ska-k8s
   variables:
     CONFIG: "Mid"
-    TELESCOPE: 'SKA-Mid'
+    TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: 'integration-ska-mid-test'
     MARK: 'system_level_test_mid'
     CSP_SIMULATION_ENABLED: 'false'
