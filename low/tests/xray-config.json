@@ -1,0 +1,78 @@
+{
+  "test_plans": [
+    {
+      "select_from_tag": {
+        "XTP-64112": "XTP-64112",
+        "XTP-34276":"XTP-34276",
+        "XTP-29227":"XTP-29227",
+        "XTP-29682":"XTP-29682",
+        "XTP-30488":"XTP-30488",
+        "XTP-41255":"XTP-41255",
+        "default": "XTP-28348"
+      }
+    }
+  ],
+  "name": {
+    "env": "CI_COMMIT_BRANCH",
+    "maps_to": {
+      "default": "branch execution",
+      "main": "main branch execution"
+    }
+  },
+  "chart_info": {
+    "env": "DEPLOYMENT_CONFIGURATION",
+    "maps_to": {
+      "default": "charts/ska-low-integration/Chart.yaml"
+    }
+  },
+  "test_report": "build/report.json",
+  "jira_url": "https://jira.skatelescope.org",
+  "project": {
+    "id": "XTP",
+    "issuetype_id": 11602,
+    "customfield_mapping": {
+      "start_date": "customfield_11918",
+      "end_date": "customfield_11917",
+      "test_plans": "customfield_11927",
+      "test_environments": "customfield_11925"
+    }
+  },
+  "description": "Test execution results as generated from https://gitlab.com/ska-telescope/ska-tmc/ska-low-integration\n",
+  "test_environments": [
+    {
+      "env": "TEST_ENV",
+      "maps_to": {
+        "default": "STFC-CI",
+        "PSI-LOW-TOPIC": "PSI-LOW-TOPIC",
+        "PSI-LOW": "PSI-LOW",
+        "dev": "dev-testing",
+        "ITF-LOW": "ITF-LOW"
+      }
+    }
+  ],
+  "labels": [
+    {
+      "env": "CI_COMMIT_BRANCH",
+      "maps_to": {
+        "default": "branch",
+        "main": "main",
+        "master": "master"
+      }
+    }
+  ],
+  "versions": [
+    {
+      "env": "CI_COMMIT_BRANCH",
+      "maps_to": {
+        "default": "",
+        "main": "PI21",
+        "master": "PI21"
+      }
+    }
+  ],
+  "environment_variables": [
+    "CI_JOB_URL",
+    "CI_COMMIT_TITLE",
+    "CI_JOB_STARTED_AT"
+  ]
+}

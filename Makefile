@@ -1,68 +1,29 @@
-# Project makefile for a ska-tmc-integration project. You should normally only need to modify
-# CAR_OCI_REGISTRY_USER and PROJECT below.
 CAR_OCI_REGISTRY_HOST:=artefact.skao.int
 PROJECT = ska-sw-integration-testing
 TANGO_HOST ?= tango-databaseds:10000 ## TANGO_HOST connection to the Tango DSI
 TANGO_HOST_NAME ?= tango-databaseds
-TELESCOPE ?= SKA-mid
-DISH_NAMESPACE_1 ?= dish-lmc-1
-DISH_NAMESPACE_2 ?= dish-lmc-2
-DISH_NAMESPACE_3 ?= dish-lmc-3
-DISH_NAMESPACE_4 ?= dish-lmc-4
-KUBE_NAMESPACE ?= ska-tmc-integration
-KUBE_NAMESPACE_SDP ?= ska-tmc-integration-sdp
+TELESCOPE ?=  $(error Please specify TELESCOPE='SKA-mid' or TELESCOPE='SKA-low')
+KUBE_NAMESPACE ?= ska-sw-integration-testing
+KUBE_NAMESPACE_SDP ?= ska-sw-integration-testing-sdp
 K8S_TIMEOUT ?= 800s
-PYTHON_LINT_TARGET ?= Mid/tests/ 
+CI_PROJECT_PATH_SLUG ?= ska-sw-integration-testing
+CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
+CSP_SIMULATION_ENABLED ?= true
+SDP_SIMULATION_ENABLED ?= true
+MCCS_SIMULATION_ENABLED ?= true
+SDP_PROCCONTROL_REPLICAS ?= 1
+CLUSTER_DOMAIN ?= cluster.local
+HELM_RELEASE ?= test
 DEPLOYMENT_TYPE = $(shell echo $(TELESCOPE) | cut -d '-' -f2)
 MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g") ## What -m opt to pass to pytest
-# run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
-FILE ?= Mid/tests## A specific test file to pass to pytest
-ADD_ARGS ?= ## Additional args to pass to pytestt
-
-
-# ----------------------------------------------------------------------------
-# Exit at failure flag
-# 
-# The following flag is used to determine whether the test run should exit at
-# the first failure or continue running tests after a failure. By default, the
-# test run will exit at the first failure. To continue running tests after a
-# failure, set the flag to 'false'.
-
-EXIT_AT_FAIL ?= true ## Flag for determining exit at failure. 
-# Set 'true' to exit at first failure. Set 'false' to continue running 
-# tests after failure. It defaults to 'true' if not set.
-# Actually, any value other than 'false' will be treated as 'true'.
-
-ifneq ($(EXIT_AT_FAIL), false)
-ADD_ARGS += -x
-endif
-
-# ----------------------------------------------------------------------------
-
-# HELM_RELEASE is the release that all Kubernetes resources will be labelled
-# with
-HELM_RELEASE ?= test
-
-# UMBRELLA_CHART_PATH Path of the umbrella chart to work with
-
-DISH_TANGO_HOST ?= databaseds
-COUNT ?= 1 ## Number of times the tests should run
-CLUSTER_DOMAIN ?= cluster.local
-PORT ?= 10000
-SUBARRAY_COUNT ?= 1
-DISH_NAME_1 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_1).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA001
-DISH_NAME_36 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_2).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA036
-DISH_NAME_63 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_3).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA063
-DISH_NAME_100 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_4).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA100
-CSP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-csp/control/0
-CSP_SUBARRAY_PREFIX ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-csp/subarray
-SDP_MASTER ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-sdp/control/0
-SDP_SUBARRAY_PREFIX ?= tango://$(TANGO_HOST_NAME).$(KUBE_NAMESPACE).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-sdp/subarray
-
-CI_REGISTRY ?= gitlab.com
 
 # K8S_TEST_IMAGE_TO_TEST ?= artefact.skao.int/ska-tango-images-tango-itango:9.3.12## docker image that will be run for testing purpose
 K8S_TEST_IMAGE_TO_TEST ?= harbor.skao.int/production/ska-tango-images-pytango-builder:9.4.2 
+COUNT ?= 1 ## Number of times the tests should run
+SUBARRAY_COUNT ?= 1
+
+CI_REGISTRY ?= gitlab.com
+
 
 
 CI_PROJECT_DIR ?= .
@@ -82,7 +43,26 @@ CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
 CSP_SIMULATION_ENABLED ?= true
 SDP_SIMULATION_ENABLED ?= true
 DISH_SIMULATION_ENABLED ?= true
+MCCS_SIMULATION_ENABLED ?= true
 SDP_PROCCONTROL_REPLICAS ?= 1
+
+# ----------------------------------------------------------------------------
+# Exit at failure flag
+# 
+# The following flag is used to determine whether the test run should exit at
+# the first failure or continue running tests after a failure. By default, the
+# test run will exit at the first failure. To continue running tests after a
+# failure, set the flag to 'false'.
+
+EXIT_AT_FAIL ?= true ## Flag for determining exit at failure. 
+# Set 'true' to exit at first failure. Set 'false' to continue running 
+# tests after failure. It defaults to 'true' if not set.
+# Actually, any value other than 'false' will be treated as 'true'.
+
+ifeq ($(EXIT_AT_FAIL), true)
+ADD_ARGS += -x
+endif
+
 
 ifeq ($(MAKECMDGOALS),k8s-test)
 ADD_ARGS +=  --true-context
@@ -90,32 +70,14 @@ MARK ?= $(shell echo $(TELESCOPE) | sed "s/-/_/g")
 endif
 
 
-PYTHON_VARS_AFTER_PYTEST ?= -m '$(MARK) $(ADDMARK)' $(ADD_ARGS) $(FILE) --count=$(COUNT)
+ifeq ($(TELESCOPE), SKA-low)
+    include Makefile-low.mk
+else ifeq ($(TELESCOPE), SKA-mid)
+    include Makefile-mid.mk
+else
+    $(error Invalid Ska environment variable. Please set TELESCOPE to 'SKA-low' or 'SKA-mid')
+endif
 
-K8S_CHART_PARAMS = $(CUSTOM_VALUES1)
-
-PYTHON_VARS_BEFORE_PYTEST ?= PYTHONPATH=.:./src \
-							 TANGO_HOST=$(TANGO_HOST) \
-							 TELESCOPE=$(TELESCOPE) \
-							 CLUSTER_DOMAIN=$(CLUSTER_DOMAIN) \
-							 CSP_SIMULATION_ENABLED=$(CSP_SIMULATION_ENABLED) \
-							 SDP_SIMULATION_ENABLED=$(SDP_SIMULATION_ENABLED) \
-							 DISH_SIMULATION_ENABLED=$(DISH_SIMULATION_ENABLED) \
-							 DISH_NAMESPACE_1=$(DISH_NAMESPACE_1) \
-							 DISH_NAMESPACE_2=$(DISH_NAMESPACE_2) \
-							 DISH_NAMESPACE_3=$(DISH_NAMESPACE_3) \
-							 DISH_NAMESPACE_4=$(DISH_NAMESPACE_4) \
-							 DISH_NAME_1=$(DISH_NAME_1) \
-							 DISH_NAME_36=$(DISH_NAME_36) \
-							 DISH_NAME_63=$(DISH_NAME_63) \
-							 DISH_NAME_100=$(DISH_NAME_100) \
-							 KUBE_NAMESPACE=$(KUBE_NAMESPACE) \
-							 KUBE_NAMESPACE_SDP=$(KUBE_NAMESPACE_SDP)
-
-K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
-						pytest \
-						$(PYTHON_VARS_AFTER_PYTEST) ./Mid/tests \
-						| tee pytest.stdout # k8s-test test command to run in container
 
 -include .make/base.mk
 -include .make/k8s.mk
@@ -125,43 +87,15 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 -include .make/xray.mk
 -include PrivateRules.mak
 
-k8s_test_folder = Mid/tests
-k8s_test_src_dir = Mid/
-
-ifeq ($(CSP_SIMULATION_ENABLED),false)
-CUSTOM_VALUES1 =	--set tmc-mid.deviceServers.mocks.csp=$(CSP_SIMULATION_ENABLED)\
-	--set ska-csp-lmc-mid.enabled=true
-endif
-# to create SDP namespace
-k8s-pre-install-chart:
-ifeq ($(SDP_SIMULATION_ENABLED),false)
-	@echo "k8s-pre-install-chart: creating the SDP namespace $(KUBE_NAMESPACE_SDP)"
-	@make k8s-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP)
-endif
-
-# to create SDP namespace
-k8s-pre-install-chart-car:
-ifeq ($(SDP_SIMULATION_ENABLED),false)
-	@echo "k8s-pre-install-chart-car: creating the SDP namespace $(KUBE_NAMESPACE_SDP)"
-	@make k8s-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP)
-endif
-
-# to delete SDP namespace
-k8s-post-uninstall-chart:
-ifeq ($(SDP_SIMULATION_ENABLED),false)
-	@echo "k8s-post-uninstall-chart: deleting the SDP namespace $(KUBE_NAMESPACE_SDP)"
-	@make k8s-delete-namespace KUBE_NAMESPACE=$(KUBE_NAMESPACE_SDP)
-endif
-
-taranta-link:
-	@echo "#            https://k8s.stfc.skao.int/$(KUBE_NAMESPACE)/taranta/dashboard"
+CONFIG = $(shell echo $(TELESCOPE) | grep -oP '(?<=-)\S+')
+k8s_test_folder = $(CONFIG)/tests
+k8s_test_src_dir = $(CONFIG)/
 
 
 test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output Mid/tests/requirements.txt
+	@poetry export --without-hashes --with dev --format requirements.txt --output $(CONFIG)/tests/requirements.txt
 
 k8s-pre-test: test-requirements
-
 # ----------------------------------------------------------------------------
 # Trick to select a subset of the tests to run by their python name
 # Very useful when debugging a single test
@@ -192,8 +126,6 @@ CUCUMBER_JSON_RESULT_FILE ?= build/cucumber.json
 REPORT_JSON_RESULT_FILE ?= build/report.json
 XRAY_TEST_RESULT_FILE ?= build/cucumber.json
 
-# configuration file for ska-ser-xray to publish the test results to Jira
-XRAY_EXECUTION_CONFIG_FILE ?= tests/xray-config.json
 
 # target file name for the BDD test report in HTML format
 # Leave or set to empty to disable the HTML BDD test report generation
@@ -231,6 +163,3 @@ xray-post-publish:
 		echo "Publishing the BDD HTML test report to the Jira test execution issue"; \
 		python3 $(PUBLISH_HTML_REPORT_TO_JIRA_SCRIPT); \
 	fi
-
-
-

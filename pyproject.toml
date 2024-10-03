@@ -5,8 +5,10 @@ description = "Repository for integration of TMC,CSP,SDP,Dish components"
 authors = []
 license = ""
 
+
 include = [
-    { path = 'tests'}
+    { path = 'low/tests'},
+    { path = 'mid/tests'}
 ]
 
 [[tool.poetry.source]]
@@ -47,6 +49,7 @@ pytest-forked = "^1.3.0"
 pytest-xdist = "^2.4.0"
 pytest-repeat = "^0.9.1"
 pytest-bdd-report = "1.0.3b0"
+
 
 [tool.poetry.group.docs.dependencies]
 docutils = "^0.18.1"
