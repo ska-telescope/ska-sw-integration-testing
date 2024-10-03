@@ -27,7 +27,7 @@ TIMEOUT = 60
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_xxxxx_assing_release.feature",
-    "Release resources using TMC",
+    "Release resources from mid Subarray",
 )
 def test_releaseresources_command():
     """BDD test scenario for verifying successful execution of
