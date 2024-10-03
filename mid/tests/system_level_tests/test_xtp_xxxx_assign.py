@@ -3,7 +3,7 @@ from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
-    CSPFacade,  # CSP facade
+    CSPFacade,  # CSP 
 )
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # CSP facade
