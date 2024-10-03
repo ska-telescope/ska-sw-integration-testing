@@ -1,0 +1,76 @@
+{
+  "test_plans": [
+    {
+      "select_from_tag": {
+        "SP-3715": "SP-3715",
+        "XTP-29381": "XTP-29381",
+        "XTP-29583":"XTP-29583",
+        "XTP-29778":"XTP-29778",
+        "default": "XTP-28347"
+      }
+    }
+  ],
+  "name": {
+    "env": "CI_COMMIT_BRANCH",
+    "maps_to": {
+      "default": "branch execution",
+      "main": "main branch execution"
+    }
+  },
+  "chart_info": {
+    "env": "DEPLOYMENT_CONFIGURATION",
+    "maps_to": {
+      "default": "charts/ska-tmc-mid/Chart.yaml",
+       "tmc_mid": "charts/ska-tmc-mid/Chart.yaml"
+    }
+  },
+  "test_report": "build/report.json",
+  "jira_url": "https://jira.skatelescope.org",
+  "project": {
+    "id": "XTP",
+    "issuetype_id": 11602,
+    "customfield_mapping": {
+      "start_date": "customfield_11918",
+      "end_date": "customfield_11917",
+      "test_plans": "customfield_11927",
+      "test_environments": "customfield_11925"
+    }
+  },
+  "description": "Test execution results as generated from https://gitlab.com/ska-telescope/ska-tmc/ska-tmc-integration\n",
+  "test_environments": [
+    {
+      "env": "TEST_ENV",
+      "maps_to": {
+        "default": "STFC-CI",
+        "PSI-MID-MDA": "PSI-MID-MDA",
+        "dev": "dev-testing",
+        "ITF-MID": "ITF-MID"
+      }
+    }
+  ],
+  "labels": [
+    {
+      "env": "CI_COMMIT_BRANCH",
+      "maps_to": {
+        "default": "branch",
+        "main": "main",
+        "master": "master"
+      }
+    }
+  ],
+  "versions": [
+    {
+      "env": "CI_COMMIT_BRANCH",
+      "maps_to": {
+        "default": "",
+        "main": "PI20",
+        "master": "PI20"
+      }
+    }
+  ],
+  "environment_variables": [
+    "CI_JOB_URL",
+    "CI_COMMIT_TITLE",
+    "CI_JOB_STARTED_AT"
+  ]
+}

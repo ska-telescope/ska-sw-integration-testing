@@ -6,7 +6,7 @@ from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
 )
 from ska_integration_test_harness.facades.sdp_facade import (
-    SDPFacade,  # CSP facade
+    SDPFacade,  # SDP facade
 )
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
