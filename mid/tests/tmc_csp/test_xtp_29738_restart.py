@@ -9,7 +9,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29738_restart.feature",
+    "../../mid/features/tmc_csp/xtp_29738_restart.feature",
     "TMC executes a Restart on CSP subarray when subarray completes abort",
 )
 def test_tmc_csp_restart(central_node_mid):

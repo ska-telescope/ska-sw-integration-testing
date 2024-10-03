@@ -26,7 +26,7 @@ TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../features/system_level_tests/xtp_xxxx_release.feature",
+    "../../mid/features/system_level_tests/xtp_xxxx_release.feature",
     "Release resources using TMC",
 )
 def test_releaseresources_command():

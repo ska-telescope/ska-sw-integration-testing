@@ -26,7 +26,7 @@ TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../features/system_level_tests/xtp_xxxxx_assign.feature",
+    "../../mid/features/system_level_tests/xtp_xxxxx_assign.feature",
     "Assign resources using TMC",
 )
 def test_assignresources_command():

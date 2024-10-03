@@ -15,7 +15,7 @@ from tests.resources.test_harness.helpers import (
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp
 @scenario(
-    "../../features/tmc_sdp/xtp_29396_abort_resourcing.feature",
+    "../../mid/features/tmc_sdp/xtp_29396_abort_resourcing.feature",
     "Abort assigning using TMC",
 )
 def test_tmc_sdp_abort_in_resourcing():
