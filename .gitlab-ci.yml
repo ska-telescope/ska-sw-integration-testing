@@ -383,7 +383,7 @@ k8s-test-mid:
   variables:
     CONFIG: "Mid"
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'integration-ska-mid-test'
+    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration'
     MARK: 'system_level_test_mid'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
@@ -413,7 +413,7 @@ stop-k8s-test-mid:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'integration-ska-mid-test'
+    KUBE_NAMESPACE: 'ci-dev-ska-mid-integrationt'
   script:
     - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
   environment:
