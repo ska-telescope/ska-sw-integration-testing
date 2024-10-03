@@ -26,7 +26,7 @@ TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../../mid/features/system_level_tests/xtp_xxxxx_assing_release.feature",
+    "../../mid/features/system_level_tests/xtp_xxxxx_assign_release.feature",
     "Release resources from mid Subarray",
 )
 def test_releaseresources_command():
@@ -34,8 +34,16 @@ def test_releaseresources_command():
     the ReleaseResources command with TMC,CSP and SDP devices for pairwise
     testing."""
 
+@given("I invoke the ON command on the telescope")
+def send_telescope_on_command(
+    event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
+):
+    """Send the TelescopeOn command to the telescope."""
+    event_tracer.clear_events()
+    central_node_facade.move_to_on(wait_termination=False)
 
-@given(parsers.parse("TMC subarray {subarray_id} is in IDLE ObsState"))
+
+@when(parsers.parse("TMC subarray {subarray_id} is in IDLE ObsState"))
 def subarray_in_idle_obsstate(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCSubarrayNodeFacade,
