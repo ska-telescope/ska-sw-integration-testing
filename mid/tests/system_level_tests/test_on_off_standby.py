@@ -22,7 +22,7 @@ ASSERTIONS_TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../../features/system_level_tests/xtp_xxxxxx.feature",
+    "system_level_tests/" + "xtp_xxxxx.feature",
     "ON to OFF - CMD on mid telescope",
 )
 def test_tmc_operational_command_flow():
