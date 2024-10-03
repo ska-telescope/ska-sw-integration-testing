@@ -13,7 +13,7 @@ from tests.resources.test_harness.helpers import (
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29838_abort_configuring.feature",
+    "../../mid/features/tmc_csp/xtp_29838_abort_configuring.feature",
     "Abort configuring CSP using TMC",
 )
 def test_tmc_csp_abort_in_configuring(central_node_mid, simulator_factory):

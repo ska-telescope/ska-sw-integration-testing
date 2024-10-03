@@ -21,7 +21,7 @@ from tests.resources.test_support.enum import DishMode
 )
 @pytest.mark.tmc_dish
 @scenario(
-    "../../features/tmc_dish/xtp-29077.feature",
+    "../../mid/features/tmc_dish/xtp-29077.feature",
     "Mid TMC Central Node robustness test with disappearing DishLMC",
 )
 def test_tmc_central_node_robustness():

@@ -15,7 +15,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../../features/tmc_dish/xtp-29417_end.feature",
+    "../../mid/features/tmc_dish/xtp-29417_end.feature",
     "TMC executes End command on DISH.LMC",
 )
 def test_tmc_dish_end():
