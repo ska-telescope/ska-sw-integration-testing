@@ -4,8 +4,8 @@ Scenario Outline: Assign resources to low subarray
     And telescope is in ON state
     And subarray <subarray_id> is in EMPTY ObsState
     When I assign resources to the subarray
-    Then the CSP, SDP and MCCS subarrays must be in IDLE obsState
-    And the subarray obsState is transitioned to IDLE        
+    Then the TMC, CSP, SDP and MCCS subarrays transition to RESOURCING obsState
+    AND to IDLE obsState        
     Examples: 
         | subarray_id |
         | 1           |
@@ -16,8 +16,7 @@ Scenario Outline: Release resources from low Subarray
     Given telescope is in ON state
     And subarray <subarray_id> is in the IDLE obsState
     When I release all resources assigned to it
-    Then the CSP, SDP and MCCS subarray must be in EMPTY obsState
-    And subarray obsState is transitioned to EMPTY
+    Then the TMC, CSP, SDP and MCCS subarray transition to EMPTY obsState
     Examples:
         | subarray_id   |   
         |  1            |

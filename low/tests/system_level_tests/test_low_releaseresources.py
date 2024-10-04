@@ -4,7 +4,6 @@ from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
-from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import COMMAND_COMPLETED
 from tests.resources.test_harness.helpers import update_eb_pb_ids
@@ -29,23 +28,7 @@ def test_telescope_release_resources():
     """
 
 
-@given("telescope is in ON state")
-def move_telescope_to_on(
-    central_node_low: CentralNodeWrapperLow, event_tracer: TangoEventTracer
-):
-    """A method to turn on the telescope."""
-    central_node_low.move_to_on()
-
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "Central Node device"
-        f"({central_node_low.central_node.dev_name()}) "
-        "is expected to be in TelescopeState ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.central_node,
-        "telescopeState",
-        DevState.ON,
-    )
+# @given("telescope is in ON state") -> conftest
 
 
 @given(parsers.parse("subarray {subarray_id} is in the IDLE obsState"))
@@ -70,7 +53,7 @@ def invoke_assignresources(
         f"({central_node_low.central_node.dev_name()}) "
         "is expected have longRunningCommand as"
         '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
@@ -81,7 +64,7 @@ def invoke_assignresources(
         "TMC Subarray device"
         f"({subarray_node_low.subarray_node.dev_name()}) "
         "is expected to be in IDLE obstate",
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "obsState",
         ObsState.IDLE,
@@ -108,7 +91,7 @@ def invoke_release_resources(
         f"({central_node_low.central_node.dev_name()}) "
         "is expected have longRunningCommand as"
         '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
@@ -141,7 +124,7 @@ def subsystem_subarrays_in_empty(
         "SDP Subarray device"
         f"({sdp.dev_name()}) "
         "is expected to be in EMPTY obstate",
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_devices["sdp_subarray"],
         "obsState",
         ObsState.EMPTY,
@@ -153,7 +136,7 @@ def subsystem_subarrays_in_empty(
         "CSP Subarray device"
         f"({csp.dev_name()}) "
         "is expected to be in EMPTY obstate",
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_devices["csp_subarray"],
         "obsState",
         ObsState.EMPTY,
@@ -165,7 +148,7 @@ def subsystem_subarrays_in_empty(
         "MCCS Subarray device"
         f"({mccs.dev_name()}) "
         "is expected to be in EMPTY obstate",
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_devices["mccs_subarray"],
         "obsState",
         ObsState.EMPTY,
@@ -184,7 +167,7 @@ def tmc_subarray_empty(
         "TMC Subarray device"
         f"({subarray_node_low.subarray_node.dev_name()}) "
         "is expected to be in EMPTY obstate",
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "obsState",
         ObsState.EMPTY,
