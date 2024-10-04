@@ -4,8 +4,6 @@ version = "0.0.1"
 description = "Repository for integration of TMC,CSP,SDP,Dish components"
 authors = []
 license = ""
-package-mode = false
-
 include = [
     { path = 'low/tests'},
     { path = 'mid/tests'}
