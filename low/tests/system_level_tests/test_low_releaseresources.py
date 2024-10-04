@@ -8,6 +8,7 @@ from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -61,9 +62,10 @@ def invoke_assignresources(
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
+    assign_input_json = update_eb_pb_ids(input_json)
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
     central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(input_json)
+    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '
         "'the subarray is in IDLE obsState'"
