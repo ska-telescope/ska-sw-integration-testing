@@ -27,12 +27,12 @@ TIMEOUT = 60
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_xxxxx_assign_release.feature",
-    "Assign resources to mid subarray",
+    "Assign and Release resources to mid subarray",
 )
 def test_assignresources_command():
     """BDD test scenario for verifying successful execution of
-    the AssignResources command with TMC,CSP and SDP devices for pairwise
-    testing."""
+    the AssignResources and ReleaseResources command with TMC,CSP and SDP
+    devices for pairwise testing."""
 
 
 @given("the Telescope is in ON state")
@@ -115,5 +115,72 @@ def csp_sdp_tmc_subarray_idle(
         sdp.sdp_subarray,
         "obsState",
         ObsState.IDLE,
+        previous_value=context_fixt.starting_state,
+    )
+
+
+@when(
+    parsers.parse("I release all resources with to TMC subarray {subarray_id}")
+)
+def invoke_releaseresources(
+    context_fixt: SubarrayTestContextData,
+    central_node_facade: TMCCentralNodeFacade,
+):
+    """
+    Send the ReleaseResources command to the subarray.
+
+    This step uses the central_node_facade to send a ReleaseResources
+    command to the specified subarray. It uses a pre-defined JSON input
+    file, modifies the subarray_id, and sends the command without waiting
+    for termination. The action result is stored in the context fixture.
+    """
+    context_fixt.when_action_name = "ReleaseResources"
+
+    json_input = MyFileJSONInput(
+        "centralnode", "release_resources_mid"
+    ).with_attribute("subarray_id", 1)
+
+    context_fixt.when_action_result = central_node_facade.release_resources(
+        json_input,
+        wait_termination=False,
+    )
+
+
+@then(
+    parsers.parse(
+        "the CSP,SDP and TMC subarray {subarray_id} must be in EMPTY ObsState"
+    )
+)
+def csp_sdp_tmc_subarray_empty(
+    context_fixt,
+    # subarray_id: str,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """
+    Verify the subarray's transition to the EMPTY state.
+    """
+    assert_that(event_tracer).described_as(
+        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to EMPTY."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.EMPTY,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "obsState",
+        ObsState.EMPTY,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "obsState",
+        ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
     )
