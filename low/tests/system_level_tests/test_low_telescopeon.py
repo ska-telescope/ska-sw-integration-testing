@@ -12,7 +12,7 @@ from tests.resources.test_harness.subarray_node_low import (
 TIMEOUT = 100
 
 
-@pytest.mark.system_level_tests1
+@pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_startup.feature",
     "Starting up low telescope",

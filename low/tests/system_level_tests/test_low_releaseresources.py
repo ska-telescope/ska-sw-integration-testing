@@ -1,6 +1,4 @@
-"""Test module for TMC StartUp functionality (XTP-64114)"""
-import json
-
+"""Test module for ReleaseResources functionality (XTP-65636)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -12,18 +10,16 @@ from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
-from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
-
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
 TIMEOUT = 100
-COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.system_level_tests1
+@pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_xxxxx_telescope_assign_release.feature",
+    "system_level_tests/" + "xtp_64112_telescope_assign_release.feature",
     "Release resources from low Subarray",
 )
 def test_telescope_release_resources():
@@ -51,7 +47,7 @@ def move_telescope_to_on(
     )
 
 
-@given(parsers.parse("subarray {subarray_id} in the IDLE obsState"))
+@given(parsers.parse("subarray {subarray_id} is in the IDLE obsState"))
 def invoke_assignresources(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -119,7 +115,7 @@ def invoke_release_resources(
 
 
 @then("the CSP, SDP and MCCS subarray must be in EMPTY obsState")
-def subsystem_subarrays_in_idle(
+def subsystem_subarrays_in_empty(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Checks if Subarray's obsState attribute value is EMPTY"""
@@ -176,7 +172,7 @@ def subsystem_subarrays_in_idle(
 
 
 @then("subarray obsState is transitioned to EMPTY")
-def tmc_subarray_idle(
+def tmc_subarray_empty(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Checks if SubarrayNode's obsState attribute value is IDLE"""

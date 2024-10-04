@@ -1,6 +1,4 @@
-"""Test module for TMC StartUp functionality (XTP-64114)"""
-import json
-
+"""Test module for AssignResources functionality (XTP-65635)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -11,23 +9,22 @@ from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
-from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
 
 TIMEOUT = 100
-COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.system_level_tests1
+@pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_xxxxx_telescope_assign_release.feature",
+    "system_level_tests/" + "xtp_64112_telescope_assign_release.feature",
     "Assign resources to low subarray",
 )
 def test_telescope_assign_resources():
     """
-    Test case to verify StartUp functionality
+    Test case to verify AssignResources functionality
     """
 
 
@@ -93,7 +90,7 @@ def invoke_assignresources(
 def subsystem_subarrays_in_idle(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
-    """Checks if Csp Subarray's obsState attribute value is IDLE"""
+    """Checks if Subarray's obsState attribute value is IDLE"""
     event_tracer.subscribe_event(
         subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
     )
