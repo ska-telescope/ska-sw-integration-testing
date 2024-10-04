@@ -26,7 +26,7 @@ TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../../mid/features/system_level_tests/xtp_xxxxx_assign_release.feature",
+    "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
     "Assign and Release resources to mid subarray",
 )
 def test_assignresources_command():
