@@ -25,7 +25,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
     "system_level_tests/" + "xtp_xxxxx_telescope_assign_release.feature",
     "Assign resources to low subarray",
 )
-def test_telescope_assignresources():
+def test_telescope_assign_resources():
     """
     Test case to verify StartUp functionality
     """

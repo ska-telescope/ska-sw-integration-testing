@@ -11,7 +11,8 @@ Scenario: Assign resources to low subarray
 
 
 Scenario: Release resources from low Subarray
-    Given the Telescope is in ON state
+    Given a low telescope
+    Given telescope is in ON state
     And subarray <subarray_id> in the IDLE obsState
     When I release all resources assigned to it
     Then the CSP, SDP and MCCS subarray must be in EMPTY obsState
