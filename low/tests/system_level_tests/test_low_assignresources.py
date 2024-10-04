@@ -100,6 +100,9 @@ def subsystem_subarrays_in_idle(
     event_tracer.subscribe_event(
         subarray_node_low.subarray_devices["csp_subarray"], "obsState"
     )
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
+    )
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
 
     csp = subarray_node_low.subarray_devices["csp_subarray"]
