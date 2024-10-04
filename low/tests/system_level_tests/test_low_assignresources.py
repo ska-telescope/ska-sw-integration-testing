@@ -25,7 +25,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
     "system_level_tests/" + "xtp_xxxxx_telescope_assign_release.feature",
     "Assign resources to low subarray",
 )
-def test_tmc_startup_telescope():
+def test_telescope_assignresources():
     """
     Test case to verify StartUp functionality
     """
@@ -50,9 +50,12 @@ def move_telescope_to_on(
     )
 
 
-@given(parsers.parse("TMC subarray {subarray_id} is in EMPTY ObsState"))
+@given(parsers.parse("subarray {subarray_id} is in EMPTY ObsState"))
 def subarray_in_empty_obsstate(
-    central_node_low, subarray_node_low, event_recorder, subarray_id
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_recorder: TangoEventTracer,
+    subarray_id: int,
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
     central_node_low.set_subarray_id(subarray_id)
@@ -62,7 +65,9 @@ def subarray_in_empty_obsstate(
 
 @when("I assign resources to the subarray")
 def invoke_assignresources(
-    central_node_low, command_input_factory, event_tracer
+    central_node_low: CentralNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
 ):
     """Invokes AssignResources command on TMC"""
     input_json = prepare_json_args_for_centralnode_commands(
@@ -85,7 +90,9 @@ def invoke_assignresources(
 
 
 @then("the CSP, SDP and MCCS subarrays must be in IDLE obsState")
-def csp_subarray_idle(subarray_node_low: SubarrayNodeWrapperLow, event_tracer):
+def subsystem_subarrays_in_idle(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
     """Checks if Csp Subarray's obsState attribute value is IDLE"""
     event_tracer.subscribe_event(
         subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
@@ -136,8 +143,10 @@ def csp_subarray_idle(subarray_node_low: SubarrayNodeWrapperLow, event_tracer):
     )
 
 
-@then("the TMC subarray obsState is transitioned to IDLE")
-def tmc_subarray_idle(subarray_node_low, event_tracer):
+@then("the subarray obsState is transitioned to IDLE")
+def tmc_subarray_idle(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
     """Checks if SubarrayNode's obsState attribute value is IDLE"""
 
     assert_that(event_tracer).described_as(
