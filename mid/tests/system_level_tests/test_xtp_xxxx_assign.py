@@ -35,7 +35,7 @@ def test_assignresources_command():
     testing."""
 
 
-@given("I invoke the ON command on the telescope")
+@given("the Telescope is in ON state")
 def send_telescope_on_command(
     event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
 ):

@@ -1,4 +1,4 @@
-# This BDD test performs AssignResources command flow on Mid integration
+# This BDD test performs Assign and Release command flow on Mid integration
 
 Scenario: Assign resources to mid subarray
     Given the Telescope is in ON state
