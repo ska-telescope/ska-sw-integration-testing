@@ -11,6 +11,9 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
+from ska_integration_test_harness.init.test_harness_builder import (
+    TestHarnessBuilder,
+)
 from ska_integration_test_harness.inputs.json_input import DictJSONInput
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
@@ -36,6 +39,7 @@ DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
         ),
     }
 )
+
 
 @pytest.fixture
 def telescope_wrapper(
