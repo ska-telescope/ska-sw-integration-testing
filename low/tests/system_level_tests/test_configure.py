@@ -55,7 +55,8 @@ def move_telescope_to_on(
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
-    event_recorder: TangoEventTracer,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
     subarray_id: int,
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
@@ -81,8 +82,9 @@ def subarray_in_idle_obsstate(
 
 
 @when("I configure it for a scan")
-def invoke_assignresources(
+def invoke_configure(
     central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
@@ -91,7 +93,7 @@ def invoke_assignresources(
         "configure_low", command_input_factory
     )
     central_node_low.set_serial_number_of_cbf_processor()
-    _, unique_id = subarray_node_low.store_configuration_data(
+    _, pytest.unique_id = subarray_node_low.store_configuration_data(
         configure_input_json
     )
     assert_that(event_tracer).described_as(
