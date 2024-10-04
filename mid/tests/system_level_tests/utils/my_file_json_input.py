@@ -13,7 +13,7 @@ class MyFileJSONInput(FileJSONInput):
         "..",
         "..",
         "..",
-        "data",
+        "data/TMC",
     )
     FILE_SUFFIX = ".json"
 
