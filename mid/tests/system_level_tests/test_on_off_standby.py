@@ -40,6 +40,7 @@ def given_the_sut(
     """
     Telescope consisting of csp , sdp and dish devices
     """
+    csp.csp_master.adminMode = 0
     event_tracer.subscribe_event(
         central_node_facade.central_node, "telescopeState"
     )
@@ -47,7 +48,7 @@ def given_the_sut(
     event_tracer.subscribe_event(csp.csp_subarray, "State")
     event_tracer.subscribe_event(sdp.sdp_master, "State")
     event_tracer.subscribe_event(sdp.sdp_subarray, "State")
-    
+
     for dish_id in ["SKA001", "SKA036", "SKA063", "SKA100"]:
         event_tracer.subscribe_event(
             dish.dish_master_dict[dish_id], "dishMode"
@@ -81,8 +82,9 @@ def given_the_sut(
 
 @when("I start up the telescope")
 def send_telescope_on_command(
-    event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade,
-    csp: CSPFacade
+    event_tracer: TangoEventTracer,
+    central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
 ):
     """Send the TelescopeOn command to the telescope."""
     csp.csp_master.adminMode = 0
