@@ -6,13 +6,13 @@ from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.constant import COMMAND_COMPLETED
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
-from tests.resources.test_harness.constant import COMMAND_COMPLETED
 
 TIMEOUT = 100
 
