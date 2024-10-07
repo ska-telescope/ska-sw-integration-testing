@@ -1,4 +1,4 @@
-"""Test module for TMC Configure functionality (XTP-xxxxx)"""
+"""Test module for TMC END functionality (XTP-66037)"""
 import json
 
 import pytest
@@ -29,13 +29,13 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
     "system_level_tests/" + "xtp_64112_telescope_configure_end.feature",
     "Assign resources to low subarray",
 )
-def test_telescope_end_command():
+def test_telescope_configure():
     """
     Test case to verify End functionality
     """
 
 
-@given(parsers.parse("subarray {subarray_id} is in IDLE ObsState"))
+@given(parsers.parse("subarray {subarray_id} is in READY ObsState"))
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -64,16 +64,6 @@ def subarray_in_idle_obsstate(
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
-
-
-@when("I configure it for a scan")
-def invoke_configure(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    command_input_factory,
-    event_tracer: TangoEventTracer,
-):
-    """Invokes End command"""
     configure_input_json = prepare_json_args_for_commands(
         "configure_low", command_input_factory
     )
@@ -95,27 +85,24 @@ def invoke_configure(
     )
 
 
-@then(
-    "the TMC, CSP, SDP, and MCCS subarrays transition to CONFIGURING obsState"
-)
+@when("I end the configuration")
+def invoke_configure(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    """Invokes End command"""
+    subarray_node_low.execute_transition("End")
+
+
+@then("the TMC, CSP, SDP and MCCS subarrays transition to IDLE obsState")
 def subsystem_subarrays_in_configuring(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
-    """Check if all subarrays are in CONFIGURING obsState."""
+    """Check if all subarrays are in IDLE obsState."""
     check_subarray_obsstate(
         subarray_node_low,
         event_tracer,
-        obs_state=ObsState.CONFIGURING,
-    )
-
-
-@then("the TMC, CSP, SDP, and MCCS subarrays transition to READY obsState")
-def tmc_subarray_ready(
-    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
-):
-    """Checks if SubarrayNode's obsState attribute value is READY"""
-    check_subarray_obsstate(
-        subarray_node_low,
-        event_tracer,
-        obs_state=ObsState.READY,
+        obs_state=ObsState.IDLE,
     )
