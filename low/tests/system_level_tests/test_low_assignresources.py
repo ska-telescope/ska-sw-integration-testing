@@ -100,10 +100,10 @@ def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
     """Subscribe to obsState events for all relevant subarray devices."""
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
     event_tracer.subscribe_event(
-        subarray_node_low.sdp_subarray_leaf_node, "obsState"
+        subarray_node_low.sdp_subarray_leaf_node, "sdpSubarrayObsState"
     )
     event_tracer.subscribe_event(
-        subarray_node_low.csp_subarray_leaf_node, "obsState"
+        subarray_node_low.csp_subarray_leaf_node, "cspSubarrayObsState"
     )
     event_tracer.subscribe_event(
         subarray_node_low.mccs_subarray_leaf_node, "obsState"
