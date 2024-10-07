@@ -20,7 +20,7 @@ TIMEOUT = 100
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_assign_release.feature",
-    "Release resources from low Subarray",
+    "Release resources from low subarray",
 )
 def test_telescope_release_resources():
     """
