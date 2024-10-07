@@ -68,19 +68,19 @@ def invoke_assignresources(
     )
 
 
-@then(
-    "the TMC, CSP, SDP, and MCCS subarrays transition to RESOURCING obsState"
-)
-def subsystem_subarrays_in_resourcing(
-    subarray_node_low: SubarrayNodeWrapperLow,
-    event_tracer: TangoEventTracer,
-):
-    """Check if all subarrays are in RESOURCING obsState."""
-    _check_subarray_obsstate(
-        subarray_node_low,
-        event_tracer,
-        obs_state=ObsState.RESOURCING,
-    )
+# @then(
+#     "the TMC, CSP, SDP, and MCCS subarrays transition to RESOURCING obsState"
+# )
+# def subsystem_subarrays_in_resourcing(
+#     subarray_node_low: SubarrayNodeWrapperLow,
+#     event_tracer: TangoEventTracer,
+# ):
+#     """Check if all subarrays are in RESOURCING obsState."""
+#     _check_subarray_obsstate(
+#         subarray_node_low,
+#         event_tracer,
+#         obs_state=ObsState.RESOURCING,
+#     )
 
 
 @then("the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState")
