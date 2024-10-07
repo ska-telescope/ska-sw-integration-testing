@@ -13,6 +13,7 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
 )
+from ska_integration_test_harness.inputs.json_input import DictJSONInput
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
@@ -20,6 +21,35 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer
+from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
+
+# ------------------------------------------------------------
+# Test Harness fixtures
+
+DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
+    {
+        "interface": "https://schema.skao.int/ska-mid-cbf-initsysparam/1.0",
+        "tm_data_sources": [
+            "car://gitlab.com/ska-telescope/ska-telmodel-data?"
+            + "ska-sdp-tmlite-repository-1.0.0#tmdata"
+        ],
+        "tm_data_filepath": (
+            "instrument/ska1_mid_psi/ska-mid-cbf-system-parameters.json",
+        ),
+    }
+)
+
+
+@pytest.fixture
+def default_commands_inputs() -> TestHarnessInputs:
+    """Default JSON inputs for TMC commands."""
+    return TestHarnessInputs(
+        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
+        configure_input=MyFileJSONInput("subarray", "configure_mid"),
+        scan_input=MyFileJSONInput("subarray", "scan_mid"),
+        release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
+        default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,
+    )
 
 
 @pytest.fixture
