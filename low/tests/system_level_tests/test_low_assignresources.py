@@ -34,11 +34,11 @@ def test_telescope_assign_resources():
 def subarray_in_empty_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
-    event_recorder: TangoEventTracer,
+    event_tracer: TangoEventTracer,
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
     central_node_low.set_subarray_id(1)
-    subscribe_to_obsstate_events(event_recorder, subarray_node_low)
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     assert subarray_node_low.subarray_node.obsState == ObsState.EMPTY
 
 
@@ -88,7 +88,8 @@ def subsystems_subarray_idle(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Check if all subarrays are in IDLE obsState."""
-    _check_subarray_obsstate(
+    # subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    check_subarray_obsstate(
         subarray_node_low,
         event_tracer,
         obs_state=ObsState.IDLE,
@@ -109,7 +110,7 @@ def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
 
 
-def _check_subarray_obsstate(
+def check_subarray_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
     obs_state: ObsState,
