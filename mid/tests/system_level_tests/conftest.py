@@ -22,37 +22,37 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
 from ska_tango_testing.integration import TangoEventTracer
 
 
-@pytest.fixture
-def telescope_wrapper(
-    default_commands_inputs: TestHarnessInputs,
-) -> TelescopeWrapper:
-    """Create an unique test harness with proxies to all devices."""
-    test_harness_builder = TestHarnessBuilder()
+# @pytest.fixture
+# def telescope_wrapper(
+#     default_commands_inputs: TestHarnessInputs,
+# ) -> TelescopeWrapper:
+#     """Create an unique test harness with proxies to all devices."""
+#     test_harness_builder = TestHarnessBuilder()
 
-    # import from a configuration file device names and emulation directives
-    # for TMC, CSP, SDP and the Dishes
-    test_harness_builder.read_config_file(
-        "tests/tmc_csp_new_ITH/test_harness_config.yaml"
-    )
-    test_harness_builder.validate_configurations()
+#     # import from a configuration file device names and emulation directives
+#     # for TMC, CSP, SDP and the Dishes
+#     test_harness_builder.read_config_file(
+#         "tests/tmc_csp_new_ITH/test_harness_config.yaml"
+#     )
+#     test_harness_builder.validate_configurations()
 
-    # set the default inputs for the TMC commands,
-    # which will be used for teardown procedures
-    test_harness_builder.set_default_inputs(default_commands_inputs)
-    test_harness_builder.validate_default_inputs()
+#     # set the default inputs for the TMC commands,
+#     # which will be used for teardown procedures
+#     test_harness_builder.set_default_inputs(default_commands_inputs)
+#     test_harness_builder.validate_default_inputs()
 
-    # build the wrapper of the telescope and it's sub-systems
-    telescope = test_harness_builder.build()
-    yield telescope
+#     # build the wrapper of the telescope and it's sub-systems
+#     telescope = test_harness_builder.build()
+#     yield telescope
 
-    # after a test is completed, reset the telescope to its initial state
-    # (obsState=READY, telescopeState=OFF, no resources assigned)
-    telescope.tear_down()
+#     # after a test is completed, reset the telescope to its initial state
+#     # (obsState=READY, telescopeState=OFF, no resources assigned)
+#     telescope.tear_down()
 
-    # NOTE: As the code is organized now, I cannot anticipate the
-    # teardown of the telescope structure. To run reset now I should
-    # init subarray node (with SetSubarrayId), but to do that I need
-    # to know subarray_id, which is a parameter of the Gherkin steps.
+#     # NOTE: As the code is organized now, I cannot anticipate the
+#     # teardown of the telescope structure. To run reset now I should
+#     # init subarray node (with SetSubarrayId), but to do that I need
+#     # to know subarray_id, which is a parameter of the Gherkin steps.
 
 
 @pytest.fixture
