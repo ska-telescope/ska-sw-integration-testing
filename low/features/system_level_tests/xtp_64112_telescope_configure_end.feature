@@ -13,7 +13,7 @@ Feature: Configure the subarray using TMC
 
 Feature: End Configuration on subarray using TMC
 	@XTP-66037 @XTP-64112
-	Scenario: End the low telescope subarray using TMC
+	Scenario: End Configuration to the low telescope subarray using TMC
 		Given a Low telescope
         And telescope is in ON state
         And subarray <subarray_id> is in READY ObsState
