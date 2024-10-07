@@ -74,7 +74,6 @@ def invoke_assignresources(
 def subsystem_subarrays_in_resourcing(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
-    obs_state: str,
 ):
     """Check if all subarrays are in RESOURCING obsState."""
     _check_subarray_obsstate(
