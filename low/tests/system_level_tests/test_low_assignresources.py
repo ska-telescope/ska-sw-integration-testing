@@ -35,10 +35,9 @@ def subarray_in_empty_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     event_recorder: TangoEventTracer,
-    subarray_id: int = 1,
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
-    central_node_low.set_subarray_id(subarray_id)
+    central_node_low.set_subarray_id(1)
     subscribe_to_obsstate_events(event_recorder, subarray_node_low)
     assert subarray_node_low.subarray_node.obsState == ObsState.EMPTY
 
