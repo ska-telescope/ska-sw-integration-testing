@@ -1,3 +1,4 @@
+"""Test module for Assign and Resources functionality (XTP-65630)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -44,7 +45,7 @@ def send_telescope_on_command(
     central_node_facade.move_to_on(wait_termination=False)
 
 
-@given(parsers.parse("TMC subarray {subarray_id} is in EMPTY ObsState"))
+@given(parsers.parse("subarray is in EMPTY ObsState"))
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
@@ -59,11 +60,7 @@ def subarray_in_empty_obsstate(
     )
 
 
-@when(
-    parsers.parse(
-        "I assign resources with {receptors} to TMC subarray {subarray_id}"
-    )
-)
+@when(parsers.parse("I assign resources to subarray"))
 def invoke_assignresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
