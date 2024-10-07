@@ -35,11 +35,11 @@ def subarray_in_empty_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     event_recorder: TangoEventTracer,
-    subarray_id: int,
+    subarray_id: int = 1,
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
     central_node_low.set_subarray_id(subarray_id)
-    event_recorder.subscribe_event(central_node_low.subarray_node, "obsState")
+    subscribe_to_obsstate_events(event_recorder, subarray_node_low)
     assert subarray_node_low.subarray_node.obsState == ObsState.EMPTY
 
 
@@ -70,14 +70,36 @@ def invoke_assignresources(
 
 
 @then(
-    "the TMC, CSP, SDP and MCCS subarrays transition to {obs_state} obsState"
+    "the TMC, CSP, SDP, and MCCS subarrays transition to RESOURCING obsState"
 )
 def subsystem_subarrays_in_resourcing(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
     obs_state: str,
 ):
-    """Checks if Subarray's obsState attribute value is IDLE"""
+    """Check if all subarrays are in RESOURCING obsState."""
+    _check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
+
+
+@then("the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState")
+def subsystems_subarray_idle(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
+    """Check if all subarrays are in IDLE obsState."""
+    _check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.IDLE,
+    )
+
+
+def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
+    """Subscribe to obsState events for all relevant subarray devices."""
+    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
     event_tracer.subscribe_event(
         subarray_node_low.sdp_subarray_leaf_node, "obsState"
     )
@@ -87,82 +109,25 @@ def subsystem_subarrays_in_resourcing(
     event_tracer.subscribe_event(
         subarray_node_low.mccs_subarray_leaf_node, "obsState"
     )
-    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
 
-    tmc_sn = subarray_node_low.subarray_node
-    csp_sln = subarray_node_low.csp_subarray_leaf_node
-    sdp_sln = subarray_node_low.sdp_subarray_leaf_node
-    mccs_sln = subarray_node_low.mccs_subarray_leaf_node
 
-    for subsystem, device in [
-        ("SDP", sdp_sln),
-        ("CSP", csp_sln),
-        ("MCCS", mccs_sln),
-        ("TMC", tmc_sn),
-    ]:
+def _check_subarray_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
+    obs_state: ObsState,
+):
+    """Check if each subarray device is in the expected obsState."""
+    subarray_devices = {
+        "TMC": subarray_node_low.subarray_node,
+        "SDP": subarray_node_low.sdp_subarray_leaf_node,
+        "CSP": subarray_node_low.csp_subarray_leaf_node,
+        "MCCS": subarray_node_low.mccs_subarray_leaf_node,
+    }
+
+    for name, device in subarray_devices.items():
         assert_that(event_tracer).described_as(
-            'FAILED ASSUMPTION IN "THEN" STEP: '
-            "'the subarray must be in the RESOURCING obsState'"
-            f"{subsystem} Subarray device"
-            f"({device.dev_name()}) "
-            "is expected to be in RESOURCING obstate",
+            f"{name} Subarray device ({device.dev_name()}) "
+            f"should be in {obs_state.name} obsState."
         ).within_timeout(TIMEOUT).has_change_event_occurred(
-            device, "obsState", ObsState[obs_state]
+            device, "obsState", obs_state
         )
-
-
-# @then("to IDLE obsState")
-# def subsystems_subarray_idle(
-#     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
-# ):
-#     """Checks if SubarrayNode's obsState attribute value is IDLE"""
-#     csp = subarray_node_low.subarray_devices["csp_subarray"]
-#     sdp = subarray_node_low.subarray_devices["sdp_subarray"]
-#     mccs = subarray_node_low.subarray_devices["mccs_subarray"]
-#     assert_that(event_tracer).described_as(
-#         'FAILED ASSUMPTION IN "THEN" STEP: '
-#         "'the subarray must be in the IDLE obsState'"
-#         "SDP Subarray device"
-#         f"({sdp.dev_name()}) "
-#         "is expected to be in IDLE obstate",
-#     ).within_timeout(TIMEOUT).has_change_event_occurred(
-#         subarray_node_low.subarray_devices["sdp_subarray"],
-#         "obsState",
-#         ObsState.IDLE,
-#     )
-
-#     assert_that(event_tracer).described_as(
-#         'FAILED ASSUMPTION IN "THEN" STEP: '
-#         "'the subarray must be in the IDLE obsState'"
-#         "CSP Subarray device"
-#         f"({csp.dev_name()}) "
-#         "is expected to be in IDLE obstate",
-#     ).within_timeout(TIMEOUT).has_change_event_occurred(
-#         subarray_node_low.subarray_devices["csp_subarray"],
-#         "obsState",
-#         ObsState.IDLE,
-#     )
-
-#     assert_that(event_tracer).described_as(
-#         'FAILED ASSUMPTION IN "THEN" STEP: '
-#         "'the subarray must be in the IDLE obsState'"
-#         "MCCS Subarray device"
-#         f"({mccs.dev_name()}) "
-#         "is expected to be in IDLE obstate",
-#     ).within_timeout(TIMEOUT).has_change_event_occurred(
-#         subarray_node_low.subarray_devices["mccs_subarray"],
-#         "obsState",
-#         ObsState.IDLE,
-#     )
-
-#     assert_that(event_tracer).described_as(
-#         'FAILED ASSUMPTION IN "THEN" STEP: '
-#         "'the subarray must be in the IDLE obsState'"
-#         "TMC Subarray device"
-#         f"({subarray_node_low.subarray_node.dev_name()}) "
-#         "is expected to be in IDLE obstate",
-#     ).within_timeout(TIMEOUT).has_change_event_occurred(
-#         subarray_node_low.subarray_node,
-#         "obsState",
-#         ObsState.IDLE,
-#     )
