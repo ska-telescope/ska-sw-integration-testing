@@ -272,7 +272,7 @@ def verify_dishmode_after_off(
         ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
             central_node_facade.central_node,
             "telescopeState",
-            DevState.ON,
+            DevState.OFF,
         ).has_change_event_occurred(
             dish.dish_master_dict[dish_id],
             "dishMode",

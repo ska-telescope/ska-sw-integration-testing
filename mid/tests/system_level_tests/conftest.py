@@ -10,49 +10,44 @@ from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
 )
-
-# from ska_integration_test_harness.init.test_harness_builder import (
-#     TestHarnessBuilder,
-# )
-# from ska_integration_test_harness.inputs.test_harness_inputs import (
-#     TestHarnessInputs,
-# )
+from ska_integration_test_harness.init.test_harness_builder import (
+    TestHarnessBuilder,
+)
+from ska_integration_test_harness.inputs.test_harness_inputs import (
+    TestHarnessInputs,
+)
 from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer
 
-# @pytest.fixture
-# def telescope_wrapper(
-#     default_commands_inputs: TestHarnessInputs,
-# ) -> TelescopeWrapper:
-#     """Create an unique test harness with proxies to all devices."""
-#     test_harness_builder = TestHarnessBuilder()
 
-#     # import from a configuration file device names and emulation directives
-#     # for TMC, CSP, SDP and the Dishes
-#     test_harness_builder.read_config_file(
-#         "tests/tmc_csp_new_ITH/test_harness_config.yaml"
-#     )
-#     test_harness_builder.validate_configurations()
+@pytest.fixture
+def telescope_wrapper(
+    default_commands_inputs: TestHarnessInputs,
+) -> TelescopeWrapper:
+    """Create an unique test harness with proxies to all devices."""
+    test_harness_builder = TestHarnessBuilder()
 
-#     # set the default inputs for the TMC commands,
-#     # which will be used for teardown procedures
-#     test_harness_builder.set_default_inputs(default_commands_inputs)
-#     test_harness_builder.validate_default_inputs()
+    # import from a configuration file device names and emulation directives
+    # for TMC, CSP, SDP and the Dishes
+    test_harness_builder.read_config_file(
+        "tests/system_level_tests/test_harness_config.yaml"
+    )
+    test_harness_builder.validate_configurations()
 
-#     # build the wrapper of the telescope and it's sub-systems
-#     telescope = test_harness_builder.build()
-#     yield telescope
+    # set the default inputs for the TMC commands,
+    # which will be used for teardown procedures
+    test_harness_builder.set_default_inputs(default_commands_inputs)
+    test_harness_builder.validate_default_inputs()
 
-#     # after a test is completed, reset the telescope to its initial state
-#     # (obsState=READY, telescopeState=OFF, no resources assigned)
-#     telescope.tear_down()
+    # build the wrapper of the telescope and it's sub-systems
+    telescope = test_harness_builder.build()
+    yield telescope
 
-#     # NOTE: As the code is organized now, I cannot anticipate the
-#     # teardown of the telescope structure. To run reset now I should
-#     # init subarray node (with SetSubarrayId), but to do that I need
-#     # to know subarray_id, which is a parameter of the Gherkin steps.
+    # after a test is completed, reset the telescope to its initial state
+    # (obsState=READY, telescopeState=OFF, no resources assigned)
+    telescope.tear_down()
 
 
 @pytest.fixture
