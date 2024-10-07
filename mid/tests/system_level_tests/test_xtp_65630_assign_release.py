@@ -1,4 +1,6 @@
 """Test module for Assign and Resources functionality (XTP-65630)"""
+import logging
+
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -22,6 +24,7 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import SubarrayTestContextData
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
+logger = logging.getLogger(__name__)
 TIMEOUT = 60
 
 
@@ -52,7 +55,7 @@ def subarray_in_empty_obsstate(
 ):
 
     context_fixt.starting_state = ObsState.EMPTY
-
+    logger.info(subarray_node_facade.subarray_node.obs_state)
     subarray_node_facade.force_change_of_obs_state(
         ObsState.EMPTY,
         TestHarnessInputs(),
