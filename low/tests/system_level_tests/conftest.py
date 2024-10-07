@@ -10,7 +10,7 @@ from tests.resources.test_harness.subarray_node_low import (
 TIMEOUT = 100
 
 
-@given("a low telescope")
+@given("a Low telescope")
 def given_the_sut(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
