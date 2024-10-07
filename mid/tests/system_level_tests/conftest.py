@@ -10,17 +10,17 @@ from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
 )
-from ska_integration_test_harness.init.test_harness_builder import (
-    TestHarnessBuilder,
-)
-from ska_integration_test_harness.inputs.test_harness_inputs import (
-    TestHarnessInputs,
-)
+
+# from ska_integration_test_harness.init.test_harness_builder import (
+#     TestHarnessBuilder,
+# )
+# from ska_integration_test_harness.inputs.test_harness_inputs import (
+#     TestHarnessInputs,
+# )
 from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer
-
 
 # @pytest.fixture
 # def telescope_wrapper(
