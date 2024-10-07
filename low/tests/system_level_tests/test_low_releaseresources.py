@@ -31,7 +31,7 @@ def test_telescope_release_resources():
 # @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarray {subarray_id} is in the IDLE obsState"))
+@given(parsers.parse("subarray is in the IDLE obsState"))
 def invoke_assignresources(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
