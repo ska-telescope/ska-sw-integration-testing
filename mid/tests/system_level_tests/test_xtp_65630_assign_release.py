@@ -30,7 +30,7 @@ TIMEOUT = 60
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
     "Assign and Release resources to mid subarray",
 )
-def test_assignresources_command():
+def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
     the AssignResources and ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing."""
@@ -78,9 +78,7 @@ def invoke_assignresources(
 
 
 @then(
-    parsers.parse(
-        "CSP,SDP,TMC subarray {subarray_id} transitioned to ObsState IDLE"
-    )
+    parsers.parse("the CSP, SDP and TMC subarrays transition to IDLE obsState")
 )
 def csp_sdp_tmc_subarray_idle(
     context_fixt: SubarrayTestContextData,
@@ -116,9 +114,7 @@ def csp_sdp_tmc_subarray_idle(
     )
 
 
-@when(
-    parsers.parse("I release all resources with to TMC subarray {subarray_id}")
-)
+@when(parsers.parse("I release all resources assigned to it"))
 def invoke_releaseresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
@@ -143,11 +139,7 @@ def invoke_releaseresources(
     )
 
 
-@then(
-    parsers.parse(
-        "the CSP,SDP and TMC subarray {subarray_id} must be in EMPTY ObsState"
-    )
-)
+@then(parsers.parse("the CSP,SDP and TMC subarray must be in EMPTY ObsState"))
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
