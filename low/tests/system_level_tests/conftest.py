@@ -1,5 +1,6 @@
 from assertpy import assert_that
 from pytest_bdd import given
+from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -122,3 +123,39 @@ def check_state_is_on(
         "telescopeState",
         DevState.ON,
     )
+
+
+def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
+    """Subscribe to obsState events for all relevant subarray devices."""
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["csp_subarray"], "obsState"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
+    )
+    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
+
+
+def check_subarray_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
+    obs_state: ObsState,
+):
+    """Check if each subarray device is in the expected obsState."""
+    subarray_devices = {
+        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
+        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
+        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
+        "TMC": subarray_node_low.subarray_node,
+    }
+
+    for name, device in subarray_devices.items():
+        assert_that(event_tracer).described_as(
+            f"{name} Subarray device ({device.dev_name()}) "
+            f"should be in {obs_state.name} obsState."
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
+            device, "obsState", obs_state
+        )

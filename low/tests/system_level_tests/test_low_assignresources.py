@@ -12,6 +12,10 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
+from tests.system_level_tests.conftest import (
+    check_subarray_obsstate,
+    subscribe_to_obsstate_events,
+)
 
 TIMEOUT = 100
 
@@ -68,19 +72,19 @@ def invoke_assignresources(
     )
 
 
-# @then(
-#     "the TMC, CSP, SDP, and MCCS subarrays transition to RESOURCING obsState"
-# )
-# def subsystem_subarrays_in_resourcing(
-#     subarray_node_low: SubarrayNodeWrapperLow,
-#     event_tracer: TangoEventTracer,
-# ):
-#     """Check if all subarrays are in RESOURCING obsState."""
-#     _check_subarray_obsstate(
-#         subarray_node_low,
-#         event_tracer,
-#         obs_state=ObsState.RESOURCING,
-#     )
+@then(
+    "the TMC, CSP, SDP, and MCCS subarrays transition to RESOURCING obsState"
+)
+def subsystem_subarrays_in_resourcing(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
+):
+    """Check if all subarrays are in RESOURCING obsState."""
+    check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
 
 
 @then("the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState")
@@ -94,39 +98,3 @@ def subsystems_subarray_idle(
         event_tracer,
         obs_state=ObsState.IDLE,
     )
-
-
-def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
-    """Subscribe to obsState events for all relevant subarray devices."""
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["csp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
-
-
-def check_subarray_obsstate(
-    subarray_node_low: SubarrayNodeWrapperLow,
-    event_tracer: TangoEventTracer,
-    obs_state: ObsState,
-):
-    """Check if each subarray device is in the expected obsState."""
-    subarray_devices = {
-        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
-        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
-        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
-        "TMC": subarray_node_low.subarray_node,
-    }
-
-    for name, device in subarray_devices.items():
-        assert_that(event_tracer).described_as(
-            f"{name} Subarray device ({device.dev_name()}) "
-            f"should be in {obs_state.name} obsState."
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            device, "obsState", obs_state
-        )
