@@ -10,7 +10,7 @@ FILE ?= mid/tests## A specific test file to pass to pytest
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 
-DISH_TANGO_HOST ?= databaseds
+DISH_TANGO_HOST ?= tango-databaseds
 COUNT ?= 1 ## Number of times the tests should run
 SUBARRAY_COUNT ?= 1
 DISH_NAME_1 ?= tango://$(DISH_TANGO_HOST).$(DISH_NAMESPACE_1).svc.$(CLUSTER_DOMAIN):$(PORT)/mid-dish/dish-manager/SKA001
