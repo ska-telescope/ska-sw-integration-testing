@@ -97,16 +97,16 @@ def subsystems_subarray_idle(
 
 def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
     """Subscribe to obsState events for all relevant subarray devices."""
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["csp_subarray"], "obsState"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
+    )
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
-    event_tracer.subscribe_event(
-        subarray_node_low.sdp_subarray_leaf_node, "sdpSubarrayObsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.csp_subarray_leaf_node, "cspSubarrayObsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.mccs_subarray_leaf_node, "obsState"
-    )
 
 
 def _check_subarray_obsstate(
@@ -116,10 +116,10 @@ def _check_subarray_obsstate(
 ):
     """Check if each subarray device is in the expected obsState."""
     subarray_devices = {
+        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
+        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
+        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
         "TMC": subarray_node_low.subarray_node,
-        "SDP": subarray_node_low.sdp_subarray_leaf_node,
-        "CSP": subarray_node_low.csp_subarray_leaf_node,
-        "MCCS": subarray_node_low.mccs_subarray_leaf_node,
     }
 
     for name, device in subarray_devices.items():
