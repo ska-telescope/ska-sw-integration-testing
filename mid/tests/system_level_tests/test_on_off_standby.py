@@ -35,7 +35,7 @@ def given_the_sut(
     central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
-    dish: DishesFacade,
+    dishes: DishesFacade,
 ):
     """
     Telescope consisting of csp , sdp and dish devices
@@ -51,10 +51,10 @@ def given_the_sut(
 
     for dish_id in ["SKA001", "SKA036", "SKA063", "SKA100"]:
         event_tracer.subscribe_event(
-            dish.dish_master_dict[dish_id], "dishMode"
+            dishes.dish_master_dict[dish_id], "dishMode"
         )
         event_tracer.subscribe_event(
-            dish.dish_master_dict[dish_id], "pointingState"
+            dishes.dish_master_dict[dish_id], "pointingState"
         )
 
     log_events(
@@ -75,7 +75,7 @@ def given_the_sut(
         log_events(
             {
                 central_node_facade.central_node: ["telescopeState"],
-                dish.dish_master_dict[dish_id]: ["dishMode"],
+                dishes.dish_master_dict[dish_id]: ["dishMode"],
             }
         )
 
@@ -138,7 +138,7 @@ def verify_on_state(
 def verify_dishmode(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
-    dish: DishesFacade,
+    dishes: DishesFacade,
     dish_ids,
 ):
     for dish_id in dish_ids.split(","):
@@ -149,7 +149,7 @@ def verify_dishmode(
             "telescopeState",
             DevState.ON,
         ).has_change_event_occurred(
-            dish.dish_master_dict[dish_id],
+            dishes.dish_master_dict[dish_id],
             "dishMode",
             DishMode.STANDBY_FP,
         )
@@ -263,7 +263,7 @@ def verify_off_state(
 def verify_dishmode_after_off(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
-    dish: DishesFacade,
+    dishes: DishesFacade,
     dish_ids,
 ):
     for dish_id in dish_ids.split(","):
@@ -274,7 +274,7 @@ def verify_dishmode_after_off(
             "telescopeState",
             DevState.OFF,
         ).has_change_event_occurred(
-            dish.dish_master_dict[dish_id],
+            dishes.dish_master_dict[dish_id],
             "dishMode",
             DishMode.STANDBY_LP,
         )
