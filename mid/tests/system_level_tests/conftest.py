@@ -4,6 +4,7 @@ from typing import Any
 import pytest
 from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
+from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
@@ -111,6 +112,12 @@ def csp(telescope_wrapper: TelescopeWrapper):
 def sdp(telescope_wrapper: TelescopeWrapper):
     """Create a facade to SDP devices."""
     return SDPFacade(telescope_wrapper)
+
+
+@pytest.fixture
+def dishes(telescope_wrapper: TelescopeWrapper):
+    """Create a facade to dishes devices."""
+    return DishesFacade(telescope_wrapper)
 
 
 @dataclass
