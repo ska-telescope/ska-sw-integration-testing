@@ -36,7 +36,7 @@ TIMEOUT = 60
 def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
     the AssignResources and ReleaseResources command with TMC,CSP and SDP
-    devices for pairwise testing."""
+    devices for pairwise testing"""
 
 
 @given("the Telescope is in ON state")
