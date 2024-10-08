@@ -23,7 +23,7 @@ csp:
   csp_subarray1_name: "mid-csp/subarray/01"
 
 sdp:
-  is_emulated: true # Supported false too, default is true
+  is_emulated: false # Supported false too, default is true
 
   # Expected device names (Required)
   sdp_master_name: "mid-sdp/control/0"
