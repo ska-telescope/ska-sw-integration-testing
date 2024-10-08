@@ -48,7 +48,7 @@ def send_telescope_on_command(
 ):
     """Send the TelescopeOn command to the telescope."""
     event_tracer.clear_events()
-    central_node_facade.move_to_on(wait_termination=False)
+    central_node_facade.move_to_on(wait_termination=True)
 
 
 @given(parsers.parse("subarray is in EMPTY ObsState"))
