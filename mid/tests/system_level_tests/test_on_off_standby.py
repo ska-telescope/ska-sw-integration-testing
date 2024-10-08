@@ -49,7 +49,7 @@ def given_the_sut(
     event_tracer.subscribe_event(sdp.sdp_master, "State")
     event_tracer.subscribe_event(sdp.sdp_subarray, "State")
 
-    for dish_id in ["SKA001", "SKA036", "SKA063", "SKA100"]:
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         event_tracer.subscribe_event(
             dishes.dish_master_dict[dish_id], "dishMode"
         )
@@ -71,7 +71,7 @@ def given_the_sut(
             sdp.sdp_subarray: ["State"],
         }
     )
-    for dish_id in ["SKA001", "SKA036", "SKA063", "SKA100"]:
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         log_events(
             {
                 central_node_facade.central_node: ["telescopeState"],
