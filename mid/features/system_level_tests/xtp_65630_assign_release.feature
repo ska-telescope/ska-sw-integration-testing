@@ -4,6 +4,7 @@ Scenario: Assign and Release resources to mid subarray
     Given the Telescope is in ON state
     And subarray is in EMPTY ObsState
     When I assign resources to the subarray
-    Then the CSP, SDP and TMC subarrays must be in IDLE obsState
+    Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
+    And the CSP, SDP and TMC subarrays must be in IDLE obsState
     When I release all resources assigned to it
     Then the CSP, SDP and TMC subarray must be in EMPTY obsState

@@ -82,6 +82,48 @@ def invoke_assignresources(
     )
 
 
+@then(
+    parsers.parse(
+        "the TMC, CSP and SDP subarrays transition to RESOURCING obsState"
+    )
+)
+def verify_resourcing_state(
+    context_fixt: SubarrayTestContextData,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """
+    Verify the subarray's transition to the RESOURCING state.
+    """
+    assert_that(event_tracer).described_as(
+        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to RESOURCING."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    )
+
+    # override the starting state for the next step
+    context_fixt.starting_state = ObsState.RESOURCING
+
+
 @then(parsers.parse("the CSP, SDP and TMC subarrays must be in IDLE obsState"))
 def csp_sdp_tmc_subarray_idle(
     context_fixt: SubarrayTestContextData,
