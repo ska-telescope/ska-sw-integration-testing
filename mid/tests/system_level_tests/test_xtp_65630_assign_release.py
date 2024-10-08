@@ -190,4 +190,3 @@ def csp_sdp_tmc_subarray_empty(
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
     )
-    assert 0
