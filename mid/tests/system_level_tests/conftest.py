@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import pytest
-from ska_control_model import ObsState
+from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
@@ -194,4 +194,15 @@ def setup_event_subscriptions(
             central_node_facade.central_node: ["longRunningCommandResult"],
         },
         event_enum_mapping={"obsState": ObsState},
+    )
+
+
+def _get_long_run_command_id(context_fixt: SubarrayTestContextData) -> str:
+    return context_fixt.when_action_result[1][0]
+
+
+def get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
+    return (
+        _get_long_run_command_id(context_fixt),
+        f'[{ResultCode.OK.value}, "Command Completed"]',
     )

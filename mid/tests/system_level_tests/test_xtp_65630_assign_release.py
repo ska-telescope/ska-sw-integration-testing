@@ -4,7 +4,7 @@ import logging
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState, ResultCode
+from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
 )
@@ -21,7 +21,10 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import SubarrayTestContextData
+from tests.system_level_tests.conftest import (
+    SubarrayTestContextData,
+    get_expected_long_run_command_result,
+)
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 logger = logging.getLogger(__name__)
@@ -37,17 +40,6 @@ def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
     the AssignResources and ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing"""
-
-
-def _get_long_run_command_id(context_fixt: SubarrayTestContextData) -> str:
-    return context_fixt.when_action_result[1][0]
-
-
-def _get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
-    return (
-        _get_long_run_command_id(context_fixt),
-        f'[{ResultCode.OK.value}, "Command Completed"]',
-    )
 
 
 @given("the Telescope is in ON state")
@@ -135,7 +127,7 @@ def csp_sdp_tmc_subarray_idle(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
-        _get_expected_long_run_command_result(context_fixt),
+        get_expected_long_run_command_result(context_fixt),
     )
 
 
