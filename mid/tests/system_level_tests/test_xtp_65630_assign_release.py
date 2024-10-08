@@ -4,7 +4,7 @@ import logging
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState
+from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
 )
@@ -37,6 +37,17 @@ def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
     the AssignResources and ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing"""
+
+
+def _get_long_run_command_id(context_fixt: SubarrayTestContextData) -> str:
+    return context_fixt.when_action_result[1][0]
+
+
+def _get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
+    return (
+        _get_long_run_command_id(context_fixt),
+        f'[{ResultCode.OK.value}, "Command Completed"]',
+    )
 
 
 @given("the Telescope is in ON state")
@@ -86,6 +97,7 @@ def invoke_assignresources(
 def csp_sdp_tmc_subarray_idle(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
+    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -114,6 +126,16 @@ def csp_sdp_tmc_subarray_idle(
         "obsState",
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,
+    )
+    assert_that(event_tracer).described_as(
+        "TMC Central Node "
+        f"({central_node_facade.central_node}) "
+        "is expected to report a"
+        "longRunningCommand successful completion."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "longRunningCommandResult",
+        _get_expected_long_run_command_result(context_fixt),
     )
 
 
