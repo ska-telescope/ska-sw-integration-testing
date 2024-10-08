@@ -65,7 +65,7 @@ def subarray_in_empty_obsstate(
     )
 
 
-@when(parsers.parse("I assign resources to subarray"))
+@when(parsers.parse("I assign resources to the subarray"))
 def invoke_assignresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
@@ -82,9 +82,7 @@ def invoke_assignresources(
     )
 
 
-@then(
-    parsers.parse("the CSP, SDP and TMC subarrays transition to IDLE obsState")
-)
+@then(parsers.parse("the CSP, SDP and TMC subarrays must be in IDLE obsState"))
 def csp_sdp_tmc_subarray_idle(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
@@ -155,7 +153,7 @@ def invoke_releaseresources(
     )
 
 
-@then(parsers.parse("the CSP,SDP and TMC subarray must be in EMPTY ObsState"))
+@then(parsers.parse("the CSP, SDP and TMC subarray must be in EMPTY obsState"))
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
