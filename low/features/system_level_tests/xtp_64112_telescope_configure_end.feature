@@ -1,6 +1,6 @@
 @XTP-66007 @XTP-64112
 Scenario: Configure the Low telescope subarray using TMC
-	Given a low telescope
+	Given a Low telescope
 	And telescope is in ON state
 	And subarray <subarray_id> is in IDLE ObsState
 	When I configure it for a scan
