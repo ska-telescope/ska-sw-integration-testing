@@ -44,9 +44,15 @@ def given_the_sut(
     event_tracer.subscribe_event(
         central_node_low.central_node, "telescopeState"
     )
+    event_tracer.subscribe_event(
+        central_node_low.central_node, "longRunningCommandResult"
+    )
     log_events(
         {
-            central_node_low.central_node: ["telescopeState"],
+            central_node_low.central_node: [
+                "telescopeState",
+                "longRunningCommandResult",
+            ],
             subarray_node_low.subarray_devices["csp_subarray"]: ["State"],
             subarray_node_low.subarray_devices["sdp_subarray"]: ["State"],
             subarray_node_low.subarray_devices["mccs_subarray"]: ["State"],

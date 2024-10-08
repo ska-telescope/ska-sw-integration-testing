@@ -7,6 +7,7 @@ from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -29,7 +30,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
     "system_level_tests/" + "xtp_64112_telescope_configure_end.feature",
     "Configure the Low telescope subarray using TMC",
 )
-def test_telescope_configure_command():
+def test_configure_command():
     """
     Test case to verify Configure functionality
     """
@@ -49,8 +50,9 @@ def subarray_in_idle_obsstate(
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
+    assign_input_json = update_eb_pb_ids(input_json)
     central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(input_json)
+    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
     assert subarray_node_low.subarray_node.obsState == ObsState.IDLE
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '

@@ -29,7 +29,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
     "system_level_tests/" + "xtp_64112_telescope_configure_end.feature",
     "End Configuration to the low telescope subarray using TMC",
 )
-def test_telescope_configure():
+def test_telescope_end():
     """
     Test case to verify End functionality
     """
