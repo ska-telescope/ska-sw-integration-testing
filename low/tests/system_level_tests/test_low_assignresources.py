@@ -24,7 +24,7 @@ TIMEOUT = 100
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_assign_release.feature",
-    "Assign resources to low subarray",
+    "Assign resources to Low subarray",
 )
 def test_telescope_assign_resources():
     """
@@ -94,7 +94,6 @@ def subsystems_subarray_idle(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Check if all subarrays are in IDLE obsState."""
-    # subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     check_subarray_obsstate(
         subarray_node_low,
         event_tracer,

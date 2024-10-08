@@ -1,5 +1,6 @@
+
 @XTP-65635 @XTP-64112 @TEAM_HIMALAYA
-Scenario: Assign resources to low subarray
+Scenario: Assign resources to Low subarray
     Given a Low telescope
     And telescope is in ON state
     And subarray is in EMPTY ObsState
@@ -8,7 +9,7 @@ Scenario: Assign resources to low subarray
     And the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState
 
 @XTP-65636 @XTP-64112 @TEAM_HIMALAYA
-Scenario: Release resources from low subarray
+Scenario: Release resources from Low subarray
     Given a Low telescope
     And telescope is in ON state
     And subarray is in the IDLE obsState
