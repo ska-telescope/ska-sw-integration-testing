@@ -221,7 +221,6 @@ def send_telescope_off_command(
 def verify_off_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
-    csp: CSPFacade,
     sdp: SDPFacade,
 ):
     """The telescope and  devices transition to the OFF state."""
