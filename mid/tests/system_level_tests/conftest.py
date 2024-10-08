@@ -41,18 +41,6 @@ DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
 
 
 @pytest.fixture
-def default_commands_inputs() -> TestHarnessInputs:
-    """Default JSON inputs for TMC commands."""
-    return TestHarnessInputs(
-        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
-        configure_input=MyFileJSONInput("subarray", "configure_mid"),
-        scan_input=MyFileJSONInput("subarray", "scan_mid"),
-        release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
-        default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,
-    )
-
-
-@pytest.fixture
 def telescope_wrapper(
     default_commands_inputs: TestHarnessInputs,
 ) -> TelescopeWrapper:
@@ -78,6 +66,18 @@ def telescope_wrapper(
     # after a test is completed, reset the telescope to its initial state
     # (obsState=READY, telescopeState=OFF, no resources assigned)
     telescope.tear_down()
+
+
+@pytest.fixture
+def default_commands_inputs() -> TestHarnessInputs:
+    """Default JSON inputs for TMC commands."""
+    return TestHarnessInputs(
+        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
+        configure_input=MyFileJSONInput("subarray", "configure_mid"),
+        scan_input=MyFileJSONInput("subarray", "scan_mid"),
+        release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
+        default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,
+    )
 
 
 @pytest.fixture
