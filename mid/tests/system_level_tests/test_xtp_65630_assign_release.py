@@ -58,7 +58,6 @@ def subarray_in_empty_obsstate(
 ):
 
     context_fixt.starting_state = ObsState.EMPTY
-    logger.info(subarray_node_facade.subarray_node.obs_state)
     subarray_node_facade.force_change_of_obs_state(
         ObsState.EMPTY,
         TestHarnessInputs(),
