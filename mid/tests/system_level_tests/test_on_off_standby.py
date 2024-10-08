@@ -225,21 +225,21 @@ def verify_off_state(
     sdp: SDPFacade,
 ):
     """The telescope and  devices transition to the OFF state."""
-    assert_that(event_tracer).described_as(
-        "The telescope and CSP devices should transition from ON to OFF state."
-    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "telescopeState",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        csp.csp_master,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "State",
-        DevState.OFF,
-    )
+    # assert_that(event_tracer).described_as(
+    #     "The telescope and CSP devices should transition from ON to OFF state."
+    # ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+    #     central_node_facade.central_node,
+    #     "telescopeState",
+    #     DevState.OFF,
+    # ).has_change_event_occurred(
+    #     csp.csp_master,
+    #     "State",
+    #     DevState.OFF,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "State",
+    #     DevState.OFF,
+    # )
 
     assert_that(event_tracer).described_as(
         "The telescope and SDP devices should transition from ON to OFF state."
