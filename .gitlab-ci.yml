@@ -68,7 +68,7 @@ k8s-test-low:
     SDP_SIMULATION_ENABLED: 'false'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK='system_level_tests'
+    - make k8s-test MARK='system_level_tests2'
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
