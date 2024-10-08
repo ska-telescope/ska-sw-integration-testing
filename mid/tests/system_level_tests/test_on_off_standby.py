@@ -187,7 +187,7 @@ def verify_standby_state(
     ).has_change_event_occurred(
         csp.csp_subarray,
         "State",
-        DevState.STANDBY,
+        DevState.OFF,
     )
     assert_that(event_tracer).described_as(
         "The telescope and SDP master should transition "
@@ -202,9 +202,9 @@ def verify_standby_state(
         "State",
         DevState.STANDBY,
     ).has_change_event_occurred(
-        csp.csp_subarray,
+        sdp.sdp_subarray,
         "State",
-        DevState.STANDBY,
+        DevState.OFF,
     )
 
 
