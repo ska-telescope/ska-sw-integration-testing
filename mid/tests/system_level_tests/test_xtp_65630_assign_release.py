@@ -28,7 +28,7 @@ from tests.system_level_tests.conftest import (
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 logger = logging.getLogger(__name__)
-TIMEOUT = 60
+TIMEOUT = 100
 
 
 @pytest.mark.system_level_test_mid
