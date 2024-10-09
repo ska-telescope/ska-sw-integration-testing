@@ -241,7 +241,6 @@ def verify_off_state(
         DevState.OFF,
     )
 
-
     assert_that(event_tracer).described_as(
         "The telescope and SDP devices should transition from ON to OFF state."
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
