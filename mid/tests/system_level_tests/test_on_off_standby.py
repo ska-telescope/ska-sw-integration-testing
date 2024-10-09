@@ -87,7 +87,7 @@ def send_telescope_on_command(
     csp: CSPFacade,
 ):
     """Send the TelescopeOn command to the telescope."""
-    csp.csp_master.adminMode = 0
+    # csp.csp_master.adminMode = 0
     event_tracer.clear_events()
     central_node_facade.move_to_on(wait_termination=False)
 
@@ -240,6 +240,7 @@ def verify_off_state(
         "State",
         DevState.OFF,
     )
+
 
     assert_that(event_tracer).described_as(
         "The telescope and SDP devices should transition from ON to OFF state."
