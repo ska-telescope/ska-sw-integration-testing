@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import pytest
+from pytest_bdd import given, parsers
 from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
@@ -166,7 +167,7 @@ def context_fixt() -> SubarrayTestContextData:
     return SubarrayTestContextData()
 
 
-def setup_event_subscriptions(
+def _setup_event_subscriptions(
     central_node_facade: TMCCentralNodeFacade,
     subarray_node_facade: TMCSubarrayNodeFacade,
     csp: CSPFacade,
@@ -214,4 +215,65 @@ def get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
     return (
         _get_long_run_command_id(context_fixt),
         f'[{ResultCode.OK.value}, "Command Completed"]',
+    )
+
+
+@given(parsers.parse("the subarray {subarray_id} can be used"))
+def subarray_can_be_used(
+    subarray_id: str,
+    central_node_facade: TMCCentralNodeFacade,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """Set up the subarray (and the subscriptions) to be used in the test."""
+    subarray_node_facade.set_subarray_id(int(subarray_id))
+    _setup_event_subscriptions(
+        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
+    )
+
+
+@given(parsers.parse("the subarray {subarray} is in the RESOURCING state"))
+def subarray_in_resourcing_state(
+    context_fixt: SubarrayTestContextData,
+    # subarray_id: str,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    default_commands_inputs: TestHarnessInputs,
+):
+    """Ensure the subarray is in the RESOURCING state."""
+    context_fixt.starting_state = ObsState.RESOURCING
+    context_fixt.expected_next_state = ObsState.IDLE
+
+    subarray_node_facade.force_change_of_obs_state(
+        ObsState.RESOURCING,
+        default_commands_inputs,
+        wait_termination=True,
+    )
+
+
+@given(parsers.parse("the subarray {subarray} is in the IDLE state"))
+def subarray_in_idle_state(
+    context_fixt: SubarrayTestContextData,
+    # subarray_id: str,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    central_node_facade: TMCCentralNodeFacade,
+    default_commands_inputs: TestHarnessInputs,
+):
+    """Ensure the subarray is in the IDLE state."""
+    context_fixt.starting_state = ObsState.IDLE
+
+    subarray_node_facade.force_change_of_obs_state(
+        ObsState.EMPTY,
+        default_commands_inputs,
+        wait_termination=True,
+    )
+
+    json_input = MyFileJSONInput(
+        "centralnode", "assign_resources_mid"
+    ).with_attribute("subarray_id", 1)
+
+    context_fixt.when_action_result = central_node_facade.assign_resources(
+        json_input,
+        wait_termination=True,
     )
