@@ -84,7 +84,7 @@ def invoke_assignresources(
     )
     time.sleep(10)
     logger.info(
-        f"subarray obs state {subarray_node_facade.subarray_node.obs_state}"
+        f"subarray obs state {subarray_node_facade.subarray_node.obsstate}"
     )
 
 
