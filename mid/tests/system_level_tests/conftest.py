@@ -2,7 +2,6 @@
 
 
 import pytest
-from pytest_bdd import given
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
@@ -115,11 +114,3 @@ def event_tracer() -> TangoEventTracer:
     return TangoEventTracer(
         event_enum_mapping={"obsState": ObsState},
     )
-
-
-@given("the telescope is in ON state")
-def given_the_telescope_is_in_on_state(
-    central_node_facade: TMCCentralNodeFacade,
-):
-    """Ensure the telescope is in ON state."""
-    central_node_facade.move_to_on(wait_termination=True)
