@@ -80,7 +80,7 @@ def invoke_assignresources(
 
     context_fixt.when_action_result = central_node_facade.assign_resources(
         json_input,
-        wait_termination=False,
+        wait_termination=True,
     )
     time.sleep(10)
     logger.info(
