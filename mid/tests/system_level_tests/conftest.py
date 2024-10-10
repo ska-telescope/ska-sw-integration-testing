@@ -200,7 +200,7 @@ def _setup_event_subscriptions(
                 "longRunningCommandResult",
             ],
             csp.csp_subarray: ["obsState"],
-            sdp.sdp_subarray: ["obsState", "commandCallInfo"],
+            sdp.sdp_subarray: ["obsState"],
             central_node_facade.central_node: ["longRunningCommandResult"],
         },
         event_enum_mapping={"obsState": ObsState},
