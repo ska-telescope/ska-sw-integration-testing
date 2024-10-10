@@ -129,7 +129,7 @@ def verify_resourcing_state(
 
 
 @then(parsers.parse("the CSP, SDP and TMC subarrays must be in IDLE obsState"))
-def csp_sdp_tmc_subarray_idle(
+def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
@@ -181,11 +181,6 @@ def invoke_releaseresources(
 ):
     """
     Send the ReleaseResources command to the subarray.
-
-    This step uses the central_node_facade to send a ReleaseResources
-    command to the specified subarray. It uses a pre-defined JSON input
-    file, modifies the subarray_id, and sends the command without waiting
-    for termination. The action result is stored in the context fixture.
     """
     context_fixt.when_action_name = "ReleaseResources"
 
