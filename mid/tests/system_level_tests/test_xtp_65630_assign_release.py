@@ -194,7 +194,9 @@ def invoke_releaseresources(
     )
 
 
-@then(parsers.parse("the CSP, SDP and TMC subarrays must be in EMPTY obsState"))
+@then(
+    parsers.parse("the CSP, SDP and TMC subarrays must be in EMPTY obsState")
+)
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
