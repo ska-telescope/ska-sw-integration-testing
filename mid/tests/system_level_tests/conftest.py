@@ -69,8 +69,6 @@ def telescope_wrapper(
     )
     test_harness_builder.validate_configurations()
 
-    # set the default inputs for the TMC commands,
-    # which will be used for teardown procedures
     test_harness_builder.set_default_inputs(default_commands_inputs)
     test_harness_builder.validate_default_inputs()
 
@@ -78,8 +76,6 @@ def telescope_wrapper(
     telescope = test_harness_builder.build()
     yield telescope
 
-    # after a test is completed, reset the telescope to its initial state
-    # (obsState=READY, telescopeState=OFF, no resources assigned)
     telescope.tear_down()
 
 
