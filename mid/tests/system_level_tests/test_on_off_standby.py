@@ -64,24 +64,21 @@ def given_the_sut(
             central_node_facade.central_node: ["telescopeState"],
             csp.csp_master: ["State"],
             csp.csp_subarray: ["State"],
-        },
-        event_enum_mapping={"DevState": DevState},
+        }
     )
     log_events(
         {
             central_node_facade.central_node: ["telescopeState"],
             sdp.sdp_master: ["State"],
             sdp.sdp_subarray: ["State"],
-        },
-        event_enum_mapping={"DevState": DevState},
+        }
     )
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         log_events(
             {
                 central_node_facade.central_node: ["telescopeState"],
                 dishes.dish_master_dict[dish_id]: ["dishMode"],
-            },
-            event_enum_mapping={"DishMode": DishMode},
+            }
         )
 
 
