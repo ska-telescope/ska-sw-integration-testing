@@ -22,7 +22,7 @@ ASSERTIONS_TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "system_level_tests/" + "xtp_65506_operational_commands.feature",
+    "system_level_tests/" + "xtp_65506_off.feature",
     "ON to OFF - CMD on mid telescope",
 )
 def test_tmc_operational_command_flow():
@@ -31,15 +31,15 @@ def test_tmc_operational_command_flow():
     """
 
 
-# @pytest.mark.system_level_test_mid
-# @scenario(
-#     "system_level_tests/" + "xtp_XXXXX_standby.feature",
-#     "ON to STANDBY - CMD on mid telescope",
-# )
-# def test_tmc_on_standby_command_flow():
-#     """
-#     Test case to verify operational commands on mid telescope
-#     """
+@pytest.mark.system_level_test_mid
+@scenario(
+    "system_level_tests/" + "xtp_66738_standby.feature",
+    "ON to STANDBY - CMD on mid telescope",
+)
+def test_tmc_on_standby_command_flow():
+    """
+    Test case to verify operational commands on mid telescope
+    """
 
 
 @given("a mid telescope")
