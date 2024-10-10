@@ -1,7 +1,4 @@
 """Test module for Assign and Resources functionality (XTP-65630)"""
-import logging
-import time
-
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -29,7 +26,6 @@ from tests.system_level_tests.conftest import (
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
-logger = logging.getLogger(__name__)
 TIMEOUT = 100
 
 
@@ -77,7 +73,6 @@ def subarray_in_empty_obsstate(
 def invoke_assignresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
 ):
 
     context_fixt.when_action_name = "AssignResources"
@@ -88,10 +83,6 @@ def invoke_assignresources(
     context_fixt.when_action_result = central_node_facade.assign_resources(
         json_input,
         wait_termination=True,
-    )
-    time.sleep(10)
-    logger.info(
-        f"subarray obs state {subarray_node_facade.subarray_node.obsstate}"
     )
 
 
