@@ -151,15 +151,11 @@ def csp_sdp_tmc_subarray_idle(
         "obsState",
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,
-    ).within_timeout(
-        TIMEOUT
     ).has_change_event_occurred(
         csp.csp_subarray,
         "obsState",
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,
-    ).within_timeout(
-        TIMEOUT
     ).has_change_event_occurred(
         sdp.sdp_subarray,
         "obsState",
