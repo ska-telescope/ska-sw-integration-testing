@@ -1,5 +1,5 @@
 # This BDD test performs Assign and Release command flow on Mid integration
-@XTP-65630 @XTP- @SAHYADRI
+@XTP-65630 @XTP-66738 @SAHYADRI
 Scenario: Assign and Release resources to mid subarray
     Given the Telescope is in ON state
     And subarray is in EMPTY ObsState
