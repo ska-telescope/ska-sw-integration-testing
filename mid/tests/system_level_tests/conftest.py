@@ -44,6 +44,18 @@ DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
 
 
 @pytest.fixture
+def default_commands_inputs() -> TestHarnessInputs:
+    """Default JSON inputs for TMC commands."""
+    return TestHarnessInputs(
+        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
+        configure_input=MyFileJSONInput("subarray", "configure_mid"),
+        scan_input=MyFileJSONInput("subarray", "scan_mid"),
+        release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
+        default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,
+    )
+
+
+@pytest.fixture
 def telescope_wrapper(
     default_commands_inputs: TestHarnessInputs,
 ) -> TelescopeWrapper:
@@ -72,18 +84,6 @@ def telescope_wrapper(
 
 
 @pytest.fixture
-def default_commands_inputs() -> TestHarnessInputs:
-    """Default JSON inputs for TMC commands."""
-    return TestHarnessInputs(
-        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
-        configure_input=MyFileJSONInput("subarray", "configure_mid"),
-        scan_input=MyFileJSONInput("subarray", "scan_mid"),
-        release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
-        default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,
-    )
-
-
-@pytest.fixture
 def central_node_facade(telescope_wrapper: TelescopeWrapper):
     """Create a facade to TMC central node and all its operations."""
     central_node_facade = TMCCentralNodeFacade(telescope_wrapper)
@@ -95,14 +95,6 @@ def subarray_node_facade(telescope_wrapper: TelescopeWrapper):
     """Create a facade to TMC subarray node and all its operations."""
     subarray_node = TMCSubarrayNodeFacade(telescope_wrapper)
     yield subarray_node
-
-
-@pytest.fixture
-def event_tracer() -> TangoEventTracer:
-    """Create an event tracer."""
-    return TangoEventTracer(
-        event_enum_mapping={"obsState": ObsState},
-    )
 
 
 @pytest.fixture
@@ -123,6 +115,18 @@ def dishes(telescope_wrapper: TelescopeWrapper):
     return DishesFacade(telescope_wrapper)
 
 
+# ----------------------------------------------------------
+# Tango event tracer
+@pytest.fixture
+def event_tracer() -> TangoEventTracer:
+    """Create an event tracer."""
+    return TangoEventTracer(
+        event_enum_mapping={"obsState": ObsState},
+    )
+
+
+# ------------------------------------------------------------
+# Other fixtures and common steps
 @dataclass
 class SubarrayTestContextData:
     """A class to store shared variables between steps."""
