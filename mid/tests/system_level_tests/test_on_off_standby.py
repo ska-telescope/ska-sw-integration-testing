@@ -33,7 +33,7 @@ def test_tmc_on_off_command_flow():
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "system_level_tests/" + "xtp_66738_standby.feature",
+    "system_level_tests/" + "xtp_66810_standby.feature",
     "ON to STANDBY - CMD on mid telescope",
 )
 def test_tmc_on_standby_command_flow():
@@ -101,7 +101,6 @@ def send_telescope_on_command(
     csp: CSPFacade,
 ):
     """Send the TelescopeOn command to the telescope."""
-    # csp.csp_master.adminMode = 0
     event_tracer.clear_events()
     central_node_facade.move_to_on(wait_termination=False)
 

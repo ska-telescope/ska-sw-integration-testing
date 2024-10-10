@@ -1,4 +1,4 @@
-@XTP- @XTP- @TEAM_SAHYADRI
+@XTP-66801 @XTP-65506 @TEAM_SAHYADRI
 Scenario: ON to OFF - CMD on mid telescope
     Given a mid telescope
     When I start up the telescope

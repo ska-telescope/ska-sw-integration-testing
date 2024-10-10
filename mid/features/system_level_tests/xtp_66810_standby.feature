@@ -1,4 +1,4 @@
-@XTP- @XTP- @TEAM_SAHYADRI
+@XTP-66801 @XTP-66810 @TEAM_SAHYADRI
 Scenario: ON to STANDBY - CMD on mid telescope
     Given a mid telescope
     When I start up the telescope
