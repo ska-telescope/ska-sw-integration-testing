@@ -65,6 +65,7 @@ def given_the_sut(
             csp.csp_master: ["State"],
             csp.csp_subarray: ["State"],
         }
+        event_enum_mapping={"State": State}
     )
     log_events(
         {
@@ -72,6 +73,7 @@ def given_the_sut(
             sdp.sdp_master: ["State"],
             sdp.sdp_subarray: ["State"],
         }
+        event_enum_mapping={"State": State}
     )
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         log_events(
@@ -79,6 +81,7 @@ def given_the_sut(
                 central_node_facade.central_node: ["telescopeState"],
                 dishes.dish_master_dict[dish_id]: ["dishMode"],
             }
+        event_enum_mapping={"dishMode": dishMode}
         )
 
 
@@ -229,12 +232,19 @@ def verify_off_state(
 ):
     """The telescope and  devices transition to the OFF state."""
 
-    logging.info(f"CSP master state:{csp.csp_master.State}")
-    logging.info(f"CSP subarray state:{csp.csp_subarray.State}")
+    # logging.info(f"CSP master state:{csp.csp_master.State}")
+    logging.info(
+        f"CSP master state: {central_node_facade.csp_master_leaf_node.State}"
+    )
+    logging.info(
+        f"SDP master state: {central_node_facade.sdp_master_leaf_node.State}"
+    )
+
+    # logging.info(f"CSP subarray state:{csp.csp_subarray.State}")
     # logging.info(f"SDP state:
     #              {central_node_facade.sdp_master_leaf_node.State}")
-    logging.info(f"SDP master state:{sdp.sdp_master.State}")
-    logging.info(f"SDP subarray state:{sdp.sdp_subarray.State}")
+    # logging.info(f"SDP master state:{sdp.sdp_master.State}")
+    # logging.info(f"SDP subarray state:{sdp.sdp_subarray.State}")
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         logging.info(
             f"DISH MODE is: " f"{dishes.dish_master_dict[dish_id].dishMode}"
