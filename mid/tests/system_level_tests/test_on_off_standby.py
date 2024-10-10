@@ -25,7 +25,7 @@ ASSERTIONS_TIMEOUT = 60
     "system_level_tests/" + "xtp_65506_off.feature",
     "ON to OFF - CMD on mid telescope",
 )
-def test_tmc_operational_command_flow():
+def test_tmc_on_off_command_flow():
     """
     Test case to verify operational commands on mid telescope
     """
