@@ -1,7 +1,7 @@
 """
 Operational command system level test case
 """
-import logging
+
 
 import pytest
 from assertpy import assert_that
@@ -26,6 +26,17 @@ ASSERTIONS_TIMEOUT = 60
     "ON to OFF - CMD on mid telescope",
 )
 def test_tmc_operational_command_flow():
+    """
+    Test case to verify operational commands on mid telescope
+    """
+
+
+@pytest.mark.system_level_test_mid
+@scenario(
+    "system_level_tests/" + "xtp_XXXXX_standby.feature",
+    "ON to STANDBY - CMD on mid telescope",
+)
+def test_tmc_on_standby_command_flow():
     """
     Test case to verify operational commands on mid telescope
     """
@@ -78,7 +89,8 @@ def given_the_sut(
             {
                 central_node_facade.central_node: ["telescopeState"],
                 dishes.dish_master_dict[dish_id]: ["dishMode"],
-            }
+            },
+            event_enum_mapping={"DishMode": DishMode},
         )
 
 
@@ -228,25 +240,6 @@ def verify_off_state(
     dishes: DishesFacade,
 ):
     """The telescope and  devices transition to the OFF state."""
-
-    # logging.info(f"CSP master state:{csp.csp_master.State}")
-    logging.info(
-        f"CSP master state: {central_node_facade.csp_master_leaf_node.State}"
-    )
-    logging.info(
-        f"SDP master state: {central_node_facade.sdp_master_leaf_node.State}"
-    )
-
-    # logging.info(f"CSP subarray state:{csp.csp_subarray.State}")
-    # logging.info(f"SDP state:
-    #              {central_node_facade.sdp_master_leaf_node.State}")
-    # logging.info(f"SDP master state:{sdp.sdp_master.State}")
-    # logging.info(f"SDP subarray state:{sdp.sdp_subarray.State}")
-    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
-        logging.info(
-            f"DISH MODE is: " f"{dishes.dish_master_dict[dish_id].dishMode}"
-        )
-
     assert_that(event_tracer).described_as(
         "The telescope and CSP devices should transition from ON to OFF state."
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
