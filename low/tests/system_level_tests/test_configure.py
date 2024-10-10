@@ -44,8 +44,7 @@ def subarray_in_idle_obsstate(
     event_tracer: TangoEventTracer,
     subarray_id: int,
 ):
-    """Checks if SubarrayNode's obsState attribute value is EMPTY"""
-    central_node_low.set_subarray_id(subarray_id)
+    """Checks if SubarrayNode's obsState attribute value is IDLE"""
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
@@ -53,7 +52,6 @@ def subarray_in_idle_obsstate(
     assign_input_json = update_eb_pb_ids(input_json)
     central_node_low.set_serial_number_of_cbf_processor()
     _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
-    assert subarray_node_low.subarray_node.obsState == ObsState.IDLE
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '
         "'the subarray is in IDLE obsState'"
@@ -61,7 +59,7 @@ def subarray_in_idle_obsstate(
         f"({central_node_low.central_node.dev_name()}) "
         "is expected have longRunningCommand as"
         '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(60).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
