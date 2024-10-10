@@ -234,46 +234,46 @@ def subarray_can_be_used(
     )
 
 
-# @given(parsers.parse("the subarray {subarray} is in the RESOURCING state"))
-# def subarray_in_resourcing_state(
-#     context_fixt: SubarrayTestContextData,
-#     # subarray_id: str,
-#     subarray_node_facade: TMCSubarrayNodeFacade,
-#     default_commands_inputs: TestHarnessInputs,
-# ):
-#     """Ensure the subarray is in the RESOURCING state."""
-#     context_fixt.starting_state = ObsState.RESOURCING
-#     context_fixt.expected_next_state = ObsState.IDLE
+@given(parsers.parse("the subarray {subarray} is in the RESOURCING state"))
+def subarray_in_resourcing_state(
+    context_fixt: SubarrayTestContextData,
+    # subarray_id: str,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    default_commands_inputs: TestHarnessInputs,
+):
+    """Ensure the subarray is in the RESOURCING state."""
+    context_fixt.starting_state = ObsState.RESOURCING
+    context_fixt.expected_next_state = ObsState.IDLE
 
-#     subarray_node_facade.force_change_of_obs_state(
-#         ObsState.RESOURCING,
-#         default_commands_inputs,
-#         wait_termination=True,
-#     )
+    subarray_node_facade.force_change_of_obs_state(
+        ObsState.RESOURCING,
+        default_commands_inputs,
+        wait_termination=True,
+    )
 
 
-# @given(parsers.parse("the subarray {subarray} is in the IDLE state"))
-# def subarray_in_idle_state(
-#     context_fixt: SubarrayTestContextData,
-#     # subarray_id: str,
-#     subarray_node_facade: TMCSubarrayNodeFacade,
-#     central_node_facade: TMCCentralNodeFacade,
-#     default_commands_inputs: TestHarnessInputs,
-# ):
-#     """Ensure the subarray is in the IDLE state."""
-#     context_fixt.starting_state = ObsState.IDLE
+@given(parsers.parse("the subarray {subarray} is in the IDLE state"))
+def subarray_in_idle_state(
+    context_fixt: SubarrayTestContextData,
+    # subarray_id: str,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    central_node_facade: TMCCentralNodeFacade,
+    default_commands_inputs: TestHarnessInputs,
+):
+    """Ensure the subarray is in the IDLE state."""
+    context_fixt.starting_state = ObsState.IDLE
 
-#     subarray_node_facade.force_change_of_obs_state(
-#         ObsState.EMPTY,
-#         default_commands_inputs,
-#         wait_termination=True,
-#     )
+    subarray_node_facade.force_change_of_obs_state(
+        ObsState.EMPTY,
+        default_commands_inputs,
+        wait_termination=True,
+    )
 
-#     json_input = MyFileJSONInput(
-#         "centralnode", "assign_resources_mid"
-#     ).with_attribute("subarray_id", 1)
+    json_input = MyFileJSONInput(
+        "centralnode", "assign_resources_mid"
+    ).with_attribute("subarray_id", 1)
 
-#     context_fixt.when_action_result = central_node_facade.assign_resources(
-#         json_input,
-#         wait_termination=True,
-#     )
+    context_fixt.when_action_result = central_node_facade.assign_resources(
+        json_input,
+        wait_termination=True,
+    )
