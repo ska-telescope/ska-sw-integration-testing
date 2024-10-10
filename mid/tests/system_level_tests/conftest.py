@@ -1,20 +1,13 @@
 """Configurations needed for the tests using the new harness."""
 
 
-from dataclasses import dataclass
-from typing import Any
-
 import pytest
-from pytest_bdd import given, parsers
-from ska_control_model import ObsState, ResultCode
+from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
-)
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
 )
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
@@ -26,7 +19,7 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
 from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
-from ska_tango_testing.integration import TangoEventTracer, log_events
+from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 # ------------------------------------------------------------
@@ -120,114 +113,4 @@ def event_tracer() -> TangoEventTracer:
     """Create an event tracer."""
     return TangoEventTracer(
         event_enum_mapping={"obsState": ObsState},
-    )
-
-
-@pytest.fixture
-def subarray_node_facade(telescope_wrapper: TelescopeWrapper):
-    """Create a facade to TMC subarray node and all its operations."""
-    subarray_node = TMCSubarrayNodeFacade(telescope_wrapper)
-    yield subarray_node
-
-
-# ------------------------------------------------------------
-# Other fixtures and common steps
-@dataclass
-class SubarrayTestContextData:
-    """A class to store shared variables between steps."""
-
-    starting_state: ObsState | None = None
-    """The state of the system before the WHEN step."""
-    expected_next_state: ObsState | None = None
-    """The expected state to be reached if no WHEN step is executed.
-    It is meaningful when the starting state is transient and so it will
-    automatically change to another state (different both from the starting
-    state and the expected next state).
-    Leave empty if the starting state is not transient.
-    """
-    when_action_result: Any | None = None
-    """The result of the WHEN step command."""
-    when_action_name: str | None = None
-    """The name of the Tango command executed in the WHEN step."""
-
-    def is_starting_state_transient(self) -> bool:
-        """Check if the starting state is transient."""
-        return self.expected_next_state is not None
-
-
-@pytest.fixture
-def context_fixt() -> SubarrayTestContextData:
-    """A collection of variables shared between steps.
-    The shared variables are the following:
-    - previous_state: the previous state of the subarray.
-    - expected_next_state: the expected next state of the subarray (specified
-        only if the previous st
-    - trigger: the trigger that caused the state change.
-    :return: the shared variables.
-    """
-    return SubarrayTestContextData()
-
-
-def _setup_event_subscriptions(
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """Set up event subscriptions for the test.
-    Args:
-        subarray_node_facade: Facade for the TMC subarray node.
-        csp: Facade for the CSP.
-        event_tracer: Event tracer for capturing events.
-    """
-    event_tracer.subscribe_event(
-        subarray_node_facade.subarray_node, "obsState"
-    )
-    event_tracer.subscribe_event(csp.csp_subarray, "obsState")
-    event_tracer.subscribe_event(sdp.sdp_subarray, "obsState")
-    event_tracer.subscribe_event(
-        central_node_facade.central_node, "longRunningCommandResult"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_facade.subarray_node, "longRunningCommandResult"
-    )
-    log_events(
-        {
-            subarray_node_facade.subarray_node: [
-                "obsState",
-                "longRunningCommandResult",
-            ],
-            csp.csp_subarray: ["obsState"],
-            sdp.sdp_subarray: ["obsState"],
-            central_node_facade.central_node: ["longRunningCommandResult"],
-        },
-        event_enum_mapping={"obsState": ObsState},
-    )
-
-
-def _get_long_run_command_id(context_fixt: SubarrayTestContextData) -> str:
-    return context_fixt.when_action_result[1][0]
-
-
-def get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
-    return (
-        _get_long_run_command_id(context_fixt),
-        f'[{ResultCode.OK.value}, "Command Completed"]',
-    )
-
-
-@given(parsers.parse("the subarray {subarray_id} can be used"))
-def subarray_can_be_used(
-    subarray_id: str,
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """Set up the subarray (and the subscriptions) to be used in the test."""
-    subarray_node_facade.set_subarray_id(int(subarray_id))
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
