@@ -256,6 +256,16 @@ k8s-test-mid-tmc-with-csp:
     CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
   script:
     - make k8s-test MARK=tmc_csp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid-csp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/csp-mid-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
     on_stop: stop-k8s-test-mid-with-csp # Specify stop job.
@@ -297,6 +307,16 @@ k8s-test-mid-tmc-with-sdp:
     MARK: tmc_sdp
   script:
     - make k8s-test MARK=tmc_sdp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid-sdp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/sdp-mid-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid-tmc-with-sdp
@@ -348,6 +368,16 @@ k8s-test-dish-lmc:
     DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
   script:
     - make k8s-test MARK=tmc_dish
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mccs-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/dish-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-dish-lmc
@@ -386,16 +416,16 @@ k8s-test-mid:
     DISH_SIMULATION_ENABLED: 'false'
   script:
     - make k8s-test MARK='system_level_test_mid'
-  # after_script:
-  #   - pip3 install -q -U ska-ser-xray
-  #   - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
-  # artifacts:
-  #   name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid"
-  #   paths:
-  #     - "build/"
-  #   reports:
-  #     junit: build/report.xml
-  #   when: always
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
   environment:
     name: test/mid-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid 
