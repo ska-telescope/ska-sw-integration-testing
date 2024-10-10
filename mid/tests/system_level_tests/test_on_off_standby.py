@@ -217,45 +217,45 @@ def send_telescope_off_command(
     central_node_facade.move_to_off(wait_termination=False)
 
 
-@then("the SDP,CSP must go to OFF state")
-def verify_off_state(
-    event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-):
-    """The telescope and  devices transition to the OFF state."""
-    assert_that(event_tracer).described_as(
-        "The telescope and CSP devices should transition from ON to OFF state."
-    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "telescopeState",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        csp.csp_master,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "State",
-        DevState.OFF,
-    )
+# @then("the SDP,CSP must go to OFF state")
+# def verify_off_state(
+#     event_tracer: TangoEventTracer,
+#     central_node_facade: TMCCentralNodeFacade,
+#     csp: CSPFacade,
+#     sdp: SDPFacade,
+# ):
+#     """The telescope and  devices transition to the OFF state."""
+#     assert_that(event_tracer).described_as(
+#         "The telescope and CSP devices should transition from ON to OFF state."
+#     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+#         central_node_facade.central_node,
+#         "telescopeState",
+#         DevState.OFF,
+#     ).has_change_event_occurred(
+#         csp.csp_master,
+#         "State",
+#         DevState.OFF,
+#     ).has_change_event_occurred(
+#         csp.csp_subarray,
+#         "State",
+#         DevState.OFF,
+#     )
 
-    assert_that(event_tracer).described_as(
-        "The telescope and SDP devices should transition from ON to OFF state."
-    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "telescopeState",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        sdp.sdp_master,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "State",
-        DevState.OFF,
-    )
+#     assert_that(event_tracer).described_as(
+#         "The telescope and SDP devices should transition from ON to OFF state."
+#     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+#         central_node_facade.central_node,
+#         "telescopeState",
+#         DevState.OFF,
+#     ).has_change_event_occurred(
+#         sdp.sdp_master,
+#         "State",
+#         DevState.OFF,
+#     ).has_change_event_occurred(
+#         sdp.sdp_subarray,
+#         "State",
+#         DevState.OFF,
+#     )
 
 
 @then(

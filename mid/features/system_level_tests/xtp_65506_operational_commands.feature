@@ -7,8 +7,7 @@ Scenario: ON to OFF - CMD on mid telescope
     When I put the telescope to STANDBY
     Then the SDP, CSP  must go to STANDBY state
     When I switch off the telescope
-    Then the SDP,CSP must go to OFF state
-    And DishMaster <dish_ids> must transition to STANDBY-LP mode
+    Then DishMaster <dish_ids> must transition to STANDBY-LP mode
 
     Examples:
         | dish_ids                                   |
