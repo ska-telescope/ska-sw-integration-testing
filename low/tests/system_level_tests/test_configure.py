@@ -7,7 +7,7 @@ from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.helpers import update_eb_pb_ids
+from tests.resources.test_harness.helpers import generate_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -46,12 +46,15 @@ def subarray_in_idle_obsstate(
 ):
     """Checks if SubarrayNode's obsState attribute value is IDLE"""
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
-    input_json = prepare_json_args_for_centralnode_commands(
+    assign_input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
-    assign_input_json = update_eb_pb_ids(input_json)
+    input_json = json.loads(assign_input_json)
+    generate_eb_pb_ids(input_json)
     central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
+    _, pytest.unique_id = central_node_low.store_resources(
+        json.dumps(input_json)
+    )
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '
         "'the subarray is in IDLE obsState'"

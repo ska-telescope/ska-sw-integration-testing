@@ -567,41 +567,32 @@ def generate_id(id_pattern: str) -> str:
     """
     Generate a time-based unique id.
 
-    :param id_pattern: The string pattern for rendering the unique id.
-                       Example: eb-mvp01-********-***** or eb-test.
+    :param id_pattern: the string pattern as to how the unique id should
+        be rendered.
+        e.g :
+            input: eb-mvp01-********-*****
+            output: eb-mvp01-35825416-12979
 
-    :return: The id rendered according to the requested pattern.
+    :return: the id rendered according to the requested pattern
     """
-    try:
-        # Check if the pattern contains '*' for dynamic ID generation
-        if "*" in id_pattern:
-            # Split prefix and suffix around '*'
-            prefix, suffix = re.split(r"\*+", id_pattern, maxsplit=1)
-
-            # Length of the dynamic portion (number of '*' in id_pattern)
-            length = id_pattern.count("*")
-            assert length <= EB_PB_ID_LENGTH
-
-            LOGGER.info(f"<EB or PB ID> Length: {length}")
-
-            # Generate a timestamp-based unique ID
-            timestamp = str(
-                int(datetime.now().timestamp() * 1000)
-            )  # Millisecond precision
-
-            # Extract the required number of digits from the timestamp
-            unique_id = timestamp[-length:]
-
-            return f"{prefix}{unique_id}{suffix}"
-
-        # If no '*' in pattern, append a timestamp to the provided ID pattern
+    prefix, suffix = re.split(r"(?=\*)[\*-]*(?<=\*)", id_pattern)
+    id_pattern = re.findall(r"(?=\*)[\*-]*(?<=\*)", id_pattern)[0]
+    length = id_pattern.count("*")
+    assert length <= EB_PB_ID_LENGTH
+    LOGGER.info(f"<SB or PB ID >Length: {length}")
+    timestamp = str(datetime.now().timestamp()).replace(".", "")
+    sections = id_pattern.split("-")
+    unique_id = ""
+    sections.reverse()
+    for section in sections:
+        section_length = len(section)
+        section_id = timestamp[-section_length:]
+        timestamp = timestamp[:-section_length]
+        if unique_id:
+            unique_id = f"{section_id}-{unique_id}"
         else:
-            timestamp = str(int(datetime.now().timestamp()))
-            return f"{id_pattern}-{timestamp}"
-
-    except Exception as e:
-        LOGGER.error(f"Error generating ID: {e}")
-        raise
+            unique_id = section_id
+    return f"{prefix}{unique_id}{suffix}"
 
 
 def update_eb_pb_ids(input_json: str, json_id: str = "") -> str:
@@ -618,6 +609,19 @@ def update_eb_pb_ids(input_json: str, json_id: str = "") -> str:
             pb["pb_id"] = generate_id("pb-test")
     input_json = json.dumps(input_json)
     return input_json
+
+
+def generate_eb_pb_ids(input_json: dict):
+    """
+    Method to generate different eb_id and pb_id
+
+    :param input_json: json to utilised to update values.
+    """
+    input_json["sdp"]["execution_block"]["eb_id"] = generate_id(
+        "eb-test-********-*****"
+    )
+    for pb in input_json["sdp"]["processing_blocks"]:
+        pb["pb_id"] = generate_id("pb-test-********-*****")
 
 
 def get_assign_json_id(input_json: str, json_id: str = "") -> list[str]:
