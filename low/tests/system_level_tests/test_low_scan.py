@@ -22,7 +22,7 @@ from tests.system_level_tests.conftest import (
 TIMEOUT = 100
 
 
-@pytest.mark.system_level_tests1
+@pytest.mark.system_level_tests2
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_scan.feature",
     "Execute Scan on the Low telescope",
