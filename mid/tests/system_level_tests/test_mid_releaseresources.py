@@ -28,7 +28,7 @@ TIMEOUT = 100
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
-    "Release resources from Low subarray",
+    "Release resources from Mid subarray",
 )
 def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
