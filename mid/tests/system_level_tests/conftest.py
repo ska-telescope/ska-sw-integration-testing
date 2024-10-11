@@ -2,6 +2,7 @@
 
 
 import pytest
+from pytest_bdd import given
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
@@ -12,6 +13,7 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
 )
+from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.json_input import DictJSONInput
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
@@ -19,7 +21,7 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
 from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
-from ska_tango_testing.integration import TangoEventTracer
+from ska_tango_testing.integration import TangoEventTracer, log_events
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 # ------------------------------------------------------------
@@ -114,3 +116,55 @@ def event_tracer() -> TangoEventTracer:
     return TangoEventTracer(
         event_enum_mapping={"obsState": ObsState},
     )
+
+
+@given("a mid telescope")
+def given_the_sut(
+    event_tracer: TangoEventTracer,
+    central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    dishes: DishesFacade,
+):
+    """
+    Telescope consisting of csp , sdp and dish devices
+    """
+    csp.csp_master.adminMode = 0
+    event_tracer.subscribe_event(
+        central_node_facade.central_node, "telescopeState"
+    )
+    event_tracer.subscribe_event(csp.csp_master, "State")
+    event_tracer.subscribe_event(csp.csp_subarray, "State")
+    event_tracer.subscribe_event(sdp.sdp_master, "State")
+    event_tracer.subscribe_event(sdp.sdp_subarray, "State")
+
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+        event_tracer.subscribe_event(
+            dishes.dish_master_dict[dish_id], "dishMode"
+        )
+        event_tracer.subscribe_event(
+            dishes.dish_master_dict[dish_id], "pointingState"
+        )
+
+    log_events(
+        {
+            central_node_facade.central_node: ["telescopeState"],
+            csp.csp_master: ["State"],
+            csp.csp_subarray: ["State"],
+        }
+    )
+    log_events(
+        {
+            central_node_facade.central_node: ["telescopeState"],
+            sdp.sdp_master: ["State"],
+            sdp.sdp_subarray: ["State"],
+        }
+    )
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+        log_events(
+            {
+                central_node_facade.central_node: ["telescopeState"],
+                dishes.dish_master_dict[dish_id]: ["dishMode"],
+            },
+            event_enum_mapping={"DishMode": DishMode},
+        )

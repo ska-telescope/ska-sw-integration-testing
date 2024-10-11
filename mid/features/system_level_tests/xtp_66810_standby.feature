@@ -1,12 +1,11 @@
 @XTP-66801 @XTP-66810 @TEAM_SAHYADRI
-Scenario: ON to STANDBY - CMD on mid telescope
+Scenario Outline: ON to STANDBY - CMD on mid telescope
     Given a mid telescope
-    When I start up the telescope
-    Then SDP, CSP must go to ON state
-    And DishMaster <dish_ids> must transition to STANDBY-FP mode
-    When I put the telescope to STANDBY
-    Then the SDP, CSP  must go to STANDBY state
-    
+    When I <command> the telescope
+    Then SDP, CSP must go to <state> state
+    And DishMaster must transition to <dish_mode> mode
+
     Examples:
-        | dish_ids                                   |
-        | dish_001,dish_036,dish_063,dish_100        |
+        | command    | state     | dish_mode   |
+        | start up   | ON        | STANDBY-FP  |
+        | stand by   | STANDBY   | STANDBY-LP  |
