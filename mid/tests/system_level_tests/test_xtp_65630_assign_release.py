@@ -1,4 +1,4 @@
-"""Test module for Assign and Resources functionality (XTP-65630)"""
+"""Test module for AssignResources functionality (XTP-65630)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
