@@ -40,9 +40,13 @@ def test_telescope_assign_release_resources():
     devices for pairwise testing"""
 
 
-@given("the Telescope is in ON state")
-def send_telescope_on_command(central_node_facade: TMCCentralNodeFacade):
+@given("telescope is in ON state")
+def send_telescope_on_command(
+    central_node_facade: TMCCentralNodeFacade,
+    event_tracer: TangoEventTracer,
+):
     """Send the TelescopeOn command to the telescope."""
+    event_tracer.clear_events()
     central_node_facade.move_to_on(wait_termination=True)
 
 
