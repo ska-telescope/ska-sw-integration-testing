@@ -1,7 +1,7 @@
 """Test module for Assign and Resources functionality (XTP-65630)"""
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, parsers, scenario, then, when
+from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
@@ -49,7 +49,7 @@ def send_telescope_on_command(
     central_node_facade.move_to_on(wait_termination=True)
 
 
-@given(parsers.parse("subarray is in EMPTY ObsState"))
+@given("subarray is in EMPTY ObsState")
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
@@ -69,7 +69,7 @@ def subarray_in_empty_obsstate(
     )
 
 
-@when(parsers.parse("I assign resources to the subarray"))
+@when("I assign resources to the subarray")
 def invoke_assignresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
@@ -86,11 +86,7 @@ def invoke_assignresources(
     )
 
 
-@then(
-    parsers.parse(
-        "the TMC, CSP and SDP subarrays transition to RESOURCING obsState"
-    )
-)
+@then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
 def verify_resourcing_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
@@ -128,7 +124,7 @@ def verify_resourcing_state(
     context_fixt.starting_state = ObsState.RESOURCING
 
 
-@then(parsers.parse("the CSP, SDP and TMC subarrays must be in IDLE obsState"))
+@then("the CSP, SDP and TMC subarrays must be in IDLE obsState")
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
@@ -174,7 +170,7 @@ def verify_idle_state(
     )
 
 
-@when(parsers.parse("I release all resources assigned to it"))
+@when("I release all resources assigned to it")
 def invoke_releaseresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
@@ -194,9 +190,7 @@ def invoke_releaseresources(
     )
 
 
-@then(
-    parsers.parse("the CSP, SDP and TMC subarrays must be in EMPTY obsState")
-)
+@then("the CSP, SDP and TMC subarrays must be in EMPTY obsState")
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
