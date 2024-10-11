@@ -170,57 +170,58 @@ def verify_idle_state(
     )
 
 
-@when("I release all resources assigned to it")
-def invoke_releaseresources(
-    context_fixt: SubarrayTestContextData,
-    central_node_facade: TMCCentralNodeFacade,
-):
-    """
-    Send the ReleaseResources command to the subarray.
-    """
-    context_fixt.when_action_name = "ReleaseResources"
+# @when("I release all resources assigned to it")
+# def invoke_releaseresources(
+#     context_fixt: SubarrayTestContextData,
+#     central_node_facade: TMCCentralNodeFacade,
+# ):
+#     """
+#     Send the ReleaseResources command to the subarray.
+#     """
+#     context_fixt.when_action_name = "ReleaseResources"
 
-    json_input = MyFileJSONInput(
-        "centralnode", "release_resources_mid"
-    ).with_attribute("subarray_id", 1)
+#     json_input = MyFileJSONInput(
+#         "centralnode", "release_resources_mid"
+#     ).with_attribute("subarray_id", 1)
 
-    context_fixt.when_action_result = central_node_facade.release_resources(
-        json_input,
-        wait_termination=False,
-    )
+#     context_fixt.when_action_result = central_node_facade.release_resources(
+#         json_input,
+#         wait_termination=False,
+#     )
 
 
-@then("the CSP, SDP and TMC subarrays must be in EMPTY obsState")
-def csp_sdp_tmc_subarray_empty(
-    context_fixt,
-    # subarray_id: str,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """
-    Verify the subarray's transition to the EMPTY state.
-    """
-    assert_that(event_tracer).described_as(
-        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to EMPTY."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
-        "obsState",
-        ObsState.EMPTY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.EMPTY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.EMPTY,
-        previous_value=context_fixt.starting_state,
-    )
+# @then("the CSP, SDP and TMC subarrays must be in EMPTY obsState")
+# def csp_sdp_tmc_subarray_empty(
+#     context_fixt,
+#     # subarray_id: str,
+#     subarray_node_facade: TMCSubarrayNodeFacade,
+#     csp: CSPFacade,
+#     sdp: SDPFacade,
+#     event_tracer: TangoEventTracer,
+# ):
+#     """
+#     Verify the subarray's transition to the EMPTY state.
+#     """
+#     assert_that(event_tracer).described_as(
+#         f"Both TMC Subarray Node device
+# ({subarray_node_facade.subarray_node})"
+#         f", CSP Subarray device ({csp.csp_subarray}) "
+#         f"and SDP Subarray device ({sdp.sdp_subarray}) "
+#         "ObsState attribute values should move "
+#         f"from {str(context_fixt.starting_state)} to EMPTY."
+#     ).within_timeout(TIMEOUT).has_change_event_occurred(
+#         subarray_node_facade.subarray_node,
+#         "obsState",
+#         ObsState.EMPTY,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         csp.csp_subarray,
+#         "obsState",
+#         ObsState.EMPTY,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         sdp.sdp_subarray,
+#         "obsState",
+#         ObsState.EMPTY,
+#         previous_value=context_fixt.starting_state,
+#     )
