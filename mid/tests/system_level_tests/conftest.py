@@ -227,7 +227,7 @@ def subarray_can_be_used(
     )
 
 
-@given("the Telescope is in ON state")
+@given("telescope is in ON state")
 def send_telescope_on_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
