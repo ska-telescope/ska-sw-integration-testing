@@ -168,7 +168,7 @@
         "script": {
               "kind": "realtime",
               "name": "vis-receive",
-              "version": "4.3.0"
+              "version": "4.2.1"
           },
         "sbi_ids": [
           "sbi-mvp01-20210623-00000"
