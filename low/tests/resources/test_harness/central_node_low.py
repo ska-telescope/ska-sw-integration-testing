@@ -499,6 +499,7 @@ class CentralNodeWrapperLow(object):
             if self.csp_subarray1.adminMode != AdminMode.ONLINE:
                 self.csp_subarray1.adminMode = AdminMode.ONLINE
             time.sleep(3)
+            self.pst.On()
             _, unique_id = self.central_node.TelescopeOn()
             self.set_values_with_sdp_mccs_mocks(DevState.ON)
             assert_that(self.event_tracer).described_as(

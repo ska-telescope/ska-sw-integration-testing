@@ -174,7 +174,10 @@
           "sbi-mvp01-20210623-00000"
         ],
         "parameters": {
-          
+          "dry_run": true,
+          "pod_settings": [
+                {"networkMapping": {"ip": "1.2.3.4/0"}}
+          ]
         }
       }
     ]
