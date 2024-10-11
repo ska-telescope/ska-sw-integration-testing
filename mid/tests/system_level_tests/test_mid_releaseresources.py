@@ -85,7 +85,7 @@ def invoke_releaseresources(
     )
 
 
-@then("the TMC, CSP and SDP subarray must be in EMPTY obsState")
+@then("the TMC, CSP and SDP subarrays must be in EMPTY obsState")
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
