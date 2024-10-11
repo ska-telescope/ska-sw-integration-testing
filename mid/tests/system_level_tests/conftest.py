@@ -179,6 +179,7 @@ def check_state_is_on(
     central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
+    dishes: DishesFacade,
 ):
     """Send the ON command to the telescope."""
     event_tracer.clear_events()
@@ -213,7 +214,7 @@ def check_state_is_on(
         "State",
         DevState.ON,
     )
-    # Iterate over dish IDs and verify the transition of each DishMaster
+    #  Iterate over dish IDs and verify the transition of each DishMaster
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to STANDBY-FP mode"
