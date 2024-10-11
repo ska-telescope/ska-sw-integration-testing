@@ -1,4 +1,4 @@
-"""Test module for Assign and Resources functionality (XTP-65630)"""
+"""Test module for AssignResources functionality (XTP-65630)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
@@ -40,15 +40,6 @@ def test_telescope_assign_release_resources():
     devices for pairwise testing"""
 
 
-@given("telescope is in ON state")
-def send_telescope_on_command(
-    event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
-):
-    """Send the TelescopeOn command to the telescope."""
-    event_tracer.clear_events()
-    central_node_facade.move_to_on(wait_termination=True)
-
-
 @given("subarray is in EMPTY ObsState")
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
@@ -67,6 +58,9 @@ def subarray_in_empty_obsstate(
         TestHarnessInputs(),
         wait_termination=True,
     )
+
+
+#  @given("telescope is in ON state") -> conftest
 
 
 @when("I assign resources to the subarray")
