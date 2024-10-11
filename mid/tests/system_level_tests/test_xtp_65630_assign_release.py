@@ -60,6 +60,9 @@ def subarray_in_empty_obsstate(
     )
 
 
+#  @given("telescope is in ON state") -> conftest
+
+
 @when("I assign resources to the subarray")
 def invoke_assignresources(
     context_fixt: SubarrayTestContextData,

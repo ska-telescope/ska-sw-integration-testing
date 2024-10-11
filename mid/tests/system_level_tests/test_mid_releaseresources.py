@@ -36,10 +36,12 @@ def test_telescope_assign_release_resources():
     devices for pairwise testing"""
 
 
+#  @given("telescope is in ON state") -> conftest
+
+
 @given("subarray is in the IDLE obsState")
 def subarray_in_idle_state(
     context_fixt: SubarrayTestContextData,
-    # subarray_id: str,
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
     default_commands_inputs: TestHarnessInputs,
