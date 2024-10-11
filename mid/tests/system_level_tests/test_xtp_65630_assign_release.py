@@ -39,6 +39,9 @@ def test_telescope_assign_release_resources():
     devices for pairwise testing"""
 
 
+#  @given("telescope is in ON state") -> conftest
+
+
 @given("subarray is in EMPTY ObsState")
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
