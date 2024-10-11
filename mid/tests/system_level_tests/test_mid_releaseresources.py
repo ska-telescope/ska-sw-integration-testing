@@ -19,10 +19,7 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import SubarrayTestContextData
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 TIMEOUT = 100
@@ -37,22 +34,6 @@ def test_telescope_assign_release_resources():
     """BDD test scenario for verifying successful execution of
     the ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing"""
-
-
-@given("the Telescope is in ON state")
-def send_telescope_on_command(
-    event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-):
-    """Send the TelescopeOn command to the telescope."""
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
-    event_tracer.clear_events()
-    central_node_facade.move_to_on(wait_termination=True)
 
 
 @given("subarray is in the IDLE obsState")

@@ -40,15 +40,6 @@ def test_telescope_assign_release_resources():
     devices for pairwise testing"""
 
 
-@given("the Telescope is in ON state")
-def send_telescope_on_command(
-    event_tracer: TangoEventTracer, central_node_facade: TMCCentralNodeFacade
-):
-    """Send the TelescopeOn command to the telescope."""
-    event_tracer.clear_events()
-    central_node_facade.move_to_on(wait_termination=True)
-
-
 @given("subarray is in EMPTY ObsState")
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
