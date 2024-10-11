@@ -13,7 +13,6 @@ from tango import DevState
 ASSERTIONS_TIMEOUT = 60
 
 
-@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_66810_standby.feature",
