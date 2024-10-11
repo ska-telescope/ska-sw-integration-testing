@@ -72,7 +72,7 @@ def telescope_wrapper(
     test_harness_builder.set_default_inputs(default_commands_inputs)
     test_harness_builder.validate_default_inputs()
 
-    # build the wrapper of the telescope and it's sub-systems
+    # build the wrapper of the telescope and its sub-systems
     telescope = test_harness_builder.build()
     yield telescope
 
