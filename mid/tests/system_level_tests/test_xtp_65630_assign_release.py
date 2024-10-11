@@ -21,7 +21,6 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
 from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
-    _setup_event_subscriptions,
     get_expected_long_run_command_result,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
@@ -43,24 +42,14 @@ def test_telescope_assign_release_resources():
 @given("subarray is in EMPTY ObsState")
 def subarray_in_empty_obsstate(
     context_fixt: SubarrayTestContextData,
-    central_node_facade: TMCCentralNodeFacade,
     subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
 ):
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
     context_fixt.starting_state = ObsState.EMPTY
     subarray_node_facade.force_change_of_obs_state(
         ObsState.EMPTY,
         TestHarnessInputs(),
         wait_termination=True,
     )
-
-
-#  @given("telescope is in ON state") -> conftest
 
 
 @when("I assign resources to the subarray")
