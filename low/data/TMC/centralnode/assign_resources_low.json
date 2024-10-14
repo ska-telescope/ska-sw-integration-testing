@@ -5,39 +5,52 @@
   "mccs": {
     "interface": "https://schema.skao.int/ska-low-mccs-controller-allocate/3.0",
     "subarray_beams": [
-      {
-        "subarray_beam_id": 1,
-        "apertures": [
-          {
-            "station_id": 1,
-            "aperture_id": "AP001.01"
-          },
-          {
-            "station_id": 2,
-            "aperture_id": "AP002.01"
-          }
-        ],
+        {
+          "subarray_beam_id": 1,
+          "apertures": [
+              {
+                "station_id": 1,
+                "aperture_id": "AP001.01"
+            },
+            {
+                "station_id": 2,
+                "aperture_id": "AP002.01"
+            }
+            ],
         "number_of_channels": 8
       }
     ]
   },
   "csp": {
     "pss": {
-      "pss_beam_ids": [1, 2, 3]
+      "pss_beam_ids": [
+        1,
+        2,
+        3
+      ]
     },
     "pst": {
-      "pst_beam_ids": [1]
+      "pst_beam_ids": [
+        1
+      ]
     }
   },
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-assignres/0.4",
     "resources": {
-      "receptors": ["SKA001", "SKA002", "SKA003", "SKA004"],
+      "receptors": [
+        "SKA001",
+        "SKA002",
+        "SKA003",
+        "SKA004"
+      ],
       "receive_nodes": 1
     },
     "execution_block": {
       "eb_id": "eb-test-20220916-00000",
-      "context": {},
+      "context": {
+        
+      },
       "max_length": 3600.0,
       "beams": [
         {
@@ -86,10 +99,22 @@
               "freq_min": 350000000.0,
               "freq_max": 368000000.0,
               "link_map": [
-                [0, 0],
-                [200, 1],
-                [744, 2],
-                [944, 3]
+                [
+                  0,
+                  0
+                ],
+                [
+                  200,
+                  1
+                ],
+                [
+                  744,
+                  2
+                ],
+                [
+                  944,
+                  3
+                ]
               ]
             }
           ]
@@ -98,15 +123,24 @@
       "polarisations": [
         {
           "polarisations_id": "all",
-          "corr_type": ["XX", "XY", "YX", "YY"]
+          "corr_type": [
+            "XX",
+            "XY",
+            "YX",
+            "YY"
+          ]
         }
       ],
       "fields": [
         {
           "field_id": "field_a",
           "phase_dir": {
-            "ra": [123.0],
-            "dec": [-60.0],
+            "ra": [
+              123.0
+            ],
+            "dec": [
+              -60.0
+            ],
             "reference_time": "...",
             "reference_frame": "ICRF3"
           },
@@ -115,8 +149,12 @@
         {
           "field_id": "field_b",
           "phase_dir": {
-            "ra": [123.0],
-            "dec": [-60.0],
+            "ra": [
+              123.0
+            ],
+            "dec": [
+              -60.0
+            ],
             "reference_time": "...",
             "reference_frame": "ICRF3"
           },
@@ -126,20 +164,19 @@
     },
     "processing_blocks": [
       {
-        "pb_id": "proc-test-20240927-12049",
+        "pb_id": "pb-test-20220916-00000",
         "script": {
-          "kind": "realtime",
-          "name": "vis-receive",
-          "version": "4.3.0"
-        },
+              "kind": "realtime",
+              "name": "vis-receive",
+              "version": "4.3.0"
+          },
+        "sbi_ids": [
+          "sbi-mvp01-20210623-00000"
+        ],
         "parameters": {
           "dry_run": true,
           "pod_settings": [
-            {
-              "networkMapping": {
-                "ip": "1.2.3.4/0"
-              }
-            }
+            {"networkMapping": {"ip": "1.2.3.4/0"}}
           ]
         }
       }
