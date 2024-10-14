@@ -128,6 +128,9 @@ def verify_resourcing_state(
         previous_value=context_fixt.starting_state,
     )
 
+    # override the starting state for the next step
+    context_fixt.starting_state = ObsState.RESOURCING
+
 
 @then("the TMC, CSP and SDP subarrays must be in EMPTY obsState")
 def csp_sdp_tmc_subarray_empty(
