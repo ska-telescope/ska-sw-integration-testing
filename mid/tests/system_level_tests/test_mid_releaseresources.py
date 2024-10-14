@@ -58,7 +58,7 @@ def subarray_in_idle_state(
     context_fixt.starting_state = ObsState.IDLE
 
     subarray_node_facade.force_change_of_obs_state(
-        ObsState.EMPTY,
+        ObsState.IDLE,
         TestHarnessInputs(),
         wait_termination=True,
     )
