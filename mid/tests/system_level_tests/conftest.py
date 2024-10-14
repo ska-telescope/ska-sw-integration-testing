@@ -117,7 +117,7 @@ def dishes(telescope_wrapper: TelescopeWrapper):
 def event_tracer() -> TangoEventTracer:
     """Create an event tracer."""
     return TangoEventTracer(
-        event_enum_mapping={"obsState": ObsState},
+        event_enum_mapping={"obsState": ObsState, "dishMode": DishMode},
     )
 
 
@@ -132,7 +132,6 @@ def given_the_sut(
     """
     Telescope consisting of csp , sdp and dish devices
     """
-    csp.csp_master.adminMode = 0
     event_tracer.subscribe_event(
         central_node_facade.central_node, "telescopeState"
     )
