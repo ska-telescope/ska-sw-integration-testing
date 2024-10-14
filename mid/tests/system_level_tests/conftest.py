@@ -239,5 +239,4 @@ def send_telescope_on_command(
     _setup_event_subscriptions(
         central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
-    event_tracer.clear_events()
     central_node_facade.move_to_on(wait_termination=True)
