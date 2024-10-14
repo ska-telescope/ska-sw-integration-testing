@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import pytest
+from assertpy import assert_that
 from pytest_bdd import given, parsers
 from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
@@ -25,6 +26,7 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
+TIMEOUT = 100
 # ------------------------------------------------------------
 # Test Harness fixtures
 
@@ -240,3 +242,30 @@ def send_telescope_on_command(
         central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
     central_node_facade.move_to_on(wait_termination=True)
+
+
+def verify_subarrays_transition(
+    event_tracer: TangoEventTracer,
+    context_fixt: SubarrayTestContextData,
+    target_state: ObsState,
+    *subarray_devices,
+):
+    """
+    Verify the transition of multiple subarrays to a specified obsState.
+
+    Args:
+        event_tracer (TangoEventTracer): The event tracer to check for changes.
+        context_fixt (SubarrayTestContextData): Context fixture containing the
+        target_state (ObsState): The expected target state to transition to.
+        *subarray_devices: The subarray devices to check.
+    """
+    for device in subarray_devices:
+        assert_that(event_tracer).described_as(
+            f"{device.__class__.__name__} device ({device.dev_name()}) "
+            f"should be in {target_state.name} obsState."
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
+            device,
+            "obsState",
+            target_state,
+            previous_value=context_fixt.starting_state,
+        )

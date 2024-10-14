@@ -1,6 +1,7 @@
 """Test module for AssignResources functionality (XTP-65630)"""
 import pytest
-from assertpy import assert_that
+
+# from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
@@ -22,7 +23,7 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
-    get_expected_long_run_command_result,
+    verify_subarrays_transition,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
@@ -77,6 +78,9 @@ def invoke_assignresources(
     )
 
 
+# test_file.py
+
+
 @then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
 def verify_resourcing_state(
     context_fixt: SubarrayTestContextData,
@@ -88,30 +92,16 @@ def verify_resourcing_state(
     """
     Verify the subarray's transition to the RESOURCING state.
     """
-    assert_that(event_tracer).described_as(
-        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to RESOURCING."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
+    verify_subarrays_transition(
+        event_tracer,
+        context_fixt,
+        ObsState.RESOURCING,
         subarray_node_facade.subarray_node,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
         csp.csp_subarray,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
         sdp.sdp_subarray,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
     )
 
-    # override the starting state for the next step
+    # Override the starting state for the next step
     context_fixt.starting_state = ObsState.RESOURCING
 
 
@@ -119,43 +109,102 @@ def verify_resourcing_state(
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
     """
-    Verify the subarray's transition to the IDLE state."""
-
-    assert_that(event_tracer).described_as(
-        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to IDLE."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
+    Verify the subarray's transition to the IDLE state.
+    """
+    verify_subarrays_transition(
+        event_tracer,
+        context_fixt,
+        ObsState.IDLE,
         subarray_node_facade.subarray_node,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
         csp.csp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
         sdp.sdp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
     )
-    assert_that(event_tracer).described_as(
-        "TMC Central Node "
-        f"({central_node_facade.central_node}) "
-        "is expected to report a"
-        "longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "longRunningCommandResult",
-        get_expected_long_run_command_result(context_fixt),
-    )
+
+
+# @then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
+# def verify_resourcing_state(
+#     context_fixt: SubarrayTestContextData,
+#     subarray_node_facade: TMCSubarrayNodeFacade,
+#     csp: CSPFacade,
+#     sdp: SDPFacade,
+#     event_tracer: TangoEventTracer,
+# ):
+#     """
+#     Verify the subarray's transition to the RESOURCING state.
+#     """
+#     assert_that(event_tracer).described_as(
+#       f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+#         f", CSP Subarray device ({csp.csp_subarray}) "
+#         f"and SDP Subarray device ({sdp.sdp_subarray}) "
+#         "ObsState attribute values should move "
+#         f"from {str(context_fixt.starting_state)} to RESOURCING."
+#     ).within_timeout(TIMEOUT).has_change_event_occurred(
+#         subarray_node_facade.subarray_node,
+#         "obsState",
+#         ObsState.RESOURCING,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         csp.csp_subarray,
+#         "obsState",
+#         ObsState.RESOURCING,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         sdp.sdp_subarray,
+#         "obsState",
+#         ObsState.RESOURCING,
+#         previous_value=context_fixt.starting_state,
+#     )
+
+#     # override the starting state for the next step
+#     context_fixt.starting_state = ObsState.RESOURCING
+
+
+# @then("the CSP, SDP and TMC subarrays must be in IDLE obsState")
+# def verify_idle_state(
+#     context_fixt: SubarrayTestContextData,
+#     subarray_node_facade: TMCSubarrayNodeFacade,
+#     central_node_facade: TMCCentralNodeFacade,
+#     csp: CSPFacade,
+#     sdp: SDPFacade,
+#     event_tracer: TangoEventTracer,
+# ):
+#     """
+#     Verify the subarray's transition to the IDLE state."""
+
+#     assert_that(event_tracer).described_as(
+#       f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+#         f", CSP Subarray device ({csp.csp_subarray}) "
+#         f"and SDP Subarray device ({sdp.sdp_subarray}) "
+#         "ObsState attribute values should move "
+#         f"from {str(context_fixt.starting_state)} to IDLE."
+#     ).within_timeout(TIMEOUT).has_change_event_occurred(
+#         subarray_node_facade.subarray_node,
+#         "obsState",
+#         ObsState.IDLE,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         csp.csp_subarray,
+#         "obsState",
+#         ObsState.IDLE,
+#         previous_value=context_fixt.starting_state,
+#     ).has_change_event_occurred(
+#         sdp.sdp_subarray,
+#         "obsState",
+#         ObsState.IDLE,
+#         previous_value=context_fixt.starting_state,
+#     )
+#     assert_that(event_tracer).described_as(
+#         "TMC Central Node "
+#         f"({central_node_facade.central_node}) "
+#         "is expected to report a"
+#         "longRunningCommand successful completion."
+#     ).within_timeout(TIMEOUT).has_change_event_occurred(
+#         central_node_facade.central_node,
+#         "longRunningCommandResult",
+#         get_expected_long_run_command_result(context_fixt),
+#     )
