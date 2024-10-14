@@ -15,7 +15,7 @@ ASSERTIONS_TIMEOUT = 60
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "system_level_tests/" + "xtp_66810_standby.feature",
+    "system_level_tests/" + "xtp_66801_telescope_operational_commands.feature",
     "Standby the mid telescope",
 )
 def test_telescope_standby_command_flow():
