@@ -80,7 +80,7 @@
           "spectral_windows": [
             {
               "spectral_window_id": "fsp_1_channels",
-              "count": 32,
+              "count": 4,
               "start": 0,
               "stride": 2,
               "freq_min": 350000000.0,
@@ -126,18 +126,21 @@
     },
     "processing_blocks": [
       {
-        "pb_id": "pb-test-20220916-00000",
+        "pb_id": "proc-test-20240927-12049",
         "script": {
-        "kind": "realtime",
-        "name": "vis-receive",
-        "version": "4.2.1"
-          },
-        "sbi_ids": ["sbi-mvp01-20210623-00000"],
+          "kind": "realtime",
+          "name": "vis-receive",
+          "version": "4.3.0"
+        },
         "parameters": {
           "dry_run": true,
           "pod_settings": [
-                    {"networkMapping": {"ip": "1.2.3.4/0"}}
-              ]
+            {
+              "networkMapping": {
+                "ip": "1.2.3.4/0"
+              }
+            }
+          ]
         }
       }
     ]
