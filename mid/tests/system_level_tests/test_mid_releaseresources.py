@@ -33,16 +33,8 @@ TIMEOUT = 100
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
     "Release resources from Mid subarray",
 )
-def test_telescope_assign_release_resources(
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
-    event_tracer: TangoEventTracer,
+def test_telescope_release_resources(
 ):
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
     """BDD test scenario for verifying successful execution of
     the ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing"""

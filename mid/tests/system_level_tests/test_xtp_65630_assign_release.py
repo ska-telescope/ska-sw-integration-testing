@@ -34,7 +34,7 @@ TIMEOUT = 100
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
     "Assign resources to Mid subarray",
 )
-def test_telescope_assign_release_resources():
+def test_telescope_assign_resources():
     """BDD test scenario for verifying successful execution of
     the AssignResources command with TMC,CSP and SDP
     devices for pairwise testing"""
