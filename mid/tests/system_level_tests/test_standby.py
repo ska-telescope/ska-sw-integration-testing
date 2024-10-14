@@ -1,3 +1,4 @@
+"""Test module for TMC StartUp functionality (XTP-66810)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
@@ -25,7 +26,7 @@ def test_telescope_standby_command_flow():
 
 
 @when("I invoke the STANDBY command on the telescope")
-def send_telescope_command(
+def send_telescope_standby_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
 ):

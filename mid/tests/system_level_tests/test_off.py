@@ -1,3 +1,4 @@
+"""Test module for TMC ShutDown functionality (XTP-67219)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
@@ -27,7 +28,7 @@ def test_telescope_off_command_flow():
 
 
 @when("I invoke the OFF command on the telescope")
-def send_telescope_command(
+def send_telescope_off_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
 ):
@@ -42,7 +43,6 @@ def verify_off_state(
     central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
-    dishes: DishesFacade,
 ):
     """The telescope and  devices transition to the OFF state."""
     devices = [

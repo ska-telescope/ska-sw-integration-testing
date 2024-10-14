@@ -1,3 +1,4 @@
+"""Test module for TMC StartUp functionality (XTP-65506)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
