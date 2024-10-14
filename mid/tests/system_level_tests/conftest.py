@@ -3,7 +3,7 @@ from typing import Any
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, parsers
+from pytest_bdd import given
 from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
@@ -213,7 +213,6 @@ def get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
     )
 
 
-@given(parsers.parse("the subarray {subarray_id} can be used"))
 def subarray_can_be_used(
     subarray_id: str,
     central_node_facade: TMCCentralNodeFacade,
