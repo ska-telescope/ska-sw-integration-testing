@@ -64,14 +64,14 @@ def subarray_in_idle_state(
         wait_termination=True,
     )
 
-    json_input = MyFileJSONInput(
-        "centralnode", "assign_resources_mid"
-    ).with_attribute("subarray_id", 1)
+    # json_input = MyFileJSONInput(
+    #     "centralnode", "assign_resources_mid"
+    # ).with_attribute("subarray_id", 1)
 
-    context_fixt.when_action_result = central_node_facade.assign_resources(
-        json_input,
-        wait_termination=True,
-    )
+    # context_fixt.when_action_result = central_node_facade.assign_resources(
+    #     json_input,
+    #     wait_termination=True,
+    # )
 
 
 @when("I release all resources assigned to it")
