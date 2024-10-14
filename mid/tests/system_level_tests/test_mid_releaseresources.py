@@ -19,10 +19,7 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import SubarrayTestContextData
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 TIMEOUT = 100
@@ -33,8 +30,7 @@ TIMEOUT = 100
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
     "Release resources from Mid subarray",
 )
-def test_telescope_release_resources(
-):
+def test_telescope_release_resources():
     """BDD test scenario for verifying successful execution of
     the ReleaseResources command with TMC,CSP and SDP
     devices for pairwise testing"""
