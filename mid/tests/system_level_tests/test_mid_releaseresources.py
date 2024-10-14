@@ -19,7 +19,10 @@ from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import SubarrayTestContextData
+from tests.system_level_tests.conftest import (
+    SubarrayTestContextData,
+    _setup_event_subscriptions,
+)
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 TIMEOUT = 100
@@ -45,8 +48,14 @@ def subarray_in_idle_state(
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
     default_commands_inputs: TestHarnessInputs,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
 ):
     """Ensure the subarray is in the IDLE state."""
+    _setup_event_subscriptions(
+        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
+    )
     context_fixt.starting_state = ObsState.IDLE
 
     subarray_node_facade.force_change_of_obs_state(
