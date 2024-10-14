@@ -47,7 +47,6 @@ def subarray_in_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
-    default_commands_inputs: TestHarnessInputs,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -60,7 +59,7 @@ def subarray_in_idle_state(
 
     subarray_node_facade.force_change_of_obs_state(
         ObsState.EMPTY,
-        default_commands_inputs,
+        TestHarnessInputs(),
         wait_termination=True,
     )
 
