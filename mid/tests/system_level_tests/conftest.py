@@ -231,7 +231,11 @@ def subarray_can_be_used(
 
 @given("telescope is in ON state")
 def send_telescope_on_command(
+    event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    subarray_node_facade: TMCSubarrayNodeFacade,
 ):
     """Send the TelescopeOn command to the telescope."""
     central_node_facade.move_to_on(wait_termination=True)
