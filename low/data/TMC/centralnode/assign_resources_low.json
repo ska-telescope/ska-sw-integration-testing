@@ -17,7 +17,7 @@
                 "aperture_id": "AP002.01"
             }
             ],
-        "number_of_channels": 8
+        "number_of_channels": 96
       }
     ]
   },
@@ -176,7 +176,7 @@
         "parameters": {
               "dry_run": true,
               "pod_settings": [
-                    {"networkMapping": {"ip": ["192.168.0.1/0","192.168.0.2/0","192.168.0.3/0","192.168.0.4/0"]}}
+                    {"networkMapping": {"ip": "192.168.0.1/0"}}
               ]
           }
       }
