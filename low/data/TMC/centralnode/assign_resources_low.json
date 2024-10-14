@@ -166,20 +166,18 @@
       {
         "pb_id": "pb-test-20220916-00000",
         "script": {
-              "kind": "realtime",
-              "name": "vis-receive",
-              "version": "4.3.0"
-          },
+          "kind": "realtime",
+          "name": "test-receive-addresses",
+          "version": "0.7.1"
+        },
         "sbi_ids": [
           "sbi-mvp01-20210623-00000"
         ],
         "parameters": {
-          "dry_run": true,
-          "pod_settings": [
-            {"networkMapping": {"ip": "1.2.3.4/0"}}
-          ]
+          
         }
       }
     ]
   }
 }
+
