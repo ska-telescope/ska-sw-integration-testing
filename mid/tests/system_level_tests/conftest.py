@@ -24,10 +24,7 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
 )
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
-from tests.system_level_tests.utils.json_file_input_handler import (
-    MyFileJSONInput,
-)
-
+from tests.system_level_tests.utils.json_file_input_handler import MyFileJSONInput
 # ------------------------------------------------------------
 # Test Harness fixtures
 
@@ -186,8 +183,7 @@ def check_state_is_on(
     event_tracer.clear_events()
     central_node_facade.move_to_on(wait_termination=False)
     assert_that(event_tracer).described_as(
-        "The telescope and CSP and SDP devices should \
-            transition to the ON state."
+        "The telescope and CSP devices should transition " "to the ON state."
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "telescopeState",
@@ -199,6 +195,13 @@ def check_state_is_on(
     ).has_change_event_occurred(
         csp.csp_subarray,
         "State",
+        DevState.ON,
+    )
+    assert_that(event_tracer).described_as(
+        "The telescope and SDP devices should transition " "to the ON state."
+    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "telescopeState",
         DevState.ON,
     ).has_change_event_occurred(
         sdp.sdp_master,
