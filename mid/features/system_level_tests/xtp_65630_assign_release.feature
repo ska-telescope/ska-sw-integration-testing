@@ -5,7 +5,7 @@ Feature: test Assign and Release Resources for the Mid Subarray
 
 @XTP-65630 @XTP-66801 @SAHYADRI
 Scenario: Assign resources to Mid subarray
-    Given a Low telescope
+    Given a Mid telescope
     And telescope is in ON state
     And subarray is in EMPTY ObsState
     When I assign resources to the subarray
