@@ -80,7 +80,7 @@ def invoke_assignresources(
     )
 
 
-@then("the TMC, CSP and SDP subarrays must be in IDLE obsState")
+@then("the TMC, CSP and SDP subarrays transition to IDLE obsState")
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,

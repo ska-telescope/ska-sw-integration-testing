@@ -10,7 +10,7 @@ Scenario: Assign resources to Mid subarray
     And subarray is in EMPTY ObsState
     When I assign resources to the subarray
     Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
-    And the TMC, CSP and SDP subarrays must be in IDLE obsState
+    And the TMC, CSP and SDP subarrays transition to IDLE obsState
    
 @XTP-67033 @XTP-66801 @SAHYADRI
 Scenario: Release resources from Mid subarray
@@ -19,4 +19,4 @@ Scenario: Release resources from Mid subarray
     And subarray is in the IDLE obsState
     When I release all resources assigned to it
     Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
-    And the TMC, CSP and SDP subarrays must be in EMPTY obsState
+    And the TMC, CSP and SDP subarrays transition to EMPTY obsState
