@@ -22,6 +22,7 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
+    get_expected_long_run_command_result,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
@@ -85,10 +86,50 @@ def invoke_releaseresources(
     )
 
 
+@then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
+def verify_resourcing_state(
+    context_fixt: SubarrayTestContextData,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """
+    Verify the subarray's transition to the RESOURCING state.
+    """
+    assert_that(event_tracer).described_as(
+        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to RESOURCING."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    )
+
+    # override the starting state for the next step
+    context_fixt.starting_state = ObsState.RESOURCING
+
+
 @then("the TMC, CSP and SDP subarrays must be in EMPTY obsState")
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
+    # subarray_id: str,
     subarray_node_facade: TMCSubarrayNodeFacade,
+    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -117,4 +158,12 @@ def csp_sdp_tmc_subarray_empty(
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
+    ).within_timeout(
+        TIMEOUT
+    ).within_timeout(
+        TIMEOUT
+    ).has_change_event_occurred(
+        central_node_facade.central_node,
+        "longRunningCommandResult",
+        get_expected_long_run_command_result(context_fixt),
     )
