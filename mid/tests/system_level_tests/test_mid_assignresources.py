@@ -120,7 +120,7 @@ def verify_resourcing_state(
     context_fixt.starting_state = ObsState.RESOURCING
 
 
-@then("the CSP, SDP and TMC subarrays must be in IDLE obsState")
+@then("the TMC, CSP and SDP subarrays must be in IDLE obsState")
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
