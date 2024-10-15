@@ -38,8 +38,8 @@ def send_telescope_command(
 
 
 @then(
-    "the Telescope consisting of SDP, CSP devices should \
-        transition to ON state"
+    "the Telescope consisting of SDP and CSP devices "
+    "should transition to ON state"
 )
 def verify_on_state(
     event_tracer: TangoEventTracer,

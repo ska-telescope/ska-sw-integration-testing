@@ -77,3 +77,4 @@ def verify_standby_state(
         logging.info(
             f"DISH MODE is: " f"{dishes.dish_master_dict[dish_id].dishMode}"
         )
+    assert 0
