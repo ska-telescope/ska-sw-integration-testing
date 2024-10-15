@@ -24,7 +24,9 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
 )
 from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DevState
-from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
+from tests.system_level_tests.utils.json_file_input_handler import (
+    MyFileJSONInput,
+)
 
 # ------------------------------------------------------------
 # Test Harness fixtures
