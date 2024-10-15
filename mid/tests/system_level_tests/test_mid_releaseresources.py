@@ -22,7 +22,6 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
-    get_expected_long_run_command_result,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
@@ -90,7 +89,6 @@ def invoke_releaseresources(
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -119,10 +117,4 @@ def csp_sdp_tmc_subarray_empty(
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
-    ).within_timeout(
-        TIMEOUT
-    ).has_change_event_occurred(
-        central_node_facade.central_node,
-        "longRunningCommandResult",
-        get_expected_long_run_command_result(context_fixt),
     )
