@@ -1,9 +1,8 @@
 import json
 import logging
 import os
-import re
 import time
-from datetime import datetime
+import uuid
 from typing import Any
 
 import pytest
@@ -563,36 +562,14 @@ def check_lrcr_events(
             pytest.fail("Assertion Failed")
 
 
-def generate_id(id_pattern: str) -> str:
+def generate_id(prefix: str) -> str:
     """
-    Generate a time-based unique id.
-
-    :param id_pattern: the string pattern as to how the unique id should
-        be rendered.
-        e.g :
-            input: eb-mvp01-********-*****
-            output: eb-mvp01-35825416-12979
-
-    :return: the id rendered according to the requested pattern
+    Generate a UUID-based numerical id with the given prefix
+    :param prefix: the prefix for the unique id.
+    :return: the generated id.
     """
-    prefix, suffix = re.split(r"(?=\*)[\*-]*(?<=\*)", id_pattern)
-    id_pattern = re.findall(r"(?=\*)[\*-]*(?<=\*)", id_pattern)[0]
-    length = id_pattern.count("*")
-    assert length <= EB_PB_ID_LENGTH
-    LOGGER.info(f"<SB or PB ID >Length: {length}")
-    timestamp = str(datetime.now().timestamp()).replace(".", "")
-    sections = id_pattern.split("-")
-    unique_id = ""
-    sections.reverse()
-    for section in sections:
-        section_length = len(section)
-        section_id = timestamp[-section_length:]
-        timestamp = timestamp[:-section_length]
-        if unique_id:
-            unique_id = f"{section_id}-{unique_id}"
-        else:
-            unique_id = section_id
-    return f"{prefix}{unique_id}{suffix}"
+    unique_id = str(int(uuid.uuid4().hex, 16))
+    return f"{prefix}-{unique_id[:8]}-{unique_id[-5:]}"
 
 
 def update_eb_pb_ids(input_json: str, json_id: str = "") -> str:
@@ -609,19 +586,6 @@ def update_eb_pb_ids(input_json: str, json_id: str = "") -> str:
             pb["pb_id"] = generate_id("pb-test")
     input_json = json.dumps(input_json)
     return input_json
-
-
-def generate_eb_pb_ids(input_json: dict):
-    """
-    Method to generate different eb_id and pb_id
-
-    :param input_json: json to utilised to update values.
-    """
-    input_json["sdp"]["execution_block"]["eb_id"] = generate_id(
-        "eb-test-********-*****"
-    )
-    for pb in input_json["sdp"]["processing_blocks"]:
-        pb["pb_id"] = generate_id("pb-test-********-*****")
 
 
 def get_assign_json_id(input_json: str, json_id: str = "") -> list[str]:
