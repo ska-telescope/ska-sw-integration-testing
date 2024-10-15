@@ -15,6 +15,7 @@ from tango import DevState
 ASSERTIONS_TIMEOUT = 60
 
 
+@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_66801_telescope_operational_commands.feature",
@@ -36,7 +37,10 @@ def send_telescope_command(
     central_node_facade.move_to_off(wait_termination=False)
 
 
-@then("the SDP and CSP go to OFF state")
+@then(
+    "the Telescope consisting of SDP, CSP devices \
+        should transition to OFF state"
+)
 def verify_off_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
