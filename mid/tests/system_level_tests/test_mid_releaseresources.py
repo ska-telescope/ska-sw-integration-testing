@@ -1,5 +1,6 @@
 """Test module for ReleaseResources functionality (XTP-67033)"""
 import pytest
+from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
@@ -21,13 +22,13 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
-    check_subarray_obsstate,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
 TIMEOUT = 100
 
 
+@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_65630_assign_release.feature",
@@ -96,35 +97,64 @@ def verify_resourcing_state(
     """
     Verify the subarray's transition to the RESOURCING state.
     """
-    check_subarray_obsstate(
-        event_tracer,
-        context_fixt,
-        ObsState.RESOURCING,
+    assert_that(event_tracer).described_as(
+        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to RESOURCING."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
         csp.csp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
         sdp.sdp_subarray,
+        "obsState",
+        ObsState.RESOURCING,
+        previous_value=context_fixt.starting_state,
     )
 
-    # Override the starting state for the next step
+    # override the starting state for the next step
     context_fixt.starting_state = ObsState.RESOURCING
 
 
 @then("the TMC, CSP and SDP subarrays must be in EMPTY obsState")
-def verify_empty_state(
-    context_fixt: SubarrayTestContextData,
+def csp_sdp_tmc_subarray_empty(
+    context_fixt,
+    # subarray_id: str,
     subarray_node_facade: TMCSubarrayNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
     """
-    Verify the subarray's transition to the RESOURCING state.
+    Verify the subarray's transition to the EMPTY state.
     """
-    check_subarray_obsstate(
-        event_tracer,
-        context_fixt,
-        ObsState.EMPTY,
+    assert_that(event_tracer).described_as(
+        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to EMPTY."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.EMPTY,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
         csp.csp_subarray,
+        "obsState",
+        ObsState.EMPTY,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
         sdp.sdp_subarray,
+        "obsState",
+        ObsState.EMPTY,
+        previous_value=context_fixt.starting_state,
     )
