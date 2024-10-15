@@ -120,9 +120,13 @@ def csp_sdp_tmc_subarray_empty(
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
-    ).within_timeout(
-        TIMEOUT
-    ).has_change_event_occurred(
+    )
+    assert_that(event_tracer).described_as(
+        "TMC Central Node "
+        f"({central_node_facade.central_node}) "
+        "is expected to report a"
+        "longRunningCommand successful completion."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
