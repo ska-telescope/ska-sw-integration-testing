@@ -6,6 +6,7 @@ Feature: Mid Telescope State Transitions
   @XTP-66801 @XTP-65506 @TEAM_SAHYADRI
   Scenario: Starting up mid telescope
       Given a mid telescope
+      And a Telescope consisting of SDP, CSP and DISH that is OFF
       When I invoke the ON command on the telescope
       Then the Telescope consisting of SDP and CSP devices must transition to ON state
       And DishMaster must transition to STANDBY-FP mode

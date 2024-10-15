@@ -184,7 +184,6 @@ def check_state_is_off(
     dishes: DishesFacade,
 ):
     """Send the ON command to the telescope."""
-    event_tracer.clear_events()
     central_node_facade.move_to_off(wait_termination=False)
     assert_that(event_tracer).described_as(
         "The telescope SDP,CSP and SDP devices should be in OFF."
