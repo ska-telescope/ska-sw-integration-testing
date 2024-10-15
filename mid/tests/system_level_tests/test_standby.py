@@ -34,7 +34,7 @@ def send_telescope_command(
     central_node_facade.set_standby(wait_termination=False)
 
 
-@then("the telescope go to STANDBY state")
+@then("the telescope transitions to STANDBY state")
 def verify_standby_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
