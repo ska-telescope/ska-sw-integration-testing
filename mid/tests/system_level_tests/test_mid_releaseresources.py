@@ -129,6 +129,7 @@ def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
     subarray_node_facade: TMCSubarrayNodeFacade,
+    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -159,8 +160,10 @@ def csp_sdp_tmc_subarray_empty(
         previous_value=context_fixt.starting_state,
     ).within_timeout(
         TIMEOUT
+    ).within_timeout(
+        TIMEOUT
     ).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        central_node_facade.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
