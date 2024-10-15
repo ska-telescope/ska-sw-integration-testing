@@ -2,6 +2,7 @@
   "test_plans": [
     {
       "select_from_tag": {
+        "SP-3715": "SP-3715",
         "XTP-66801": "XTP-66801",
         "XTP-29381": "XTP-29381",
         "XTP-29583":"XTP-29583",
@@ -63,7 +64,7 @@
       "env": "CI_COMMIT_BRANCH",
       "maps_to": {
         "default": "",
-        "main": "PI24",
+        "main": "PI20",
         "master": "PI20"
       }
     }
