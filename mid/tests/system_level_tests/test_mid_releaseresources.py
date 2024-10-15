@@ -127,7 +127,6 @@ def verify_resourcing_state(
 @then("the TMC, CSP and SDP subarrays must be in EMPTY obsState")
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
-    # subarray_id: str,
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
@@ -158,8 +157,6 @@ def csp_sdp_tmc_subarray_empty(
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
-    ).within_timeout(
-        TIMEOUT
     ).within_timeout(
         TIMEOUT
     ).has_change_event_occurred(
