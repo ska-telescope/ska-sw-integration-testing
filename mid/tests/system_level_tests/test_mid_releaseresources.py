@@ -160,8 +160,6 @@ def csp_sdp_tmc_subarray_empty(
         previous_value=context_fixt.starting_state,
     ).within_timeout(
         TIMEOUT
-    ).within_timeout(
-        TIMEOUT
     ).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
