@@ -1,10 +1,7 @@
-import logging
-
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
-from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
@@ -39,14 +36,13 @@ def send_telescope_command(
 
 @then(
     "the Telescope consisting of SDP and CSP devices "
-    "should transition to STANDBY state"
+    "must transition to STANDBY state"
 )
 def verify_standby_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
-    dishes: DishesFacade,
 ):
     """The telescope and devices transition to the STANDBY state."""
     assert_that(event_tracer).described_as(
@@ -73,8 +69,3 @@ def verify_standby_state(
         "State",
         DevState.OFF,
     )
-    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
-        logging.info(
-            f"DISH MODE is: " f"{dishes.dish_master_dict[dish_id].dishMode}"
-        )
-    assert 0

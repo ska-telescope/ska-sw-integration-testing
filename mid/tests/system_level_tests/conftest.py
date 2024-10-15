@@ -3,7 +3,7 @@
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given
+from pytest_bdd import given, then
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
@@ -264,4 +264,22 @@ def check_state_is_on(
             dishes.dish_master_dict[dish_id],
             "dishMode",
             DishMode.STANDBY_FP,
+        )
+
+
+@then("DishMaster must transition to STANDBY-LP mode")
+def verify_dish_mode(
+    event_tracer: TangoEventTracer,
+    dishes: DishesFacade,
+):
+    """Verify that each DishMaster transitions to the correct mode."""
+
+    # Iterate over dish IDs and verify the transition of each DishMaster
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+        assert_that(event_tracer).described_as(
+            f"The DishMaster {dish_id} must transition to STANDBY-LP mode"
+        ).has_change_event_occurred(
+            dishes.dish_master_dict[dish_id],
+            "dishMode",
+            DishMode.STANDBY_LP,
         )
