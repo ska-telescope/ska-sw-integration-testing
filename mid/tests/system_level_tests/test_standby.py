@@ -1,4 +1,3 @@
-"""Test module for TMC StartUp functionality (XTP-66810)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import scenario, then, when
@@ -26,7 +25,7 @@ def test_telescope_standby_command_flow():
 
 
 @when("I invoke the STANDBY command on the telescope")
-def send_telescope_standby_command(
+def send_telescope_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
 ):
@@ -43,51 +42,37 @@ def verify_standby_state(
     sdp: SDPFacade,
 ):
     """The telescope and devices transition to the STANDBY state."""
-
-    devices = [
-        {
-            "name": "CSP",
-            "subarray": csp.csp_subarray,
-            "master": csp.csp_master,
-            "subarray_state": DevState.OFF,
-            "master_state": DevState.STANDBY,
-        },
-        {
-            "name": "SDP",
-            "subarray": sdp.sdp_subarray,
-            "master": sdp.sdp_master,
-            "subarray_state": DevState.OFF,
-            "master_state": DevState.STANDBY,
-        },
-    ]
-
-    # Testing for CSP and SDP devices transitioning to their respective states
-    for device in devices:
-        # Assert subarray transition first
-        assert_that(event_tracer).described_as(
-            f"{device['name']} subarray should transition to OFF state."
-        ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-            device["subarray"],
-            "State",
-            device["subarray_state"],
-        )
-
-        # Assert master transition next
-        assert_that(event_tracer).described_as(
-            f"{device['name']} master should transition to STANDBY state."
-        ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-            device["master"],
-            "State",
-            device["master_state"],
-        )
-
-    # After all CSP and SDP components are verified,
-    # check the central node last
     assert_that(event_tracer).described_as(
-        "The telescope and CSP/SDP devices should \
-            transition to the correct states."
+        "The telescope and CSP master should transition "
+        "to the STANDBY state. "
+        "CSP subarray should transition to OFF state."
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "telescopeState",
         DevState.STANDBY,
+    ).has_change_event_occurred(
+        csp.csp_master,
+        "State",
+        DevState.STANDBY,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "State",
+        DevState.OFF,
+    )
+    assert_that(event_tracer).described_as(
+        "The telescope and SDP master should transition "
+        "to the STANDBY state. "
+        "SDP subarray should transition to OFF state."
+    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "telescopeState",
+        DevState.STANDBY,
+    ).has_change_event_occurred(
+        sdp.sdp_master,
+        "State",
+        DevState.STANDBY,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "State",
+        DevState.OFF,
     )
