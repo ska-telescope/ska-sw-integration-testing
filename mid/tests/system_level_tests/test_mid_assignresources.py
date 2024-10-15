@@ -1,8 +1,6 @@
 """Test module for AssignResources functionality (XTP-65630)"""
 import pytest
 from assertpy import assert_that
-
-# from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (

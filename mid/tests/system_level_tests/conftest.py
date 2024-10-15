@@ -160,7 +160,7 @@ def context_fixt() -> SubarrayTestContextData:
     """
     return SubarrayTestContextData()
 
-
+@given("a mid telescope")
 def _setup_event_subscriptions(
     central_node_facade: TMCCentralNodeFacade,
     subarray_node_facade: TMCSubarrayNodeFacade,
