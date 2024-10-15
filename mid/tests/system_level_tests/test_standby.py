@@ -43,9 +43,7 @@ def verify_standby_state(
 ):
     """The telescope and devices transition to the STANDBY state."""
     assert_that(event_tracer).described_as(
-        "The telescope and CSP master should transition "
-        "to the STANDBY state. "
-        "CSP subarray should transition to OFF state."
+        "The telescope CSP and SDP devices should transition to the OFF state"
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "telescopeState",
@@ -58,15 +56,6 @@ def verify_standby_state(
         csp.csp_subarray,
         "State",
         DevState.OFF,
-    )
-    assert_that(event_tracer).described_as(
-        "The telescope and SDP master should transition "
-        "to the STANDBY state. "
-        "SDP subarray should transition to OFF state."
-    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "telescopeState",
-        DevState.STANDBY,
     ).has_change_event_occurred(
         sdp.sdp_master,
         "State",
