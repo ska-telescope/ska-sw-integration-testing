@@ -24,4 +24,4 @@ Feature: Mid Telescope State Transitions
       Given a mid telescope
       And a Telescope consisting of SDP, CSP and DISH that is ON
       When I invoke the STANDBY command on the telescope
-      Then the Telescope consisting of SDP, CSP devices should transition to STANDBY state
+      Then the Telescope consisting of SDP and CSP devices should transition to STANDBY state
