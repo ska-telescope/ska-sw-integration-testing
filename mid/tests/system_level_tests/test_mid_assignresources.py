@@ -23,7 +23,7 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
-    verify_subarrays_transition,
+    check_subarray_obsstate,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
@@ -89,7 +89,7 @@ def verify_resourcing_state(
     """
     Verify the subarray's transition to the RESOURCING state.
     """
-    verify_subarrays_transition(
+    check_subarray_obsstate(
         event_tracer,
         context_fixt,
         ObsState.RESOURCING,
@@ -113,7 +113,7 @@ def verify_idle_state(
     """
     Verify the subarray's transition to the IDLE state.
     """
-    verify_subarrays_transition(
+    check_subarray_obsstate(
         event_tracer,
         context_fixt,
         ObsState.IDLE,

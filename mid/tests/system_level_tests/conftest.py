@@ -236,7 +236,7 @@ def send_telescope_on_command(
     central_node_facade.move_to_on(wait_termination=True)
 
 
-def verify_subarrays_transition(
+def check_subarray_obsstate(
     event_tracer: TangoEventTracer,
     context_fixt: SubarrayTestContextData,
     target_state: ObsState,
