@@ -62,9 +62,7 @@
     {
       "env": "CI_COMMIT_BRANCH",
       "maps_to": {
-        "default": "",
-        "main": "PI24",
-        "master": "PI24"
+        "default": ""
       }
     }
   ],

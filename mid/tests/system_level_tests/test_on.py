@@ -36,10 +36,7 @@ def send_telescope_command(
     central_node_facade.move_to_on(wait_termination=False)
 
 
-@then(
-    "the Telescope consisting of SDP and CSP devices "
-    "must transition to ON state"
-)
+@then("the Telescope and the SDP and CSP devices must transition to ON state")
 def verify_on_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
