@@ -1,7 +1,5 @@
 """Test module for AssignResources functionality (XTP-65630)"""
 
-import logging
-
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
@@ -29,7 +27,6 @@ from tests.system_level_tests.conftest import (
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
-LOGGER = logging.getLogger(__name__)
 TIMEOUT = 100
 
 
@@ -128,9 +125,6 @@ def verify_idle_state(
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
-    LOGGER.info(".......................")
-    LOGGER.info(subarray_node_facade.subarray_node.assignedResources)
-    LOGGER.info(type(subarray_node_facade.subarray_node.assignedResources))
     assert subarray_node_facade.subarray_node.assignedResources == (
         ("SKA001", "SKA036", "SKA063", "SKA100")
     )
