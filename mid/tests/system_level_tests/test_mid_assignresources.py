@@ -1,4 +1,6 @@
 """Test module for AssignResources functionality (XTP-65630)"""
+import time
+
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
@@ -124,6 +126,8 @@ def verify_idle_state(
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
+    time.sleep(5)
+    print(subarray_node_facade.subarray_node.assignedResources)
     assert_that(event_tracer).has_change_event_occurred(
         subarray_node_facade.subarray_node,
         "assignedResources",
