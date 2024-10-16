@@ -71,11 +71,11 @@ def verify_on_state(
 
 
 @then("DishMaster must transition to STANDBY-FP mode")
-def verify_dish_mode(
+def verify_dish_mode_standby_fp(
     event_tracer: TangoEventTracer,
     dishes: DishesFacade,
 ):
-    """Verify that each DishMaster transitions to the correct mode."""
+    """Verify that each DishMaster transitions to STANDBY-FP dishMode."""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
