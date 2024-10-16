@@ -100,7 +100,8 @@ def csp_sdp_tmc_subarray_empty(
     Verify the subarray's transition to the EMPTY state.
     """
     assert_that(event_tracer).described_as(
-        f"Both TMC Subarray Node device ({subarray_node_facade.subarray_node})"
+        f"All three: TMC Subarray Node device "
+        f"({subarray_node_facade.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
