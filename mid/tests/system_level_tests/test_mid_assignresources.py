@@ -126,6 +126,17 @@ def verify_idle_state(
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
+
+
+@then("the correct resources are assigned to TMC, CSP and SDP subarrays")
+def assert_assigned_resources(subarray_node_facade):
+    """
+    This method asserts that the assigned resources in the subarray node
+    match the expected resources "SKA001", "SKA036", "SKA063", and "SKA100".
+
+    Args:
+        subarray_node_facade: The facade object for the subarray node.
+    """
     assert_that(
         subarray_node_facade.subarray_node.assignedResources
     ).described_as(
