@@ -126,6 +126,10 @@ def verify_idle_state(
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
-    assert subarray_node_facade.subarray_node.assignedResources == (
-        ("SKA001", "SKA036", "SKA063", "SKA100")
+    assert_that(
+        subarray_node_facade.subarray_node.assigned_resources
+    ).described_as(
+        "Wrong set of resources being assigned in subarray_node"
+    ).contains_only(
+        "SKA001", "SKA036", "SKA063", "SKA100"
     )
