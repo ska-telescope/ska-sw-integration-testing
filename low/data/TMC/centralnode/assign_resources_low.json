@@ -179,7 +179,8 @@
                 {"networkMapping": {"ip": "192.168.0.1/0"}}
               ],
               "max_ports_per_node": 1,
-              "channels_per_port": 1
+              "channels_per_port": 1,
+              "processes_per_node": 4
           }
       }
     ]
