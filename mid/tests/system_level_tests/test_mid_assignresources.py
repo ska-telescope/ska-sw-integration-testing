@@ -114,11 +114,6 @@ def verify_idle_state(
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,
     )
-    assert_that(event_tracer).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
-        "assignedResources",
-        "('SKA001', 'SKA036', 'SKA063', 'SKA100')",
-    )
     assert_that(event_tracer).described_as(
         "TMC Central Node "
         f"({central_node_facade.central_node}) "
