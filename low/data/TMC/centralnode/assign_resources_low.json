@@ -176,10 +176,7 @@
         "parameters": {
               "dry_run": true,
               "pod_settings": [
-                {"networkMapping": {"ip": "192.168.0.1/0"}},
-                {"networkMapping": {"ip": "192.168.0.2/2"}},
-                {"networkMapping": {"ip": "192.168.0.3/4"}},
-                {"networkMapping": {"ip": "192.168.0.4/6"}}
+                {"networkMapping": {"ip": "192.168.0.1/0"}}
               ]
           }
       }

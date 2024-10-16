@@ -91,7 +91,9 @@
         "stn_beams": [
           {
             "stn_beam_id": 1,
-            "integration_ms": 849
+            "integration_ms": 849,
+            "host": [[0, "192.168.0.1"]],
+            "port": [[0, 21000, 1]]
           }
         ]
       },
