@@ -3,7 +3,7 @@ Feature: test Assign and Release Resources for the Mid Subarray
     the telescope system. The scenarios ensure that the subarrays transition correctly between their 
     operational states
 
-	@XTP-65630 @XTP-66801 @SAHYADRI
+	@XTP-65630 @XTP-66801 @TEAM_SAHYADRI
 	Scenario: Assign resources to Mid subarray
 	    Given a Mid telescope
 	    And telescope is in ON state
@@ -12,7 +12,7 @@ Feature: test Assign and Release Resources for the Mid Subarray
 	    Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
 	    And the TMC, CSP and SDP subarrays transition to IDLE obsState
 	   
-	@XTP-67033 @XTP-66801 @SAHYADRI
+	@XTP-67033 @XTP-66801 @TEAM_SAHYADRI
 	Scenario: Release resources from Mid subarray
 	    Given a Mid telescope
 	    And telescope is in ON state
