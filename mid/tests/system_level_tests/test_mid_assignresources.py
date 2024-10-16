@@ -127,5 +127,5 @@ def verify_idle_state(
     assert_that(event_tracer).has_change_event_occurred(
         subarray_node_facade.subarray_node,
         "assignedResources",
-        "('SKA001', 'SKA036', 'SKA063', 'SKA100')",
+        ("SKA001", "SKA036", "SKA063", "SKA100"),
     )
