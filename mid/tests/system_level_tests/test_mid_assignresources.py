@@ -119,8 +119,13 @@ def verify_idle_state(
         f"({central_node_facade.central_node}) "
         "is expected to report a"
         "longRunningCommand successful completion."
-    ).has_change_event_occurred(
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
+    )
+    assert_that(event_tracer).has_change_event_occurred(
+        subarray_node_facade.subarray_node,
+        "assignedResources",
+        "('SKA001', 'SKA036', 'SKA063', 'SKA100')",
     )

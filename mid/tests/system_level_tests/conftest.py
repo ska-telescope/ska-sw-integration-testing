@@ -183,6 +183,9 @@ def _setup_event_subscriptions(
     event_tracer.subscribe_event(csp.csp_subarray, "obsState")
     event_tracer.subscribe_event(sdp.sdp_subarray, "obsState")
     event_tracer.subscribe_event(
+        subarray_node_facade.subarray_node, "assignedResources"
+    )
+    event_tracer.subscribe_event(
         central_node_facade.central_node, "longRunningCommandResult"
     )
     event_tracer.subscribe_event(
@@ -194,6 +197,7 @@ def _setup_event_subscriptions(
             subarray_node_facade.subarray_node: [
                 "obsState",
                 "longRunningCommandResult",
+                "assignedResources",
             ],
             csp.csp_subarray: ["obsState"],
             sdp.sdp_subarray: ["obsState"],
