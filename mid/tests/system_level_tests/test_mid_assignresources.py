@@ -131,10 +131,6 @@ def verify_idle_state(
     LOGGER.info(".......................")
     LOGGER.info(subarray_node_facade.subarray_node.assignedResources)
     LOGGER.info(type(subarray_node_facade.subarray_node.assignedResources))
-    assert_that(event_tracer).within_timeout(
-        TIMEOUT
-    ).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
-        "assignedResources",
-        ("SKA001", "SKA036", "SKA063", "SKA100"),
+    assert subarray_node_facade.subarray_node.assignedResources == (
+        ("SKA001", "SKA036", "SKA063", "SKA100")
     )
