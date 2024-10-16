@@ -119,7 +119,7 @@ def verify_idle_state(
         f"({central_node_facade.central_node}) "
         "is expected to report a"
         "longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
+    ).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
