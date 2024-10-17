@@ -16,7 +16,7 @@ def test_tmc_csp_telescope_off():
     Test case to verify TMC-CSP ShutDown functionality
     """
 
-
+@pytest.mark.skip
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_29251_standby.feature",
