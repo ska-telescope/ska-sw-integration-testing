@@ -8,6 +8,7 @@ from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 
 TIMEOUT = 100
 
+
 @pytest.mark.skip
 @pytest.mark.system_level_tests
 @scenario(
