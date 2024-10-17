@@ -53,6 +53,7 @@ def subarray_in_empty_obsstate(
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
+    """Verify the subarray's transition to the EMPTY state."""
     _setup_event_subscriptions(
         central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
@@ -85,7 +86,6 @@ def invoke_assignresources(
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
