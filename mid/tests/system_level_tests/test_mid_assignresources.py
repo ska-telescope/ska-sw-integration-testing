@@ -118,7 +118,10 @@ def verify_idle_state(
     )
 
 
-@then("the TMC receives, ResultCode.Ok from subsystems CSP ,SDP")
+@then(
+    "the TMC receives LongRunningCommandResult event OK "
+    "from subsystems CSP ,SDP"
+)
 def assert_long_running_command_completion(
     event_tracer,
     central_node_facade,
