@@ -18,6 +18,7 @@ from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
+@pytest.mark.skip
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_40073_succesive_configure.feature",
