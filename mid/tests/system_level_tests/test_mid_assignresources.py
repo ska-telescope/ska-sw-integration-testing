@@ -116,19 +116,27 @@ def verify_idle_state(
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,
     )
+
+
+@then("the TMC receives, ResultCode.Ok from subsystems CSP ,SDP")
+def assert_long_running_command_completion(
+    event_tracer, central_node_facade, context_fixt, timeout=TIMEOUT
+):
+    """
+    Asserts that the TMC Central Node reports a successful
+    completion of a long-running command.
+    """
     assert_that(event_tracer).described_as(
-        "TMC Central Node "
-        f"({central_node_facade.central_node}) "
-        "is expected to report a"
-        "longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        f"TMC Central Node ({central_node_facade.central_node}) is "
+        " expected to report a longRunningCommand successful completion."
+    ).within_timeout(timeout).has_change_event_occurred(
         central_node_facade.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
 
 
-@then("the correct resources are assigned to TMC, CSP and SDP subarrays")
+@then("the requested resources are assigned to subarray")
 def assert_assigned_resources(subarray_node_facade):
     """
     This method asserts that the assigned resources in the subarray node
