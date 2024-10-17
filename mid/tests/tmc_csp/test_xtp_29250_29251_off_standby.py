@@ -17,7 +17,7 @@ def test_tmc_csp_telescope_off():
     """
 
 
-@pytest.mark.skip
+@pytest.mark.skip(reason="CBF not support STANDBY command")
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_29251_standby.feature",
