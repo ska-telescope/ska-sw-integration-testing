@@ -2769,4 +2769,4 @@ reference = "PyPI-public"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3b5889d3c39afef3c558b0ba7fc0ec455bea71ba3a7f496e9fb72d6e234d2c2c"
+content-hash = "4ff36f154104b18401dd937d42d256b5040a3155d4c961ef0279a26c6132e20d"
