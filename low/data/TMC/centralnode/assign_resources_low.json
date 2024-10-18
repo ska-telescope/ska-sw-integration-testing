@@ -93,9 +93,9 @@
           "spectral_windows": [
             {
               "spectral_window_id": "fsp_1_channels",
-              "count": 1,
+              "count": 13824,
               "start": 0,
-              "stride": 2,
+              "stride": 1,
               "freq_min": 350000000.0,
               "freq_max": 368000000.0,
               "link_map": [
@@ -177,10 +177,7 @@
               "dry_run": true,
               "pod_settings": [
                 {"networkMapping": {"ip": "192.168.0.1/0"}}
-              ],
-              "max_ports_per_node": 1,
-              "channels_per_port": 1,
-              "processes_per_node": 4
+              ]
           }
       }
     ]
