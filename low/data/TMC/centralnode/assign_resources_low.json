@@ -101,20 +101,20 @@
         "subarray_beam_id": 1,
         "apertures": [
           {
-            "station_id": 345,
-            "aperture_id": "AP345.01"
+            "station_id": 1,
+            "aperture_id": "AP001.01"
           },
           {
-            "station_id": 350,
-            "aperture_id": "AP350.01"
+            "station_id": 1,
+            "aperture_id": "AP001.02"
           },
           {
-            "station_id": 352,
-            "aperture_id": "AP352.01"
+            "station_id": 2,
+            "aperture_id": "AP002.01"
           },
           {
-            "station_id": 431,
-            "aperture_id": "AP431.01"
+            "station_id": 2,
+            "aperture_id": "AP002.02"
           }
         ],
         "number_of_channels": 96
