@@ -1,7 +1,7 @@
 {
   "subarray_id": 1,
-  "csp_config": {},
-  "sdp_config": {
+  "csp": {},
+  "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-assignres/0.4",
     "execution_block": {
       "eb_id": "eb-t0001-20241015-00002",
