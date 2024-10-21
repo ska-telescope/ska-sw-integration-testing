@@ -89,6 +89,11 @@ class Waiter:
             )
         )
         self.waits.append(
+            watch(Resource(self.csp_subarray1)).to_become(
+                "State", changed_to="OFF"
+            )
+        )
+        self.waits.append(
             watch(Resource(self.csp_master)).to_become(
                 "State", changed_to="OFF"
             )
@@ -105,6 +110,11 @@ class Waiter:
         self.waits.append(
             watch(Resource(self.sdp_master)).to_become(
                 "State", changed_to="STANDBY"
+            )
+        )
+        self.waits.append(
+            watch(Resource(self.csp_subarray1)).to_become(
+                "State", changed_to="OFF"
             )
         )
         self.waits.append(

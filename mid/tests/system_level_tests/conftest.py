@@ -24,6 +24,7 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer, log_events
+from tango import DevState
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -179,27 +180,102 @@ def given_the_sut(
 
 
 @given("a Telescope consisting of SDP, CSP and DISH that is OFF")
-def invoke_telescope_off_command(
+def check_state_is_off(
+    event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    dishes: DishesFacade,
 ):
-    """Send the OFF command to the telescope."""
-    central_node_facade.move_to_off(wait_termination=True)
+    """Send the ON command to the telescope."""
+    central_node_facade.move_to_off(wait_termination=False)
+    assert_that(event_tracer).described_as(
+        "The telescope SDP,CSP and SDP devices should be in OFF."
+    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "telescopeState",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        csp.csp_master,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        sdp.sdp_master,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "State",
+        DevState.OFF,
+    )
+
+    #  Iterate over dish IDs and verify the transition of each DishMaster
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+        assert_that(event_tracer).described_as(
+            f"The DishMaster {dish_id} must transition to STANDBY-LP mode"
+        ).has_change_event_occurred(
+            dishes.dish_master_dict[dish_id],
+            "dishMode",
+            DishMode.STANDBY_LP,
+        )
 
 
 @given("a Telescope consisting of SDP, CSP and DISH that is ON")
-def invoke_telescope_on_command(
+def check_state_is_on(
+    event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    dishes: DishesFacade,
 ):
     """Send the ON command to the telescope."""
-    central_node_facade.move_to_on(wait_termination=True)
+    event_tracer.clear_events()
+    central_node_facade.move_to_on(wait_termination=False)
+    assert_that(event_tracer).described_as(
+        "The telescope, CSP and SDP devices should be in ON state."
+    ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "telescopeState",
+        DevState.ON,
+    ).has_change_event_occurred(
+        csp.csp_master,
+        "State",
+        DevState.ON,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "State",
+        DevState.ON,
+    ).has_change_event_occurred(
+        sdp.sdp_master,
+        "State",
+        DevState.ON,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "State",
+        DevState.ON,
+    )
+
+    #  Iterate over dish IDs and verify the transition of each DishMaster
+    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+        assert_that(event_tracer).described_as(
+            f"The DishMaster {dish_id} must transition to STANDBY-FP mode"
+        ).has_change_event_occurred(
+            dishes.dish_master_dict[dish_id],
+            "dishMode",
+            DishMode.STANDBY_FP,
+        )
 
 
 @then("DishMaster must transition to STANDBY-LP mode")
-def verify_dish_mode_standby_lp(
+def verify_dish_mode(
     event_tracer: TangoEventTracer,
     dishes: DishesFacade,
 ):
-    """Verify that each DishMaster transitions to STANDBY-LP dishMode."""
+    """Verify that each DishMaster transitions to the correct mode."""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:

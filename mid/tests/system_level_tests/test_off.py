@@ -34,7 +34,10 @@ def send_telescope_command(
     central_node_facade.move_to_off(wait_termination=False)
 
 
-@then("the Telescope and the SDP and CSP devices must transition to OFF state")
+@then(
+    "the Telescope consisting of SDP and CSP devices "
+    "must transition to OFF state"
+)
 def verify_off_state(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,

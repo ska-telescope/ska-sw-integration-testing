@@ -35,8 +35,8 @@ def send_telescope_command(
 
 
 @then(
-    "the Telescope and the SDP and CSP devices must "
-    "transition to STANDBY state"
+    "the Telescope consisting of SDP and CSP devices "
+    "must transition to STANDBY state"
 )
 def verify_standby_state(
     event_tracer: TangoEventTracer,
@@ -57,7 +57,15 @@ def verify_standby_state(
         "State",
         DevState.STANDBY,
     ).has_change_event_occurred(
+        csp.csp_subarray,
+        "State",
+        DevState.OFF,
+    ).has_change_event_occurred(
         sdp.sdp_master,
         "State",
         DevState.STANDBY,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "State",
+        DevState.OFF,
     )

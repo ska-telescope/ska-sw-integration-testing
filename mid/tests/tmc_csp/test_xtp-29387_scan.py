@@ -12,7 +12,6 @@ from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
-@pytest.mark.skip(reason="issue at CSP for scan after configure (CIP-2967)")
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_29387_scan.feature",

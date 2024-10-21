@@ -1,90 +1,103 @@
 {
-  "interface": "https://schema.skao.int/ska-tmc-configure/2.3",
-  "transaction_id": "txn-....-00001",
-  "pointing": {
-    "target": {
-      "reference_frame": "ICRS",
-      "target_name": "Polaris Australis",
-      "ra": "21:08:47.92",
-      "dec": "-88:57:22.9"
+    "interface": "https://schema.skao.int/ska-tmc-configure/2.0",
+    "transaction_id": "txn-....-00001",
+    "pointing": {
+      "target": {
+        "reference_frame": "ICRS",
+        "target_name": "Polaris Australis",
+        "ra": "21:08:47.92",
+        "dec": "-88:57:22.9"
+      }
     },
-    "correction": "UPDATE"
-  },
-  "dish": {
-    "receiver_band": "1"
-  },
-  "csp": {
-    "interface": "https://schema.skao.int/ska-csp-configure/2.0",
-    "subarray": {
-      "subarray_name": "science period 23"
+    "dish": {
+      "receiver_band": "1"
     },
-    "common": {
-      "config_id": "sbi-mvp01-20200325-00001-science_A",
-      "frequency_band": "1",
-      "subarray_id": 1
-    },
-    "cbf": {
-      "fsp": [
-        {
-          "fsp_id": 1,
-          "function_mode": "CORR",
-          "frequency_slice_id": 1,
-          "integration_factor": 1,
-          "zoom_factor": 0,
-          "channel_averaging_map": [
-            [
-              0,
-              2
+    "csp": {
+      "interface": "https://schema.skao.int/ska-csp-configure/2.0",
+      "subarray": {
+        "subarray_name": "science period 23"
+      },
+      "common": {
+        "config_id": "sbi-test-20220916-00000-science_A",
+        "frequency_band": "1",
+        "subarray_id": 1
+      },
+      "cbf": {
+        "fsp": [
+          {
+            "fsp_id": 1,
+            "function_mode": "CORR",
+            "frequency_slice_id": 1,
+            "integration_factor": 1,
+            "zoom_factor": 0,
+            "channel_averaging_map": [
+              [
+                0,
+                2
+              ],
+              [
+                744,
+                0
+              ]
             ],
-            [
-              744,
-              0
+            "channel_offset": 0,
+            "output_link_map": [
+              [
+                0,
+                0
+              ],
+              [
+                200,
+                1
+              ]
             ]
-          ],
-          "channel_offset": 0,
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ]
-        },
-        {
-          "fsp_id": 2,
-          "function_mode": "CORR",
-          "frequency_slice_id": 2,
-          "integration_factor": 1,
-          "zoom_factor": 1,
-          "channel_averaging_map": [
-            [
-              0,
-              2
+          },
+          {
+            "fsp_id": 2,
+            "function_mode": "CORR",
+            "frequency_slice_id": 2,
+            "integration_factor": 1,
+            "zoom_factor": 1,
+            "channel_averaging_map": [
+              [
+                0,
+                2
+              ],
+              [
+                744,
+                0
+              ]
             ],
-            [
-              744,
-              0
-            ]
-          ],
-          "channel_offset": 740,
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ],
-          "zoom_window_tuning": 650000
+            "channel_offset": 744,
+            "output_link_map": [
+              [
+                0,
+                4
+              ],
+              [
+                200,
+                5
+              ]
+            ],
+            "zoom_window_tuning": 650000
+          }
+        ],
+        "vlbi": {
+          
         }
-      ],
-      "vlbi": {
+      },
+      "pss": {
+        
+      },
+      "pst": {
         
       }
+    },
+    "sdp": {
+      "interface": "https://schema.skao.int/ska-sdp-configure/0.3",
+      "scan_type": "target:a"
+    },
+    "tmc": {
+      "scan_duration": 10.0
     }
-  },
-  "sdp": {
-    "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
-    "scan_type": "target:a"
-  },
-  "tmc": {
-    "scan_duration": 5.0
   }
-}
