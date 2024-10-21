@@ -1,6 +1,23 @@
 {
   "subarray_id": 1,
-  "csp": {},
+  "csp": [
+    {
+        "common": {},
+        "config_id": "csp config 1",
+        "lowcbf": {
+            "correlation_spws": [
+                {
+                    "spw_id": 1,
+                    "logical_fsp_ids": [1],
+                    "zoom_factor": 0,
+                    "centre_frequency": 199.609375e6,
+                    "number_of_channels": 96,
+                    "integration_time_ms": 849
+                }
+            ]
+        }
+    }
+],
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-assignres/0.4",
     "execution_block": {
