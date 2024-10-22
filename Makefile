@@ -2,10 +2,9 @@ CAR_OCI_REGISTRY_HOST:=artefact.skao.int
 PROJECT = ska-sw-integration-testing
 TANGO_HOST ?= tango-databaseds:10000 ## TANGO_HOST connection to the Tango DSI
 TANGO_HOST_NAME ?= tango-databaseds
-# TELESCOPE ?=  $(error Please specify TELESCOPE='SKA-mid' or TELESCOPE='SKA-low')
+TELESCOPE ?=  $(error Please specify TELESCOPE='SKA-mid' or TELESCOPE='SKA-low')
 KUBE_NAMESPACE ?= ska-sw-integration-testing
 KUBE_NAMESPACE_SDP ?= ska-sw-integration-testing-sdp
-K8S_TIMEOUT ?= 800s
 TELESCOPE ?= SKA-mid
 CI_PROJECT_PATH_SLUG ?= ska-sw-integration-testing
 CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
