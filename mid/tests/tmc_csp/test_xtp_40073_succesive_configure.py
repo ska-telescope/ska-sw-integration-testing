@@ -18,6 +18,7 @@ from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
+@pytest.mark.skip(reason="issue at CSP for succesive configure (CIP-2967)")
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_40073_succesive_configure.feature",
