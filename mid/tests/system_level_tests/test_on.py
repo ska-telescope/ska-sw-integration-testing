@@ -10,7 +10,7 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
-from tests.system_level_tests.conftest import dish_ids
+from tests.system_level_tests.conftest import DISH_IDS
 
 # Constants
 ASSERTIONS_TIMEOUT = 60
@@ -74,7 +74,7 @@ def verify_dish_mode_standby_fp(
     """Verify that each DishMaster transitions to the STANDBY-FP"""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
-    for dish_id in dish_ids:
+    for dish_id in DISH_IDS:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to STANDBY-FP mode"
         ).has_change_event_occurred(

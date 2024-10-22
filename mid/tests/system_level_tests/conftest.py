@@ -51,7 +51,7 @@ DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
 )
 ASSERTIONS_TIMEOUT = 60
 
-dish_ids = ["dish_001", "dish_036", "dish_063", "dish_100"]
+DISH_IDS = ["dish_001", "dish_036", "dish_063", "dish_100"]
 
 
 @pytest.fixture
@@ -64,7 +64,6 @@ def telescope_wrapper(
     # import from a configuration file device names and emulation directives
     # for TMC, CSP, SDP and the Dishes
     test_harness_builder.read_config_file(
-        # "tests/system_level_tests/test_harness_config.yaml"
         "mid/tests/system_level_tests/test_harness_config.yaml"
     )
     test_harness_builder.validate_configurations()
@@ -161,7 +160,7 @@ def given_the_sut(
     event_tracer.subscribe_event(sdp.sdp_master, "State")
     event_tracer.subscribe_event(sdp.sdp_subarray, "State")
 
-    for dish_id in dish_ids:
+    for dish_id in DISH_IDS:
         event_tracer.subscribe_event(
             dishes.dish_master_dict[dish_id], "dishMode"
         )
@@ -182,7 +181,7 @@ def given_the_sut(
             sdp.sdp_subarray: ["State"],
         }
     )
-    for dish_id in dish_ids:
+    for dish_id in DISH_IDS:
         log_events(
             {
                 dishes.dish_master_dict[dish_id]: ["dishMode"],
@@ -215,7 +214,7 @@ def verify_dish_mode_standby_lp(
     """Verify that each DishMaster transitions to the STANDBY-LP"""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
-    for dish_id in dish_ids:
+    for dish_id in DISH_IDS:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to STANDBY-LP mode"
         ).has_change_event_occurred(
