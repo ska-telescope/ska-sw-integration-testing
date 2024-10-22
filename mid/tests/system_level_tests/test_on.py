@@ -1,6 +1,5 @@
 import pytest
 from assertpy import assert_that
-from conftest import dish_ids
 from pytest_bdd import scenario, then, when
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
@@ -11,6 +10,7 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
+from tests.system_level_tests.conftest import dish_ids
 
 # Constants
 ASSERTIONS_TIMEOUT = 60
