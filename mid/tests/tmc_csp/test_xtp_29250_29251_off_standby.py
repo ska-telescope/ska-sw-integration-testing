@@ -5,6 +5,7 @@ from tango import DevState
 from tests.resources.test_harness.helpers import get_master_device_simulators
 
 
+@pytest.mark.skip(reason="CBF not support Off command")
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_29250_off.feature",
