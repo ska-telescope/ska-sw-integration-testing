@@ -278,3 +278,26 @@ def verify_resourcing_state(
 
     # override the starting state for the next step
     context_fixt.starting_state = ObsState.RESOURCING
+
+
+@then(
+    "the TMC receives LongRunningCommandResult event OK "
+    "from subsystems CSP and SDP"
+)
+def assert_long_running_command_completion(
+    event_tracer,
+    central_node_facade,
+    context_fixt,
+):
+    """
+    Asserts that the TMC Central Node reports a successful
+    completion of a long-running command.
+    """
+    assert_that(event_tracer).described_as(
+        f"TMC Central Node ({central_node_facade.central_node}) is "
+        " expected to report a longRunningCommand successful completion."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_facade.central_node,
+        "longRunningCommandResult",
+        get_expected_long_run_command_result(context_fixt),
+    )

@@ -22,7 +22,6 @@ from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
-    get_expected_long_run_command_result,
 )
 from tests.system_level_tests.utils.my_file_json_input import MyFileJSONInput
 
@@ -121,27 +120,4 @@ def csp_sdp_tmc_subarray_empty(
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
-    )
-
-
-@then(
-    "the TMC receives LongRunningCommandResult event OK "
-    "from subsystems CSP ,SDP"
-)
-def assert_long_running_command_completion(
-    event_tracer,
-    central_node_facade,
-    context_fixt,
-):
-    """
-    Asserts that the TMC Central Node reports a successful
-    completion of a long-running command.
-    """
-    assert_that(event_tracer).described_as(
-        f"TMC Central Node ({central_node_facade.central_node}) is "
-        " expected to report a longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
-        "longRunningCommandResult",
-        get_expected_long_run_command_result(context_fixt),
     )

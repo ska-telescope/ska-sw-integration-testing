@@ -11,7 +11,7 @@ Feature: test Assign and Release Resources for the Mid Subarray
 	    When I assign resources to the subarray
 	    Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
 	    And the TMC, CSP and SDP subarrays transition to IDLE obsState
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP ,SDP
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP and SDP
 		And the requested resources are assigned to subarray
 	   
 	@XTP-67033 @XTP-66801 @TEAM_SAHYADRI
@@ -22,4 +22,4 @@ Feature: test Assign and Release Resources for the Mid Subarray
 	    When I release all resources assigned to it
 	    Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
 	    And the TMC, CSP and SDP subarrays transition to EMPTY obsState
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP ,SDP
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP and SDP
