@@ -23,7 +23,9 @@ from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
 )
-from tests.system_level_tests.utils.json_file_input_handler import MyFileJSONInput
+from tests.system_level_tests.utils.json_file_input_handler import (
+    MyFileJSONInput,
+)
 
 TIMEOUT = 100
 

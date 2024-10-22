@@ -1,12 +1,14 @@
 """Configurations needed for the tests using the new harness."""
 
 from dataclasses import dataclass
+from typing import Any
+
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, then
+from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
-from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
 from ska_integration_test_harness.facades.tmc_central_node_facade import (
     TMCCentralNodeFacade,
@@ -14,16 +16,12 @@ from ska_integration_test_harness.facades.tmc_central_node_facade import (
 from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
-
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
 )
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.json_input import DictJSONInput
 from ska_integration_test_harness.inputs.pointing_state import PointingState
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
-)
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
@@ -31,7 +29,9 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer, log_events
-from tests.system_level_tests.utils.json_file_input_handler import MyFileJSONInput
+from tests.system_level_tests.utils.json_file_input_handler import (
+    MyFileJSONInput,
+)
 
 TIMEOUT = 100
 # ------------------------------------------------------------
@@ -222,6 +222,7 @@ def verify_dish_mode_standby_lp(
             DishMode.STANDBY_LP,
         )
 
+
 @dataclass
 class SubarrayTestContextData:
     """A class to store shared variables between steps."""
@@ -335,10 +336,6 @@ def subarray_can_be_used(
     _setup_event_subscriptions(
         central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
-
-
-
-
 
 
 @then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
