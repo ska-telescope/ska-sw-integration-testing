@@ -23,18 +23,21 @@ csp:
   csp_subarray1_name: "mid-csp/subarray/01"
 
 sdp:
-  is_emulated: false # Supported false too, default is true
+  is_emulated: false # Supported true too, default is false
 
   # Expected device names (Required)
   sdp_master_name: "mid-sdp/control/0"
   sdp_subarray1_name: "mid-sdp/subarray/01"
 
 dishes:
-  is_emulated: false # Supported false too, default is true
+  is_emulated: false # Supported true too, default is false
 
   # Expected device names (Required)
   dish_master1_name: "tango://tango-databaseds.ci-dev-ska-mid-integration.svc.techops.internal.skao.int:10000/mid-dish/dish-manager/SKA001"
   dish_master2_name: "tango://tango-databaseds.ci-dev-ska-mid-integration.svc.techops.internal.skao.int:10000/mid-dish/dish-manager/SKA036"
   dish_master3_name: "tango://tango-databaseds.ci-dev-ska-mid-integration.svc.techops.internal.skao.int:10000/mid-dish/dish-manager/SKA063"
   dish_master4_name: "tango://tango-databaseds.ci-dev-ska-mid-integration.svc.techops.internal.skao.int:10000/mid-dish/dish-manager/SKA100"
+
+
+
 

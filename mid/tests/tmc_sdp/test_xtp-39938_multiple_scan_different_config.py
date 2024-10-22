@@ -14,10 +14,8 @@ LOGGER = logging.getLogger(__name__)
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp
 @scenario(
-    (
-        "../../mid/features/tmc_sdp/"
-        "xtp-39938_multiple_scan_different_config.feature"
-    ),
+    "../../mid/features/tmc_sdp/"
+    "xtp-39938_multiple_scan_different_config.feature",
     "TMC Mid executes multiple scans with different resources "
     "and configurations",
 )
