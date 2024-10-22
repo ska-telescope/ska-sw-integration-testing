@@ -48,4 +48,4 @@ K8S_TEST_TEST_COMMAND ?= $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) \
 						pytest \
 						$(PYTHON_VARS_AFTER_PYTEST) ./mid/tests \
 						| tee pytest.stdout # k8s-test test command to run in container
-XRAY_EXECUTION_CONFIG_FILE ?= mid/tests/xray-config.json						
+XRAY_EXECUTION_CONFIG_FILE ?= mid/tests/xray-config.json 

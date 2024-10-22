@@ -1,5 +1,3 @@
-
-
 PYTHON_LINT_TARGET ?= low/tests/
 
 # run one test with FILE=acceptance/test_subarray_node.py::test_check_internal_model_according_to_the_tango_ecosystem_deployed
