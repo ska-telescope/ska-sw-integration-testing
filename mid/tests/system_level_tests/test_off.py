@@ -25,7 +25,7 @@ def test_telescope_off_command_flow():
 
 
 @when("I invoke the OFF command on the telescope")
-def send_telescope_command(
+def send_telescope_off_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
 ):

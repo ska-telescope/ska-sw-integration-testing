@@ -27,7 +27,7 @@ def test_telescope_on_command_flow():
 
 
 @when("I invoke the ON command on the telescope")
-def send_telescope_command(
+def send_telescope_on_command(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
 ):
@@ -66,11 +66,11 @@ def verify_on_state(
 
 
 @then("DishMaster must transition to STANDBY-FP mode")
-def verify_dish_mode(
+def verify_dish_mode_standby_fp(
     event_tracer: TangoEventTracer,
     dishes: DishesFacade,
 ):
-    """Verify that each DishMaster transitions to the correct mode."""
+    """Verify that each DishMaster transitions to the STANDBY-FP"""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:

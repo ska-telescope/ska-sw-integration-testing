@@ -195,11 +195,11 @@ def check_state_is_on(
 
 
 @then("DishMaster must transition to STANDBY-LP mode")
-def verify_dish_mode(
+def verify_dish_mode_standby_lp(
     event_tracer: TangoEventTracer,
     dishes: DishesFacade,
 ):
-    """Verify that each DishMaster transitions to the correct mode."""
+    """Verify that each DishMaster transitions to the STANDBY-LP"""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
     for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
