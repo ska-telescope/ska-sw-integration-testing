@@ -141,7 +141,7 @@ def event_tracer() -> TangoEventTracer:
     )
 
 
-@given("a mid telescope")
+@given("a Mid telescope")
 def given_the_sut(
     event_tracer: TangoEventTracer,
     central_node_facade: TMCCentralNodeFacade,
@@ -268,7 +268,6 @@ def context_fixt() -> SubarrayTestContextData:
     return SubarrayTestContextData()
 
 
-@given("a Mid telescope")
 def _setup_event_subscriptions(
     central_node_facade: TMCCentralNodeFacade,
     subarray_node_facade: TMCSubarrayNodeFacade,
