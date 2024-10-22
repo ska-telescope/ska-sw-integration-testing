@@ -5,9 +5,10 @@ from tango import DevState
 from tests.resources.test_harness.helpers import get_master_device_simulators
 
 
+@pytest.mark.skip(reason="CBF not support Off command")
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29250_off.feature",
+    "../../mid/features/tmc_csp/xtp_29250_off.feature",
     "Turn Off Telescope with real TMC and CSP devices",
 )
 def test_tmc_csp_telescope_off():
@@ -16,9 +17,10 @@ def test_tmc_csp_telescope_off():
     """
 
 
+@pytest.mark.skip(reason="CBF not support STANDBY command")
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29251_standby.feature",
+    "../../mid/features/tmc_csp/xtp_29251_standby.feature",
     "Standby the Telescope with real TMC and CSP devices",
 )
 def test_tmc_csp_telescope_standby():

@@ -12,7 +12,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29260_release.feature",
+    "../../mid/features/tmc_csp/xtp_29260_release.feature",
     "Release resources from CSP subarray using TMC",
 )
 def test_releaseresources_command():

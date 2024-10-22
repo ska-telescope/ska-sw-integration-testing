@@ -13,7 +13,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_29259_assign.feature",
+    "../../mid/features/tmc_csp/xtp_29259_assign.feature",
     "Assign resources to CSP subarray using TMC",
 )
 def test_assignresources_command():

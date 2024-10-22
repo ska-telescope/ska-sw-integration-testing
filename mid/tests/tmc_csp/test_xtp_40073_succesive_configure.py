@@ -18,9 +18,10 @@ from tests.resources.test_harness.subarray_node import SubarrayNodeWrapper
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 
 
+@pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_csp
 @scenario(
-    "../../features/tmc_csp/xtp_40073_succesive_configure.feature",
+    "../../mid/features/tmc_csp/xtp_40073_succesive_configure.feature",
     "TMC-CSP succesive configure functionality",
 )
 def test_tmc_csp_succesive_configure_functionality():

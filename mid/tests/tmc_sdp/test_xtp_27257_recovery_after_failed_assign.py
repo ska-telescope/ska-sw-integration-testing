@@ -14,7 +14,8 @@ from tests.resources.test_harness.helpers import (
 @pytest.mark.skip(reason="Duplicate scenario")
 @pytest.mark.tmc_sdp
 @scenario(
-    "../../features/tmc_sdp/xtp_27257_recovery_after_failed_assign.feature",
+    "../../mid/features/tmc_sdp/"
+    "xtp_27257_recovery_after_failed_assign.feature",
     "Fix bug SKB-185 in TMC",
 )
 def test_tmc_sdp_recovery_after_failed_assign_resources():

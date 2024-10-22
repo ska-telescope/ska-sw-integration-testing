@@ -14,7 +14,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_dish
 @scenario(
-    "../../features/tmc_dish/xtp-30211_abort_configuring.feature",
+    "../../mid/features/tmc_dish/xtp-30211_abort_configuring.feature",
     "Abort configuring DISH.LMC using TMC",
 )
 def test_tmc_dish_abort_in_configuring():
