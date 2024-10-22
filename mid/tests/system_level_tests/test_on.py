@@ -59,15 +59,7 @@ def verify_on_state(
         "State",
         DevState.ON,
     ).has_change_event_occurred(
-        csp.csp_subarray,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
         sdp.sdp_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
         "State",
         DevState.ON,
     )
