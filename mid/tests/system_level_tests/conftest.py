@@ -51,6 +51,8 @@ DEFAULT_VCC_CONFIG_INPUT = DictJSONInput(
 )
 ASSERTIONS_TIMEOUT = 60
 
+dish_ids = ["dish_001", "dish_036", "dish_063", "dish_100"]
+
 
 @pytest.fixture
 def telescope_wrapper(
@@ -72,7 +74,7 @@ def telescope_wrapper(
     test_harness_builder.set_default_inputs(default_commands_inputs)
     test_harness_builder.validate_default_inputs()
 
-    # build the wrapper of the telescope and it's sub-systems
+    # build the wrapper of the telescope and its sub-systems
     telescope = test_harness_builder.build()
     yield telescope
 
@@ -159,7 +161,7 @@ def given_the_sut(
     event_tracer.subscribe_event(sdp.sdp_master, "State")
     event_tracer.subscribe_event(sdp.sdp_subarray, "State")
 
-    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+    for dish_id in dish_ids:
         event_tracer.subscribe_event(
             dishes.dish_master_dict[dish_id], "dishMode"
         )
@@ -180,7 +182,7 @@ def given_the_sut(
             sdp.sdp_subarray: ["State"],
         }
     )
-    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+    for dish_id in dish_ids:
         log_events(
             {
                 dishes.dish_master_dict[dish_id]: ["dishMode"],
@@ -213,7 +215,7 @@ def verify_dish_mode_standby_lp(
     """Verify that each DishMaster transitions to the STANDBY-LP"""
 
     # Iterate over dish IDs and verify the transition of each DishMaster
-    for dish_id in ["dish_001", "dish_036", "dish_063", "dish_100"]:
+    for dish_id in dish_ids:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to STANDBY-LP mode"
         ).has_change_event_occurred(

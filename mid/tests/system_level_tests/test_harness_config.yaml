@@ -16,7 +16,7 @@ tmc:
   tmc_dish_leaf_node4_name: "ska_mid/tm_leaf_node/d0100"
 
 csp:
-  is_emulated: false # Supported true too, default is true
+  is_emulated: false # Supported true too, default is false
 
   # Expected device names
   csp_master_name: "mid-csp/control/0"
