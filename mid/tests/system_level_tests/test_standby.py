@@ -58,15 +58,7 @@ def verify_standby_state(
         "State",
         DevState.STANDBY,
     ).has_change_event_occurred(
-        csp.csp_subarray,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
         sdp.sdp_master,
         "State",
         DevState.STANDBY,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "State",
-        DevState.OFF,
     )

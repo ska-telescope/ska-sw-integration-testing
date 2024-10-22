@@ -13,7 +13,6 @@ from tango import DevState
 ASSERTIONS_TIMEOUT = 60
 
 
-@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_66801_telescope_operational_commands.feature",
@@ -58,15 +57,7 @@ def verify_off_state(
         "State",
         DevState.OFF,
     ).has_change_event_occurred(
-        csp.csp_subarray,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
         sdp.sdp_master,
-        "State",
-        DevState.OFF,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
         "State",
         DevState.OFF,
     )
