@@ -2120,17 +2120,17 @@ reference = "PyPI-public"
 
 [[package]]
 name = "ska-control-model"
-version = "1.1.0"
+version = "1.1.1"
 description = "The SKA control model"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "ska_control_model-1.1.0-py3-none-any.whl", hash = "sha256:3a07e21125a83ae5c75dbf78bc74ff92eb99a86a019ceadbbca46c9af81df028"},
-    {file = "ska_control_model-1.1.0.tar.gz", hash = "sha256:67eed018bc84acaf5b9a4a06908e154cf6e34e1283e29941b696b058b5e14308"},
+    {file = "ska_control_model-1.1.1-py3-none-any.whl", hash = "sha256:2ce1934e0c99fff52eebd33598781fd2e177a430ae37c1532060dfd02ccd7e12"},
+    {file = "ska_control_model-1.1.1.tar.gz", hash = "sha256:568f98979132d5ccf1258ec71ee6756dcc8ef40f4ea2a8f96cffa33c88ce0ebe"},
 ]
 
 [package.dependencies]
-pytango = ">=9.4.2,<10.0.0"
+pytango = ">=9.4.2,<11.0.0"
 transitions = ">=0.9.0,<0.10.0"
 
 [package.source]
