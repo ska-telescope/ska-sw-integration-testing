@@ -8,7 +8,7 @@ Feature: test Scan and EndScan commands flow for the Mid Subarray
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in the READY obsState
-        When I invoke scan command
+        When I issue the Scan command to subarray
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK   
         Then the TMC, CSP and SDP subarrays transition to SCANNING obsState
         And subarrays transitions to obsState READY once the scan duration is elapsed
