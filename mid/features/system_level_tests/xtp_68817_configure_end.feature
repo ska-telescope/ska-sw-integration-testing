@@ -9,7 +9,7 @@ Feature: test Configure and End commands flow for the Mid Subarray
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And TMC subarray in ObsState IDLE
         When I issue the Configure command to subarray
-        Then the Telescope consisting of SDP and CSP devices must transition to READY obsState
+        Then the Telescope consisting of SDP and CSP devices transition to READY obsState
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
         And CSP subarray leaf node starts generating delay values
         And SDP subarray scanType reflects correctly configured <scan_type>
@@ -22,8 +22,8 @@ Feature: test Configure and End commands flow for the Mid Subarray
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in READY ObsState
-        When I issue End command to subarray 
-        Then the Telescope consisting of SDP and CSP devices must transition to IDLE obsState
-        And the DishMaster transitions pointingState READY
+        When I issue the End command to subarray 
+        Then the Telescope consisting of SDP and CSP devices transition to IDLE obsState
+        And the DishMaster transitions to pointingState READY
 
     

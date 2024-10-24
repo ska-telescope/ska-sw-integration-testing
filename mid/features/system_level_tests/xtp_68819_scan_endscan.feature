@@ -18,7 +18,7 @@ Feature: test Scan and EndScan commands flow for the Mid Subarray
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in Scanning ObsState
-        When I issue the Endscan command to the subarray 
+        When I issue the EndScan command to the subarray 
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK  
-        Then the TMC, CSP and SDP subarray transitions to ObsState READY
-        And the DishMaster transitions pointingState READY
+        Then the TMC, CSP and SDP subarrays transition to ObsState READY
+        And the DishMaster transitions to pointingState READY
