@@ -7,7 +7,7 @@ Feature: test Configure and End commands flow for the Mid Subarray
     Scenario: Configure a Mid telescope subarray for a scan using TMC
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
-        And TMC subarray in ObsState IDLE
+        And subarray in ObsState IDLE
         When I issue the Configure command to subarray
         Then the Telescope consisting of SDP and CSP devices transition to READY obsState
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
