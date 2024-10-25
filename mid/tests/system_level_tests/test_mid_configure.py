@@ -43,7 +43,7 @@ def test_telescope_configure_command():
     devices for pairwise testing"""
 
 
-@given("TMC subarray in ObsState IDLE")
+@given("subarray in ObsState IDLE")
 def set_subarray_to_idle(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
