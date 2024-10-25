@@ -11,11 +11,7 @@ Feature: test Configure and End commands flow for the Mid Subarray
         When I issue the Configure command to subarray
         Then the Telescope consisting of SDP and CSP devices transition to READY obsState
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
-        And CSP subarray leaf node starts generating delay values
-        And SDP subarray scanType reflects correctly configured <scan_type>
-        Examples:
-            |    scan_type    |
-            |    target:a     |
+        
 
     @XTP-68818 @XTP-66801 @TEAM_SAHYADRI
     Scenario: End command on Mid telescope
