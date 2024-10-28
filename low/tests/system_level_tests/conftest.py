@@ -73,6 +73,23 @@ def given_the_sut(
     )
 
 
+def check_devices_state_on(
+    event_tracer: TangoEventTracer,
+    devices: dict,
+    expected_state: DevState = DevState.ON,
+):
+    """Helper function to check if multiple devices are in the
+    expected state."""
+    for name, device in devices.items():
+        assert_that(event_tracer).described_as(
+            f"FAILED ASSUMPTION AFTER ON COMMAND: "
+            f"{name} device ({device.dev_name()}) "
+            f"is expected to be in State {expected_state.name}"
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
+            device, "State", expected_state
+        )
+
+
 @given("telescope is in ON state")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
@@ -81,56 +98,27 @@ def check_state_is_on(
 ):
     """A method to check CentralNode.telescopeState"""
     central_node_low.move_to_on()
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "CSP devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.csp_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["csp_subarray"],
-        "State",
-        DevState.ON,
-    )
 
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "SDP devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.sdp_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["sdp_subarray"],
-        "State",
-        DevState.ON,
-    )
+    devices = {
+        "CSP Master": central_node_low.csp_master,
+        "CSP Subarray": subarray_node_low.subarray_devices["csp_subarray"],
+        "SDP Master": central_node_low.sdp_master,
+        "SDP Subarray": subarray_node_low.subarray_devices["sdp_subarray"],
+        "MCCS Master": central_node_low.mccs_master,
+        "MCCS Subarray": subarray_node_low.subarray_devices["mccs_subarray"],
+    }
 
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ON COMMAND: "
-        "MCCS devices"
-        "are expected to be in State ON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.mccs_master,
-        "State",
-        DevState.ON,
-    ).has_change_event_occurred(
-        subarray_node_low.subarray_devices["mccs_subarray"],
-        "State",
-        DevState.ON,
-    )
+    # Check if all devices are in ON state
+    check_devices_state_on(event_tracer, devices)
+
+    # Check if the Central Node is in TelescopeState ON
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ON COMMAND: "
         "Central Node device"
         f"({central_node_low.central_node.dev_name()}) "
         "is expected to be in TelescopeState ON",
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.central_node,
-        "telescopeState",
-        DevState.ON,
+        central_node_low.central_node, "telescopeState", DevState.ON
     )
 
 
