@@ -34,7 +34,7 @@ def test_configure_command():
 # @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarray {subarray_id} is in IDLE ObsState"))
+@given(parsers.parse("subarray is in IDLE ObsState"))
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,

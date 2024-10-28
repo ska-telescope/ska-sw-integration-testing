@@ -34,7 +34,7 @@ def test_telescope_end():
 # @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarray {subarray_id} is in READY ObsState"))
+@given(parsers.parse("subarray is in READY ObsState"))
 def subarray_in_ready_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
