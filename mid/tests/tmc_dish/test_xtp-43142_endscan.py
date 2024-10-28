@@ -21,7 +21,7 @@ from tests.resources.test_support.enum import DishMode, PointingState
 
 @pytest.mark.tmc_dish
 @scenario(
-    "../../features/tmc_dish/xtp-43142_endscan.feature",
+    "../../mid/features/tmc_dish/xtp-43142_endscan.feature",
     "TMC mid executes EndScan command on DISH",
 )
 def test_tmc_dish_endscan():

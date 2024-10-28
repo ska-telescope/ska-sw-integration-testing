@@ -14,7 +14,7 @@ from tests.resources.test_harness.helpers import (
 
 @pytest.mark.tmc_sdp
 @scenario(
-    "../../features/tmc_sdp/xtp-29293_assign_resources.feature",
+    "../../mid/features/tmc_sdp/xtp-29293_assign_resources.feature",
     "Assign resources to SDP subarray using TMC",
 )
 def test_tmc_sdp_assign_resources(central_node_mid):

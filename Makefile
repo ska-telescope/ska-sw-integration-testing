@@ -5,7 +5,6 @@ TANGO_HOST_NAME ?= tango-databaseds
 TELESCOPE ?=  $(error Please specify TELESCOPE='SKA-mid' or TELESCOPE='SKA-low')
 KUBE_NAMESPACE ?= ska-sw-integration-testing
 KUBE_NAMESPACE_SDP ?= ska-sw-integration-testing-sdp
-K8S_TIMEOUT ?= 800s
 CI_PROJECT_PATH_SLUG ?= ska-sw-integration-testing
 CI_ENVIRONMENT_SLUG ?= ska-sw-integration-testing
 CSP_SIMULATION_ENABLED ?= true

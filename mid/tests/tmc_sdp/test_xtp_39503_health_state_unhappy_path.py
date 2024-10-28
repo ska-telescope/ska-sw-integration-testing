@@ -27,7 +27,7 @@ LOGGER = logging.getLogger(__name__)
 @pytest.mark.skip(reason="This test case is not in the scope of this story")
 @pytest.mark.tmc_sdp_unhappy
 @scenario(
-    "../../features/tmc_sdp/xtp_39503_health_state_unhappy_path.feature",
+    "../../mid/features/tmc_sdp/xtp_39503_health_state_unhappy_path.feature",
     "Verify TMC TelescopeHealthState transition based on SDP Controller"
     + " HealthState",
 )
