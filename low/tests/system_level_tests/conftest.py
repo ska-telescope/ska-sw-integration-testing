@@ -5,7 +5,7 @@ from assertpy import assert_that
 from pytest_bdd import given
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer, log_events
-from tango import DevState
+from tango import DeviceProxy, DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
@@ -167,13 +167,22 @@ def set_subarray_to_idle(
     """Helper method to set subarray to IDLE ObsState."""
     # Subscribe to obsState change events
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    cbf_proc1 = DeviceProxy("low-cbf/processor/0.0.0")
+    cbf_proc2 = DeviceProxy("low-cbf/processor/0.0.1")
 
+    cbf_proc1.serialnumber = "XFL14SLO1LIF"
+    cbf_proc1.subscribetoallocator("low-cbf/allocator/0")
+    cbf_proc1.register()
+
+    cbf_proc2.serialnumber = "XFL1HOOQ1Y44"
+    cbf_proc2.subscribetoallocator("low-cbf/allocator/0")
+    cbf_proc2.register()
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
-    central_node_low.set_serial_number_of_cbf_processor()
+    # central_node_low.set_serial_number_of_cbf_processor()
     _, unique_id = central_node_low.store_resources(assign_input_json)
 
     # Verify longRunningCommandResult for the TMC Central Node
