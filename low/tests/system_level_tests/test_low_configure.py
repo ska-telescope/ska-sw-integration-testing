@@ -6,11 +6,11 @@ from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
+from ska_tango_testing.mock.placeholders import Anything
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
-from ska_tango_testing.mock.placeholders import Anything
 from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
@@ -18,9 +18,10 @@ from tests.resources.test_support.common_utils.tmc_helpers import (
 from tests.system_level_tests.conftest import (
     check_subarray_obsstate,
     set_subarray_to_idle,
+    subscribe_to_obsstate_events,
 )
 
-TIMEOUT = 150
+TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
@@ -45,6 +46,7 @@ def subarray_in_idle_obsstate(
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     set_subarray_to_idle(
         central_node_low,
         subarray_node_low,
