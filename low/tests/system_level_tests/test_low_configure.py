@@ -2,6 +2,7 @@
 import json
 
 import pytest
+from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
@@ -10,9 +11,11 @@ from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.result_code import ResultCode
+from tests.resources.test_support.common_utils.tmc_helpers import (
+    prepare_json_args_for_commands,
+)
 from tests.system_level_tests.conftest import (
     check_subarray_obsstate,
-    execute_command,
     set_subarray_to_idle,
 )
 
@@ -51,12 +54,25 @@ def subarray_in_idle_obsstate(
 
 @when("I configure it for a scan")
 def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
-    execute_command(
-        subarray_node_low,
-        event_tracer,
-        command_name="Configure",
-        command_input_factory=command_input_factory,
-        expected_obs_state=ObsState.CONFIGURING,
+    configure_input_json = prepare_json_args_for_commands(
+        "configure_low", command_input_factory
+    )
+    _, unique_id = subarray_node_low.store_configuration_data(
+        configure_input_json
+    )
+
+    # Verify longRunningCommandResult for the TMC Subarray Node
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (unique_id[0], COMMAND_COMPLETED),
     )
 
 
