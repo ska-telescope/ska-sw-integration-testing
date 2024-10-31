@@ -30,8 +30,6 @@ from tests.system_level_tests.utils.json_file_input_handler import (
 
 TIMEOUT = 100
 
-
-@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_68817_configure_end.feature",
