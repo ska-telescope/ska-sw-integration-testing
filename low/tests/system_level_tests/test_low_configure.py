@@ -6,7 +6,6 @@ from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
-from ska_tango_testing.mock.placeholders import Anything
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
@@ -25,7 +24,7 @@ TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.system_level_tests2
+@pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
     "Configure the Low telescope subarray using TMC",
@@ -75,7 +74,7 @@ def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (Anything, COMMAND_COMPLETED),
+        (pytest.unique_id[0], COMMAND_COMPLETED),
     )
 
 

@@ -2,7 +2,8 @@
 import json
 
 import pytest
-from pytest_bdd import given, parsers, scenario, then, when
+from assertpy import assert_that
+from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -20,7 +21,7 @@ TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.system_level_tests
+@pytest.mark.system_level_tests2
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
     "End Configuration to the low telescope subarray using TMC",
@@ -34,7 +35,7 @@ def test_telescope_end():
 # @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarray is in READY ObsState"))
+@given("subarray is in READY ObsState")
 def subarray_in_ready_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -56,13 +57,25 @@ def subarray_in_ready_obsstate(
 
 @when("I end the configuration")
 def invoke_end(
-    central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
-    command_input_factory,
     event_tracer: TangoEventTracer,
 ):
     """Invokes End command"""
-    subarray_node_low.execute_transition("End")
+    _, pytest.unique_id = subarray_node_low.end_observation()
+
+    # Verify longRunningCommandResult for the TMC Subarray Node
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id[0], COMMAND_COMPLETED),
+    )
 
 
 @then("the TMC, CSP, SDP and MCCS subarrays transition to IDLE obsState")
