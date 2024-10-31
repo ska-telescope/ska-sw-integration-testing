@@ -57,7 +57,7 @@ def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     configure_input_json = prepare_json_args_for_commands(
         "configure_low", command_input_factory
     )
-    _, unique_id = subarray_node_low.store_configuration_data(
+    _, pytest.unique_id = subarray_node_low.store_configuration_data(
         configure_input_json
     )
 
@@ -72,7 +72,7 @@ def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (unique_id[0], COMMAND_COMPLETED),
+        (pytest.unique_id[0], COMMAND_COMPLETED),
     )
 
 
