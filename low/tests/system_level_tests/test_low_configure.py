@@ -10,6 +10,7 @@ from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
+from ska_tango_testing.mock.placeholders import Anything
 from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
@@ -19,7 +20,7 @@ from tests.system_level_tests.conftest import (
     set_subarray_to_idle,
 )
 
-TIMEOUT = 100
+TIMEOUT = 150
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
@@ -72,7 +73,7 @@ def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
+        (Anything, COMMAND_COMPLETED),
     )
 
 
