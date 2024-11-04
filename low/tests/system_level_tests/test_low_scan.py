@@ -9,7 +9,6 @@ from tests.resources.test_harness.constant import COMMAND_COMPLETED
 from tests.resources.test_harness.helpers import (
     update_scan_duration,
     update_scan_id,
-    update_scan_type,
 )
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
@@ -50,7 +49,6 @@ def subarray_in_ready_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
-    scan_types: str,
     scan_duration: int,
 ):
     # First ensure the subarray is in IDLE state
@@ -66,8 +64,7 @@ def subarray_in_ready_obsstate(
         "configure_low", command_input_factory
     )
 
-    update_scan_duration(configure_input_json, scan_duration)
-    configure_json = update_scan_type(configure_input_json, scan_types)
+    configure_json = update_scan_duration(configure_input_json, scan_duration)
 
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
         configure_json
