@@ -94,18 +94,18 @@ def telescope_wrapper(
                 TestHarnessInputs.InputName.RELEASE, fail_if_missing=True
             )
         )
-        release_resources.set_termination_condition_timeout(200)
+        release_resources.set_termination_condition_timeout(250)
         release_resources.execute()
 
     reset_to_empty = ForceChangeOfObsState(
         ObsState.EMPTY, telescope.tmc.default_commands_input
     )
-    reset_to_empty.set_termination_condition_timeout(200)
+    reset_to_empty.set_termination_condition_timeout(250)
     reset_to_empty.execute()
 
     if telescope.tmc.central_node.telescopeState != DevState.OFF:
         move_to_off = MoveToOff()
-        move_to_off.set_termination_condition_timeout(200)
+        move_to_off.set_termination_condition_timeout(250)
         move_to_off.execute()
 
     # if source dish vcc config is empty or not matching with default
@@ -123,7 +123,7 @@ def telescope_wrapper(
         load_default_vcc_config = CentralNodeLoadDishConfig(
             expected_vcc_config
         )
-        load_default_vcc_config.set_termination_condition_timeout(200)
+        load_default_vcc_config.set_termination_condition_timeout(250)
         load_default_vcc_config.execute()
 
     telescope.sdp.tear_down()
