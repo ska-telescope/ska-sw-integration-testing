@@ -100,6 +100,7 @@ def check_devices_state_on(
         )
 
 
+@given("a Telescope consisting of SDP, CSP and MCCS that is ON")
 @given("telescope is in ON state")
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
