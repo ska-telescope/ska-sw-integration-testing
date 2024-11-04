@@ -76,7 +76,7 @@ def invoke_end(
     )
 
 
-@then("the TMC, CSP, SDP and MCCS subarrays transition to IDLE obsState")
+@then("the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState")
 def subsystem_subarrays_in_idle(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
