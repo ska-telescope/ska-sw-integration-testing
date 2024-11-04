@@ -120,8 +120,14 @@ def invoke_scan(
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
-    assert (
-        subarray_node_low.subarray_devices["sdp_subarray"].ScanType == scan_id
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+        "Scan ID on SDP devices"
+        "are expected to be as per JSON",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_devices["sdp_subarray"],
+        "scanID",
+        (scan_id),
     )
 
 
