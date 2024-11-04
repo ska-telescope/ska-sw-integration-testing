@@ -24,7 +24,7 @@ TIMEOUT = 100
 @pytest.mark.system_level_tests3
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
-    "End Configuration to the low telescope subarray using TMC",
+    "Execute Scan on the Low telescope",
 )
 def test_telescope_scan():
     """
