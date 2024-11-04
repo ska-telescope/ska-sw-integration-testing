@@ -109,6 +109,15 @@ def invoke_scan(
     scan_input_json = update_scan_id(scan_json, scan_id)
     _, pytest.unique_id = subarray_node_low.store_scan_data(scan_input_json)
     assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+        "Scan ID on SDP devices"
+        "are expected to be as per JSON",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_devices["sdp_subarray"],
+        "scanID",
+        scan_id,
+    )
+    assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
         "'the subarray is in SCANNING obsState'"
         "TMC Subarray Node device"
@@ -119,15 +128,6 @@ def invoke_scan(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
-    )
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER SCAN COMMAND: "
-        "Scan ID on SDP devices"
-        "are expected to be as per JSON",
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_devices["sdp_subarray"],
-        "scanID",
-        (scan_id),
     )
 
 
