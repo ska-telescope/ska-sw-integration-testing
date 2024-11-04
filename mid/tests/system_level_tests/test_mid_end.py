@@ -31,7 +31,6 @@ from tests.system_level_tests.conftest import (
 TIMEOUT = 100
 
 
-@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_68817_configure_end.feature",
