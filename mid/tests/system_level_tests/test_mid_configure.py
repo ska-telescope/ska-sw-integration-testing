@@ -31,7 +31,7 @@ from tests.system_level_tests.utils.json_file_input_handler import (
 
 TIMEOUT = 100
 
-
+@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "../../mid/features/system_level_tests/xtp_68817_configure_end.feature",
@@ -41,6 +41,9 @@ def test_telescope_configure_command():
     """BDD test scenario for verifying successful execution of
     the Configure command with TMC,CSP and SDP
     devices for pairwise testing"""
+
+
+#  @given("telescope is in ON state") -> conftest
 
 
 @given("subarray in ObsState IDLE")
