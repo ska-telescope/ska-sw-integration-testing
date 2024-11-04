@@ -21,7 +21,7 @@ from tests.system_level_tests.conftest import (
 TIMEOUT = 100
 
 
-@pytest.mark.system_level_tests3
+@pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
     "EndScan to the low telescope subarray using TMC",
