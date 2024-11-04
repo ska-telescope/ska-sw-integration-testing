@@ -16,7 +16,7 @@ Feature: This feature describes assigning, releasing, and configuring resources 
         And telescope is in ON state
         And subarray is in the IDLE obsState
         When I release all resources assigned to it
-        Then the TMC, CSP, SDP, and MCCS subarrays must be in EMPTY obsState
+        Then the TMC, CSP, SDP, and MCCS subarrays transition to EMPTY obsState
 
     @XTP-66007 @XTP-64112
     Scenario: Configure the Low telescope subarray using TMC

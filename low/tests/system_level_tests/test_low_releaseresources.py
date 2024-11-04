@@ -96,7 +96,7 @@ def invoke_release_resources(
     )
 
 
-@then("the TMC, CSP, SDP and MCCS subarray must be in EMPTY obsState")
+@then("the TMC, CSP, SDP, and MCCS subarrays transition to EMPTY obsState")
 def subsystem_subarrays_in_empty(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
