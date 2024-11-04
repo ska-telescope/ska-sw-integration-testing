@@ -51,7 +51,7 @@ def subarray_in_ready_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
-    scan_type: str,
+    scan_types: str,
     scan_duration: int,
 ):
     # First ensure the subarray is in IDLE state
@@ -68,7 +68,7 @@ def subarray_in_ready_obsstate(
     )
 
     update_scan_duration(configure_input_json, scan_duration)
-    configure_json = update_scan_type(configure_input_json, scan_type)
+    configure_json = update_scan_type(configure_input_json, scan_types)
 
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
         configure_json
