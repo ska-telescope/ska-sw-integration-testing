@@ -61,7 +61,7 @@ def given_the_sut(
         subarray_node_low.subarray_node, "longRunningCommandResult"
     )
     event_tracer.subscribe_event(
-        central_node_low.subarray_devices["sdp_subarray"], "scanID"
+        subarray_node_low.subarray_devices["sdp_subarray"], "scanID"
     )
     log_events(
         {
