@@ -13,6 +13,7 @@ from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.system_level_tests.utils import (
     set_subarray_to_idle,
     set_subarray_to_ready,
+    check_subarray_obsstate,
 )
 
 TIMEOUT = 100
@@ -87,9 +88,8 @@ def subsystem_subarrays_in_idle(
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
-    set_subarray_to_idle(
-        central_node_low,
+    check_subarray_obsstate(
         subarray_node_low,
-        command_input_factory,
         event_tracer,
+        obs_state=ObsState.IDLE,
     )
