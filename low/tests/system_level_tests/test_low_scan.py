@@ -1,11 +1,16 @@
 """Test module for ReleaseResources functionality (XTP-65636)"""
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import COMMAND_COMPLETED
+from tests.resources.test_harness.helpers import (
+    update_scan_duration,
+    update_scan_id,
+    update_scan_type,
+)
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -15,7 +20,6 @@ from tests.resources.test_support.common_utils.tmc_helpers import (
 from tests.system_level_tests.conftest import (
     check_subarray_obsstate,
     set_subarray_to_idle,
-    set_subarray_to_ready,
 )
 
 TIMEOUT = 100
@@ -35,12 +39,20 @@ def test_telescope_scan():
 # @given("telescope is in ON state") -> conftest
 
 
+@given(
+    parsers.parse(
+        "subarray is in READY ObsState with {scan_types} scan_types "
+        "and {scan_duration} scan_duration"
+    )
+)
 @given("subarray is in READY ObsState")
 def subarray_in_ready_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
+    scan_type: str,
+    scan_duration: int,
 ):
     # First ensure the subarray is in IDLE state
     set_subarray_to_idle(
@@ -50,16 +62,39 @@ def subarray_in_ready_obsstate(
         event_tracer,
     )
     # Then set it to READY state
-    set_subarray_to_ready(
-        subarray_node_low, command_input_factory, event_tracer
+
+    configure_input_json = prepare_json_args_for_commands(
+        "configure_low", command_input_factory
+    )
+
+    update_scan_duration(configure_input_json, scan_duration)
+    configure_json = update_scan_type(configure_input_json, scan_type)
+
+    _, pytest.unique_id = subarray_node_low.store_configuration_data(
+        configure_json
+    )
+
+    # Verify longRunningCommandResult for the TMC Subarray Node
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id[0], COMMAND_COMPLETED),
     )
 
 
-@when("I invoke scan command")
+@when(parsers.parse("I invoke scan command with scan id {scan_id}"))
 def invoke_scan(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
+    scan_id: int,
 ):
     """Invoke the Scan command on TMC.
 
@@ -75,7 +110,8 @@ def invoke_scan(
     scan_json = prepare_json_args_for_commands(
         "scan_low", command_input_factory
     )
-    _, pytest.unique_id = subarray_node_low.store_scan_data(scan_json)
+    scan_input_json = update_scan_id(scan_json, scan_id)
+    _, pytest.unique_id = subarray_node_low.store_scan_data(scan_input_json)
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
         "'the subarray is in SCANNING obsState'"
@@ -87,6 +123,9 @@ def invoke_scan(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
+    )
+    assert (
+        subarray_node_low.subarray_devices["sdp_subarray"].ScanType == scan_id
     )
 
 

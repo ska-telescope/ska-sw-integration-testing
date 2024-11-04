@@ -88,6 +88,19 @@ def update_scan_id(input_json: str, scan_id: int) -> str:
     return updated_json
 
 
+def update_scan_duration(input_json: str, scan_duration: int) -> str:
+    """
+    Method to update scan_duration in input json..
+    :param input_json: json to utilised to update values.
+
+    :param json_value: new json value to be updated in json
+    """
+    input_json = json.loads(input_json)
+    input_json["tmc"]["scan_duration"] = int(scan_duration)
+    updated_json = json.dumps(input_json)
+    return updated_json
+
+
 def check_subarray_obs_state(obs_state=None, timeout=50):
     LOGGER.info(
         f"{tmc_low_subarraynode1}.obsState : "
