@@ -4,6 +4,7 @@ import json
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
+from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
@@ -11,9 +12,9 @@ from tests.resources.test_harness.subarray_node_low import (
 )
 from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.system_level_tests.utils import (
+    check_subarray_obsstate,
     set_subarray_to_idle,
     set_subarray_to_ready,
-    check_subarray_obsstate,
 )
 
 TIMEOUT = 100
