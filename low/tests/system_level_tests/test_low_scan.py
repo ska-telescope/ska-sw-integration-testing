@@ -115,7 +115,7 @@ def invoke_scan(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_devices["sdp_subarray"],
         "scanID",
-        scan_id,
+        int(scan_id),
     )
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
