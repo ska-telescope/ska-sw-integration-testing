@@ -96,7 +96,7 @@ def update_scan_duration(input_json: str, scan_duration: int) -> str:
     :param json_value: new json value to be updated in json
     """
     input_json = json.loads(input_json)
-    input_json["tmc"]["scan_duration"] = int(scan_duration)
+    input_json["tmc"]["scan_duration"] = float(scan_duration)
     updated_json = json.dumps(input_json)
     return updated_json
 

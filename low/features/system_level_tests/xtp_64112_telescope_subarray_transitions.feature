@@ -46,6 +46,6 @@ Scenario: Execute Scan on the Low telescope
     And after the scan duration it transition back to READY obsState
     Examples:
         |scan_duration     |scan_id   |
-        |10                |1         |
-        |15                |2         |
+        |10.0              |1         |
+        |15.0              |2         |
 
