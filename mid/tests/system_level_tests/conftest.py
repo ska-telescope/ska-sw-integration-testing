@@ -31,6 +31,7 @@ from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
+from ska_integration_test_harness.production.tmc_wrapper import TMCWrapper
 from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
@@ -83,12 +84,13 @@ def telescope_wrapper(
     # build the wrapper of the telescope and its sub-systems
     telescope = test_harness_builder.build()
     yield telescope
+    assert isinstance(telescope.tmc, TMCWrapper)
 
     # after a test is completed, reset the telescope to its initial state
     # (obsState=READY, telescopeState=OFF, no resources assigned)
     if telescope.tmc.subarray_node.obsState == ObsState.IDLE:
         release_resources = CentralNodeReleaseResources(
-            telescope.tmc.subarray_node.default_commands_input.get_input(
+            telescope.tmc.default_commands_input.get_input(
                 TestHarnessInputs.InputName.RELEASE, fail_if_missing=True
             )
         )
@@ -96,7 +98,7 @@ def telescope_wrapper(
         release_resources.execute()
 
     reset_to_empty = ForceChangeOfObsState(
-        ObsState.EMPTY, telescope.tmc.subarray_node.default_commands_input
+        ObsState.EMPTY, telescope.tmc.default_commands_input
     )
     reset_to_empty.set_termination_condition_timeout(100)
     reset_to_empty.execute()
@@ -110,7 +112,7 @@ def telescope_wrapper(
     # dish vcc then load default dish vcc config
     # CSP_SIMULATION_ENABLED condition will be removed after testing
     # with real csp
-    tmc_centralnode = telescope.tmc.central_node.default_commands_input
+    tmc_centralnode = telescope.tmc.default_commands_input
     expected_vcc_config = tmc_centralnode.default_vcc_config_input
     if (
         not telescope.tmc.csp_master_leaf_node.sourceDishVccConfig
@@ -127,6 +129,7 @@ def telescope_wrapper(
     telescope.sdp.tear_down()
     telescope.csp.tear_down()
     telescope.dishes.tear_down()
+    # telescope.tear_down()
 
 
 @pytest.fixture
