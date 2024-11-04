@@ -42,5 +42,5 @@ Scenario: Execute Scan on the Low telescope
 	And telescope is in ON state
 	And subarray is in READY ObsState
 	When I invoke scan command 
-	Then the TMC, CSP, SDP, and MCCS subarrays transition to SCANNING obsState
+	Then the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState
     And after the scan duration it transition back to READY obsState

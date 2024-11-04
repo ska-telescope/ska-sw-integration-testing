@@ -90,7 +90,7 @@ def invoke_scan(
     )
 
 
-@then("the TMC, CSP, SDP, and MCCS subarrays transition to SCANNING obsState")
+@then("the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState")
 def subsystem_subarrays_in_scanning(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
