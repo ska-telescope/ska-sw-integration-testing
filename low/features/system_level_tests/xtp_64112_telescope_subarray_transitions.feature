@@ -40,12 +40,12 @@ Scenario: End Configuration to the low telescope subarray using TMC
 Scenario: Execute Scan on the Low telescope
     Given a Low telescope
     And telescope is in ON state
-    And subarray is in READY ObsState with <scan_types> scan_types and <scan_duration> scan_duration
+    And subarray is in READY ObsState with <scan_duration> scan_duration
     When I invoke scan command with scan id <scan_id>
     Then the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState
     And after the scan duration it transition back to READY obsState
     Examples:
-        |scan_types                                   |scan_duration     |scan_id   |
-        |"science1"                                   |10                |1         |
-        |"science_A"                                  |15                |2         |
+        |scan_duration     |scan_id   |
+        |10                |1         |
+        |15                |2         |
 

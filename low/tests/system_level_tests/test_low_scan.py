@@ -41,8 +41,7 @@ def test_telescope_scan():
 
 @given(
     parsers.parse(
-        "subarray is in READY ObsState with {scan_types} scan_types "
-        "and {scan_duration} scan_duration"
+        "subarray is in READY ObsState with {scan_duration} scan_duration"
     )
 )
 @given("subarray is in READY ObsState")

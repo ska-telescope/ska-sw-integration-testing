@@ -65,15 +65,6 @@
               "polarisations_id": "all"
             }
           }
-        },
-        {
-          "scan_type_id": "science_A",
-          "derive_from": ".default",
-          "beams": {
-            "vis0": {
-              "field_id": "field_a"
-            }
-          }
         }
       ]
     },
