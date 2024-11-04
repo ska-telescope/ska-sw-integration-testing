@@ -13,7 +13,7 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
-from tests.system_level_tests.conftest import (
+from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     subscribe_to_obsstate_events,
 )
