@@ -24,7 +24,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 @pytest.mark.system_level_tests2
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
-    "End Configuration to the low telescope subarray using TMC",
+    "End Configuration to the Low telescope subarray using TMC",
 )
 def test_telescope_end():
     """
