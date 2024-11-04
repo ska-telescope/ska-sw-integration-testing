@@ -18,7 +18,7 @@ Feature: test Configure and End commands flow for the Mid Subarray
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in READY ObsState
-        When I issue the End command to subarray 
+        When I issue the End command to subarray
         Then the Telescope consisting of SDP and CSP devices transition to IDLE obsState
         And the DishMaster transitions to pointingState READY
 

@@ -65,7 +65,7 @@ def subarray_in_ready_state(
     )
 
 
-@when("I issue the End command to subarray ")
+@when("I issue the End command to subarray")
 def send_end_command(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
