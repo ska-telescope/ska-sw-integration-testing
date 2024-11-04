@@ -7,6 +7,12 @@ import pytest
 from assertpy import assert_that
 from pytest_bdd import given, then
 from ska_control_model import ObsState, ResultCode
+from ska_integration_test_harness.actions.central_node import (
+    CentralNodeLoadDishConfig,
+    CentralNodeReleaseResources,
+    MoveToOff,
+)
+from ska_integration_test_harness.actions.subarray import ForceChangeOfObsState
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
@@ -29,6 +35,7 @@ from ska_integration_test_harness.structure.telescope_wrapper import (
     TelescopeWrapper,
 )
 from ska_tango_testing.integration import TangoEventTracer, log_events
+from tango import DevState
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -79,7 +86,47 @@ def telescope_wrapper(
 
     # after a test is completed, reset the telescope to its initial state
     # (obsState=READY, telescopeState=OFF, no resources assigned)
-    telescope.tear_down()
+    if telescope.tmc.subarray_node.obsState == ObsState.IDLE:
+        release_resources = CentralNodeReleaseResources(
+            telescope.tmc.subarray_node.default_commands_input.get_input(
+                TestHarnessInputs.InputName.RELEASE, fail_if_missing=True
+            )
+        )
+        release_resources.set_termination_condition_timeout(100)
+        release_resources.execute()
+
+    reset_to_empty = ForceChangeOfObsState(
+        ObsState.EMPTY, telescope.tmc.subarray_node.default_commands_input
+    )
+    reset_to_empty.set_termination_condition_timeout(100)
+    reset_to_empty.execute()
+
+    if telescope.tmc.central_node.telescopeState != DevState.OFF:
+        move_to_off = MoveToOff()
+        move_to_off.set_termination_condition_timeout(100)
+        move_to_off.execute()
+
+    # if source dish vcc config is empty or not matching with default
+    # dish vcc then load default dish vcc config
+    # CSP_SIMULATION_ENABLED condition will be removed after testing
+    # with real csp
+    tmc_centralnode = telescope.tmc.central_node.default_commands_input
+    expected_vcc_config = tmc_centralnode.default_vcc_config_input
+    if (
+        not telescope.tmc.csp_master_leaf_node.sourceDishVccConfig
+        or not expected_vcc_config.is_equal_to_json(
+            telescope.tmc.csp_master_leaf_node.sourceDishVccConfig
+        )
+    ):
+        load_default_vcc_config = CentralNodeLoadDishConfig(
+            expected_vcc_config
+        )
+        load_default_vcc_config.set_termination_condition_timeout(100)
+        load_default_vcc_config.execute()
+
+    telescope.sdp.tear_down()
+    telescope.csp.tear_down()
+    telescope.dishes.tear_down()
 
 
 @pytest.fixture
