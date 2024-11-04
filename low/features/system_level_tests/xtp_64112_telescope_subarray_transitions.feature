@@ -49,3 +49,9 @@ Scenario: Execute Scan on the Low telescope
         |10.0              |1         |
         |15.0              |2         |
 
+Scenario: EndScan to the low telescope subarray using TMC
+	Given a Low telescope
+	And telescope is in ON state
+	And subarray is in SCANNING obsState
+	When I end the scan
+	Then the TMC, CSP, SDP and MCCS subarrays transition to READY obsState
