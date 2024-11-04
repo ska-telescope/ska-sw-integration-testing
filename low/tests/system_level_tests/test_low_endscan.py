@@ -26,7 +26,7 @@ TIMEOUT = 100
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
     "EndScan to the low telescope subarray using TMC",
 )
-def test_telescope_scan():
+def test_telescope_endscan():
     """
     Test case to verify scan functionality
     """
@@ -71,6 +71,11 @@ def subarray_in_ready_obsstate(
         "longRunningCommandResult",
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
+    check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.SCANNING,
+    )
 
 
 @when("I end the scan")
@@ -78,7 +83,7 @@ def invoke_endscan(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
 ):
-    """Invokes EndSCan command"""
+    """Invokes EndSCan command before scan duration"""
     _, pytest.unique_id = subarray_node_low.remove_scan_data()
 
     # Verify longRunningCommandResult for the TMC Subarray Node
