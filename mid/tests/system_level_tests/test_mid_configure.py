@@ -34,8 +34,7 @@ TIMEOUT = 100
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "../../mid/features/system_level_tests/"
-    + "xtp_65630_telescope_subarray_transitions",
+    "system_level_tests/" + "xtp_65630_telescope_subarray_transitions",
     "Configure a Mid telescope subarray for a scan using TMC",
 )
 def test_telescope_configure_command():
