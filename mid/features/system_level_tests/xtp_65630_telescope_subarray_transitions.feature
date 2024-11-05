@@ -1,7 +1,5 @@
-Feature: test Assign and Release Resources for the Mid Subarray
-    This feature tests the functionality of assigning and releasing resources for the Mid subarray in 
-    the telescope system. The scenarios ensure that the subarrays transition correctly between their 
-    operational states
+Feature: This feature describes assigning, releasing, and configuring resources for the Mid telescope subarray 
+    with TMC, including expected state transitions across TMC, CSP, SDP, and DISH subsystems.
 
 	@XTP-65630 @XTP-66801 @TEAM_SAHYADRI
 	Scenario: Assign resources to Mid subarray
@@ -23,7 +21,6 @@ Feature: test Assign and Release Resources for the Mid Subarray
 		Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
 		And the TMC, CSP and SDP subarrays transition to EMPTY obsState
 		And the TMC receives LongRunningCommandResult event OK from subsystems CSP and SDP
-		
 
 	@XTP-68817 @XTP-66801 @TEAM_SAHYADRI
     Scenario: Configure a Mid telescope subarray for a scan using TMC
