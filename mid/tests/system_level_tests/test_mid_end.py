@@ -132,7 +132,7 @@ def verify_pointing_state_after_end(
     for dish_id in DISH_IDS:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to READY pointingState"
-        ).has_change_event_occurred(
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
             dishes.dish_master_dict[dish_id],
             "pointingState",
             PointingState.READY,
