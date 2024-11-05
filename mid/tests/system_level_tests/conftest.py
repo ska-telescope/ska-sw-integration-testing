@@ -129,7 +129,6 @@ def telescope_wrapper(
     telescope.sdp.tear_down()
     telescope.csp.tear_down()
     telescope.dishes.tear_down()
-    # telescope.tear_down()
 
 
 @pytest.fixture
