@@ -1,4 +1,4 @@
-"""Test module for AssignResources functionality (XTP-65630)"""
+"""Test module for Configure functionality (XTP-68817)"""
 
 import pytest
 from assertpy import assert_that
