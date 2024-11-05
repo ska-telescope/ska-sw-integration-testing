@@ -159,9 +159,6 @@ def verify_ready_state(
         previous_value=context_fixt.starting_state,
     )
 
-    # override the starting state for the next step
-    context_fixt.starting_state = ObsState.READY
-
 
 @then("the DishMaster transitions to dishMode OPERATE and pointingState TRACK")
 def check_dish_mode_and_pointing_state_after_configure(
