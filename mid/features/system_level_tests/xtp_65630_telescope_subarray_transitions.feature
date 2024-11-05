@@ -23,3 +23,23 @@ Feature: test Assign and Release Resources for the Mid Subarray
 		Then the TMC, CSP and SDP subarrays transition to RESOURCING obsState
 		And the TMC, CSP and SDP subarrays transition to EMPTY obsState
 		And the TMC receives LongRunningCommandResult event OK from subsystems CSP and SDP
+		
+
+	@XTP-68817 @XTP-66801 @TEAM_SAHYADRI
+    Scenario: Configure a Mid telescope subarray for a scan using TMC
+        Given a Mid telescope
+        And a Telescope consisting of SDP, CSP and DISH that is ON
+        And subarray in ObsState IDLE
+        When I issue the Configure command to subarray
+        Then the Telescope consisting of SDP and CSP devices transition to READY obsState
+        And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
+        
+
+    @XTP-68818 @XTP-66801 @TEAM_SAHYADRI
+    Scenario: End command on Mid telescope
+        Given a Mid telescope
+        And a Telescope consisting of SDP, CSP and DISH that is ON
+        And subarray is in READY ObsState
+        When I issue the End command to subarray
+        Then the Telescope consisting of SDP and CSP devices transition to IDLE obsState
+        And the DishMaster transitions to pointingState READY
