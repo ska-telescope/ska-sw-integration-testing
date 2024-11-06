@@ -44,7 +44,7 @@ def invoke_assignresources(
 ):
     """Invokes AssignResources command on TMC"""
     input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low", command_input_factory
+        "assign_resources_low_real", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
