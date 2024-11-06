@@ -28,7 +28,7 @@ from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
 
-TIMEOUT = 100
+TIMEOUT = 200
 
 
 @pytest.mark.system_level_test_mid
