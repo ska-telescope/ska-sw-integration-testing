@@ -18,14 +18,14 @@ from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
 from ska_integration_test_harness.inputs.pointing_state import PointingState
+from ska_integration_test_harness.inputs.test_harness_inputs import (
+    TestHarnessInputs,
+)
 from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     DISH_IDS,
     SubarrayTestContextData,
     _setup_event_subscriptions,
-)
-from tests.system_level_tests.utils.json_file_input_handler import (
-    MyFileJSONInput,
 )
 
 TIMEOUT = 200
@@ -43,60 +43,26 @@ def test_telescope_end_command():
 
 
 @given("subarray is in READY ObsState")
-def set_subarray_to_ready(
+def subarray_in_ready_state(
     context_fixt: SubarrayTestContextData,
-    central_node_facade: TMCCentralNodeFacade,
     subarray_node_facade: TMCSubarrayNodeFacade,
+    default_commands_inputs: TestHarnessInputs,
+    central_node_facade: TMCCentralNodeFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
+    """Ensure the subarray is in the READY state."""
     _setup_event_subscriptions(
         central_node_facade, subarray_node_facade, csp, sdp, event_tracer
     )
-    context_fixt.when_action_name = "AssignResources"
-    json_input = MyFileJSONInput(
-        "centralnode", "assign_resources_mid"
-    ).with_attribute("subarray_id", 1)
-
-    context_fixt.when_action_result = central_node_facade.assign_resources(
-        json_input,
-        wait_termination=False,
-    )
-    context_fixt.when_action_name = "Configure"
-
-    json_input = MyFileJSONInput("subarray", "configure_mid")
-
-    context_fixt.when_action_result = subarray_node_facade.configure(
-        json_input,
-        wait_termination=False,
-    )
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to READY."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    )
-
-    # override the starting state for the next step
     context_fixt.starting_state = ObsState.READY
+
+    subarray_node_facade.force_change_of_obs_state(
+        ObsState.READY,
+        default_commands_inputs,
+        wait_termination=True,
+    )
 
 
 @when("I issue the End command to subarray")
