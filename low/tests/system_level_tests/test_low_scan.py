@@ -1,4 +1,4 @@
-"""Test module for ReleaseResources functionality (XTP-65636)"""
+"""Test module for Scan functionality (XTP-69762)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
@@ -40,7 +40,7 @@ def test_telescope_scan():
 
 @given(
     parsers.parse(
-        "subarray is in READY ObsState with {scan_duration} scan_duration"
+        "subarray is in READY ObsState with {scan_duration} scan_duration set"
     )
 )
 @given("subarray is in READY ObsState")

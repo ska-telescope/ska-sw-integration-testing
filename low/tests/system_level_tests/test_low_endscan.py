@@ -1,4 +1,4 @@
-"""Test module for ReleaseResources functionality (XTP-65636)"""
+"""Test module for EndScan functionality (XTP-69763)"""
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, scenario, then, when
