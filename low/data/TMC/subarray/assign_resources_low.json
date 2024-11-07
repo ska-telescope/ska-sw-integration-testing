@@ -184,7 +184,7 @@
               }
             ]
           },
-          "sbi_ids": ["sbi-mvp01-20200325-00014"],
+          "sbi_ids": ["sbi-mvp01-20200325-00014", "sbi-t0001-20241015-00015"],
           "script": {
             "kind": "realtime",
             "name": "vis-receive",

@@ -47,12 +47,7 @@
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-assignres/0.4",
     "resources": {
-      "receptors": [
-        "SKA001",
-        "SKA002",
-        "SKA003",
-        "SKA004"
-      ],
+      "receptors": ["S8-1", "S8-6", "S9-2", "S10-3"],
       "receive_nodes": 1
     },
     "execution_block": {
@@ -193,7 +188,7 @@
             }
           ]
         },
-        "sbi_ids": ["sbi-mvp01-20200325-00014"],
+        "sbi_ids": ["sbi-mvp01-20200325-00014", "sbi-t0001-20241015-00015"],
         "script": {
           "kind": "realtime",
           "name": "vis-receive",
