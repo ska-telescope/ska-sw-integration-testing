@@ -13,16 +13,8 @@
               "aperture_id": "AP001.01"
             },
             {
-              "station_id": 1,
-              "aperture_id": "AP001.02"
-            },
-            {
               "station_id": 2,
               "aperture_id": "AP002.01"
-            },
-            {
-              "station_id": 2,
-              "aperture_id": "AP002.02"
             }
           ],
           "number_of_channels": 8
