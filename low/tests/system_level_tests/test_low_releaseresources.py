@@ -13,7 +13,7 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_centralnode_commands,
 )
-from tests.system_level_tests.conftest import (
+from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     subscribe_to_obsstate_events,
 )
@@ -23,7 +23,7 @@ TIMEOUT = 100
 
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_64112_telescope_assign_release.feature",
+    "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
     "Release resources from Low subarray",
 )
 def test_telescope_release_resources():
@@ -44,7 +44,7 @@ def invoke_assignresources(
 ):
     """Invokes AssignResources command on TMC"""
     input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low", command_input_factory
+        "assign_resources_low_real", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
@@ -96,7 +96,7 @@ def invoke_release_resources(
     )
 
 
-@then("the TMC, CSP, SDP and MCCS subarray must be in EMPTY obsState")
+@then("the TMC, CSP, SDP, and MCCS subarrays transition to EMPTY obsState")
 def subsystem_subarrays_in_empty(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
