@@ -24,8 +24,9 @@
         "SKA036",
         "SKA063",
         "SKA100"
+
       ],
-      "receive_nodes": 1
+      "receive_nodes": 10
     },
     "execution_block": {
       "eb_id": "eb-test-20210630-00059",
@@ -145,7 +146,7 @@
     },
     "processing_blocks": [
       {
-        "pb_id": "pb-test-20211111-00059",
+        "pb_id": "pb-test-20210630-00059",
         "script": {
           "kind": "realtime",
           "name": "vis-receive",
