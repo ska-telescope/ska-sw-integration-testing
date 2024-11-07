@@ -46,12 +46,7 @@
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-assignres/0.4",
     "resources": {
-      "receptors": [
-        "SKA001",
-        "SKA002",
-        "SKA003",
-        "SKA004"
-      ],
+      "receptors": ["S8-1", "S8-6", "S9-2", "S10-3"],
       "receive_nodes": 1
     },
     "execution_block": {
