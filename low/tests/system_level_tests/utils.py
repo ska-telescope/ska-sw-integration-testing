@@ -77,7 +77,7 @@ def set_subarray_to_idle(
     cbf_proc2.register()
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low", command_input_factory
+        "assign_resources_low_real", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
     # central_node_low.set_serial_number_of_cbf_processor()
