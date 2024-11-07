@@ -29,7 +29,7 @@ Feature: This feature describes assigning, releasing, and configuring resources 
   
 
     @XTP-66037 @XTP-64112
-    Scenario: End Configuration to the low telescope subarray using TMC
+    Scenario: End Configuration to the Low telescope subarray using TMC
         Given a Low telescope
         And telescope is in ON state
         And subarray is in READY ObsState
