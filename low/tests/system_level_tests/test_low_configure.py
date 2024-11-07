@@ -14,7 +14,7 @@ from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
 )
-from tests.system_level_tests.conftest import (
+from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
     subscribe_to_obsstate_events,

@@ -16,7 +16,7 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
 )
-from tests.system_level_tests.conftest import (
+from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
 )
@@ -145,7 +145,7 @@ def subsystem_subarrays_in_scanning(
     )
 
 
-@then("after the scan duration it transition back to READY obsState")
+@then("after the scan duration they transition back to READY obsState")
 def subsystem_subarrays_in_ready(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):

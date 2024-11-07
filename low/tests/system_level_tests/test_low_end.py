@@ -11,7 +11,7 @@ from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.result_code import ResultCode
-from tests.system_level_tests.conftest import (
+from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
     set_subarray_to_ready,
@@ -21,10 +21,10 @@ TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.system_level_tests2
+@pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
-    "End Configuration to the low telescope subarray using TMC",
+    "End Configuration to the Low telescope subarray using TMC",
 )
 def test_telescope_end():
     """
@@ -78,9 +78,10 @@ def invoke_end(
     )
 
 
-@then("the TMC, CSP, SDP and MCCS subarrays transition to IDLE obsState")
-def subsystem_subarrays_in_configuring(
-    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+@then("the TMC, CSP, SDP, and MCCS subarrays transition to IDLE obsState")
+def subsystem_subarrays_in_idle(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
 ):
     """Check if all subarrays are in IDLE obsState."""
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
