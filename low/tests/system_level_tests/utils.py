@@ -116,7 +116,7 @@ def execute_command(
     """
     if command_name.lower() == "configure":
         input_json = prepare_json_args_for_commands(
-            "configure_low", command_input_factory
+            "configure_low_real", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_configuration_data(
             input_json
