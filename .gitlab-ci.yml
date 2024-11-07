@@ -424,6 +424,7 @@ k8s-test-mid:
     name: test/mid-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid 
     auto_stop_in: 1 minute
+  allow_failure: true
 
 # Job to stop the test environment for TMC
 stop-k8s-test-mid:
