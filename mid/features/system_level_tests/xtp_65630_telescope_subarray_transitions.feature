@@ -26,7 +26,7 @@ Feature: This feature describes assigning, releasing, and configuring resources 
     Scenario: Configure a Mid telescope subarray for a scan using TMC
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
-        And subarray in ObsState IDLE
+        And subarray is in the IDLE obsState
         When I issue the Configure command to subarray
         Then the TMC, CSP and SDP subarrays transition to READY obsState
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK

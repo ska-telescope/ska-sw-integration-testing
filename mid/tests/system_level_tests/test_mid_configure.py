@@ -2,7 +2,7 @@
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
@@ -11,20 +11,13 @@ from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
 from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    DISH_IDS,
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -44,52 +37,6 @@ def test_telescope_configure_command():
 
 
 #  @given("telescope is in ON state") -> conftest
-
-
-@given("subarray in ObsState IDLE")
-def set_subarray_to_idle(
-    context_fixt: SubarrayTestContextData,
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
-    context_fixt.when_action_name = "AssignResources"
-    json_input = MyFileJSONInput(
-        "centralnode", "assign_resources_mid"
-    ).with_attribute("subarray_id", 1)
-
-    context_fixt.when_action_result = central_node_facade.assign_resources(
-        json_input,
-        wait_termination=False,
-    )
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to IDLE."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    )
 
 
 @when("I issue the Configure command to subarray")
