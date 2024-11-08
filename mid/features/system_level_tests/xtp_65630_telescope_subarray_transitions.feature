@@ -28,7 +28,7 @@ Feature: This feature describes assigning, releasing, and configuring resources 
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray in ObsState IDLE
         When I issue the Configure command to subarray
-        Then the Telescope consisting of SDP and CSP devices transition to READY obsState
+        Then the TMC, CSP and SDP subarrays transition to READY obsState
         And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
         
 
@@ -38,5 +38,5 @@ Feature: This feature describes assigning, releasing, and configuring resources 
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in READY ObsState
         When I issue the End command to subarray
-        Then the Telescope consisting of SDP and CSP devices transition to IDLE obsState
+        Then the TMC, CSP and SDP subarrays transition to IDLE obsState
         And the DishMaster transitions to pointingState READY

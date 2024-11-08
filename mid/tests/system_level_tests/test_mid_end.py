@@ -84,10 +84,7 @@ def send_end_command(
     )
 
 
-@then(
-    "the Telescope consisting of SDP and CSP devices transition to IDLE "
-    "obsState"
-)
+@then("Then the TMC, CSP and SDP subarrays transition to IDLE obsState")
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,

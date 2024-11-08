@@ -115,10 +115,7 @@ def send_configure_command(
     )
 
 
-@then(
-    "the Telescope consisting of SDP and CSP devices transition "
-    "to READY obsState"
-)
+@then("Then the TMC, CSP and SDP subarrays transition to READY obsState")
 def verify_ready_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
