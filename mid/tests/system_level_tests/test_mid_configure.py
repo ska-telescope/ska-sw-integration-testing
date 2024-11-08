@@ -11,20 +11,13 @@ from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
 from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    DISH_IDS,
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -50,10 +43,6 @@ def test_telescope_configure_command():
 def send_configure_command(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
 ):
     """
     Send the Configure command to the subarray.
@@ -63,9 +52,6 @@ def send_configure_command(
     sends the command without waiting for termination. The action result
     is stored in the context fixture.
     """
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
     context_fixt.when_action_name = "Configure"
 
     json_input = MyFileJSONInput("subarray", "configure_mid")
