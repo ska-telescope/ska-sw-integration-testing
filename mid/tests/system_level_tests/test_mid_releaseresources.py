@@ -16,7 +16,10 @@ from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
     TMCSubarrayNodeFacade,
 )
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import SubarrayTestContextData
+from tests.system_level_tests.conftest import (
+    SubarrayTestContextData,
+    _setup_event_subscriptions,
+)
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -42,10 +45,17 @@ def test_telescope_release_resources():
 def invoke_releaseresources(
     context_fixt: SubarrayTestContextData,
     central_node_facade: TMCCentralNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+    subarray_node_facade: TMCSubarrayNodeFacade,
 ):
     """
     Send the ReleaseResources command to the subarray.
     """
+    _setup_event_subscriptions(
+        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
+    )
     context_fixt.when_action_name = "ReleaseResources"
 
     json_input = MyFileJSONInput(
