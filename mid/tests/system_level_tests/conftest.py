@@ -359,6 +359,14 @@ def subarray_in_idle_state(
         default_commands_inputs,
         wait_termination=True,
     )
+    json_input = MyFileJSONInput(
+        "centralnode", "assign_resources_mid"
+    ).with_attribute("subarray_id", 1)
+
+    context_fixt.when_action_result = central_node_facade.assign_resources(
+        json_input,
+        wait_termination=True,
+    )
 
 
 @then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
