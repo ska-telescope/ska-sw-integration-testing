@@ -92,8 +92,7 @@ def verify_idle_state(
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
-    """Verify that each sub system transitions to
-    pointingState IDLE"""
+    """Verify the subarray's transition to the IDLE state."""
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
         f"({subarray_node_facade.subarray_node})"
