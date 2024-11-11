@@ -34,7 +34,7 @@ TIMEOUT = 200
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_65630_telescope_subarray_transitions.feature",
-    "End command from Mid subarray",
+    "End command on Mid telescope",
 )
 def test_telescope_end_command():
     """BDD test scenario for verifying successful execution of
