@@ -74,6 +74,29 @@ def send_configure_command(
         json_input,
         wait_termination=False,
     )
+    assert_that(event_tracer).described_as(
+        f"All three: TMC Subarray Node device "
+        f"({subarray_node_facade.subarray_node})"
+        f", CSP Subarray device ({csp.csp_subarray}) "
+        f"and SDP Subarray device ({sdp.sdp_subarray}) "
+        "ObsState attribute values should move "
+        f"from {str(context_fixt.starting_state)} to CONFIGURING."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_facade.subarray_node,
+        "obsState",
+        ObsState.CONFIGURING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        csp.csp_subarray,
+        "obsState",
+        ObsState.CONFIGURING,
+        previous_value=context_fixt.starting_state,
+    ).has_change_event_occurred(
+        sdp.sdp_subarray,
+        "obsState",
+        ObsState.CONFIGURING,
+        previous_value=context_fixt.starting_state,
+    )
 
 
 @then("the TMC, CSP and SDP subarrays transition to READY obsState")
