@@ -74,6 +74,19 @@ def send_configure_command(
         json_input,
         wait_termination=False,
     )
+
+
+@then("the TMC, CSP and SDP subarrays transition to CONFIGURING obsState")
+def verify_configuring_state(
+    context_fixt: SubarrayTestContextData,
+    subarray_node_facade: TMCSubarrayNodeFacade,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """
+    Verify the subarray's transition to the CONFIGURING state.
+    """
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
         f"({subarray_node_facade.subarray_node})"
