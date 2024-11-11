@@ -34,7 +34,7 @@ Feature: This feature describes assigning, releasing and configuring resources f
         
 
     @XTP-68818 @XTP-66801 @TEAM_SAHYADRI
-    Scenario: End command on Mid subarray
+    Scenario: End command on Mid telescope
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
         And subarray is in the READY ObsState
