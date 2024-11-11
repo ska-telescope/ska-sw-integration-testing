@@ -68,7 +68,7 @@ def send_configure_command(
     )
     context_fixt.when_action_name = "Configure"
 
-    json_input = MyFileJSONInput("subarray", "configure_mid")
+    json_input = MyFileJSONInput("subarray", "configure_mid1")
 
     context_fixt.when_action_result = subarray_node_facade.configure(
         json_input,
