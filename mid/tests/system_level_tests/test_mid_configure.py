@@ -97,6 +97,8 @@ def send_configure_command(
         ObsState.CONFIGURING,
         previous_value=context_fixt.starting_state,
     )
+    # override the starting state for the next step
+    context_fixt.starting_state = ObsState.CONFIGURING
 
 
 @then("the TMC, CSP and SDP subarrays transition to READY obsState")
