@@ -1,4 +1,4 @@
-Feature: This feature describes assigning, releasing, and configuring resources for the Mid telescope subarray 
+Feature: This feature describes assigning, releasing and configuring resources for the Mid telescope subarray 
     with TMC, including expected state transitions across TMC, CSP, SDP, and DISH subsystems.
 
 	@XTP-65630 @XTP-66801 @TEAM_SAHYADRI
