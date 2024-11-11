@@ -42,7 +42,7 @@ def test_telescope_end_command():
     devices for pairwise testing"""
 
 
-@given("subarray is in the READY ObsState")
+@given("subarray is in READY ObsState")
 def subarray_in_ready_state(
     context_fixt: SubarrayTestContextData,
     subarray_node_facade: TMCSubarrayNodeFacade,

@@ -37,7 +37,7 @@ Feature: This feature describes assigning, releasing and configuring resources f
     Scenario: End command Mid subarray
         Given a Mid telescope
         And a Telescope consisting of SDP, CSP and DISH that is ON
-        And subarray is in the READY ObsState
+        And subarray is in READY ObsState
         When I issue the End command to subarray
         Then the TMC, CSP and SDP subarrays transition to IDLE obsState
         And the DishMaster transitions to pointingState READY
