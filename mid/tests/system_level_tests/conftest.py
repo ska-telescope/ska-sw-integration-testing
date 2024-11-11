@@ -344,14 +344,8 @@ def subarray_in_idle_state(
     subarray_node_facade: TMCSubarrayNodeFacade,
     central_node_facade: TMCCentralNodeFacade,
     default_commands_inputs: TestHarnessInputs,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
 ):
     """Ensure the subarray is in the IDLE state."""
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
     context_fixt.starting_state = ObsState.IDLE
 
     subarray_node_facade.force_change_of_obs_state(
