@@ -381,7 +381,7 @@ def verify_resourcing_state(
 )
 def assert_long_running_command_completion(
     event_tracer,
-    central_node_facade,
+    tmc,
     context_fixt,
 ):
     """
@@ -389,10 +389,10 @@ def assert_long_running_command_completion(
     completion of a long-running command.
     """
     assert_that(event_tracer).described_as(
-        f"TMC Central Node ({central_node_facade.central_node}) is "
+        f"TMC Central Node ({tmc.central_node}) is "
         " expected to report a longRunningCommand successful completion."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
+        tmc.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
