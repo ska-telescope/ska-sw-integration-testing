@@ -11,13 +11,6 @@ from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-
-# from ska_integration_test_harness.facades.tmc_central_node_facade import (
-#     TMCCentralNodeFacade,
-# )
-# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-#     TMCSubarrayNodeFacade,
-# )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState

@@ -10,13 +10,6 @@ from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
-
-# from ska_integration_test_harness.facades.tmc_central_node_facade import (
-#     TMCCentralNodeFacade,
-# )
-# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-#     TMCSubarrayNodeFacade,
-# )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
@@ -100,20 +93,6 @@ def default_commands_inputs() -> TestHarnessInputs:
 def tmc(telescope_wrapper: TelescopeWrapper) -> TMCFacade:
     """Create a facade to TMC devices."""
     return TMCFacade(telescope_wrapper)
-
-
-# @pytest.fixture
-# def central_node_facade(telescope_wrapper: TelescopeWrapper):
-#     """Create a facade to TMC central node and all its operations."""
-#     central_node_facade = TMCCentralNodeFacade(telescope_wrapper)
-#     yield central_node_facade
-
-
-# @pytest.fixture
-# def subarray_node_facade(telescope_wrapper: TelescopeWrapper):
-#     """Create a facade to TMC subarray node and all its operations."""
-#     subarray_node = TMCSubarrayNodeFacade(telescope_wrapper)
-#     yield subarray_node
 
 
 @pytest.fixture

@@ -3,9 +3,7 @@ from assertpy import assert_that
 from pytest_bdd import scenario, then, when
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
+from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DevState
 
@@ -13,7 +11,6 @@ from tango import DevState
 ASSERTIONS_TIMEOUT = 60
 
 
-@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_66801_telescope_operational_commands.feature",
@@ -28,11 +25,11 @@ def test_telescope_off_command_flow():
 @when("I invoke the OFF command on the telescope")
 def send_telescope_off_command(
     event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
 ):
     """Send the OFF command to the telescope."""
     event_tracer.clear_events()
-    central_node_facade.move_to_off(wait_termination=False)
+    tmc.move_to_off(wait_termination=False)
 
 
 @then(
@@ -41,7 +38,7 @@ def send_telescope_off_command(
 )
 def verify_off_state(
     event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
 ):
@@ -50,7 +47,7 @@ def verify_off_state(
         "The telescope,CSP and SDP devices should transition \
             from ON to OFF state."
     ).within_timeout(ASSERTIONS_TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
+        tmc.central_node,
         "telescopeState",
         DevState.OFF,
     ).has_change_event_occurred(

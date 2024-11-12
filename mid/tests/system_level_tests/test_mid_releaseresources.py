@@ -9,13 +9,6 @@ from ska_integration_test_harness.facades.csp_facade import (
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-
-# from ska_integration_test_harness.facades.tmc_central_node_facade import (
-#     TMCCentralNodeFacade,
-# )
-# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-#     TMCSubarrayNodeFacade,
-# )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
