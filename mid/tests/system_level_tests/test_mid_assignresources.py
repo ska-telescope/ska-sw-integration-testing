@@ -112,18 +112,14 @@ def verify_idle_state(
 
 
 @then("the requested resources are assigned to subarray")
-def assert_assigned_resources(subarray_node_facade):
+def assert_assigned_resources(tmc: TMCFacade):
     """
     This method asserts that the assigned resources in the subarray node
     match the expected resources "SKA001", "SKA036", "SKA063", and "SKA100".
 
     Args:
-        subarray_node_facade: The facade object for the subarray node.
+        tmc: The facade object for the subarray node.
     """
-    assert_that(
-        subarray_node_facade.subarray_node.assignedResources
-    ).described_as(
+    assert_that(tmc.subarray_node.assignedResources).described_as(
         "Wrong set of resources being assigned in subarray_node"
-    ).contains_only(
-        "SKA001", "SKA036", "SKA063", "SKA100"
-    )
+    ).contains_only("SKA001", "SKA036", "SKA063", "SKA100")

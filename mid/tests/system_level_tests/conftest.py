@@ -381,7 +381,7 @@ def verify_resourcing_state(
 )
 def assert_long_running_command_completion(
     event_tracer,
-    tmc,
+    tmc: TMCFacade,
     context_fixt,
 ):
     """
