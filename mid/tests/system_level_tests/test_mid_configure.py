@@ -11,12 +11,14 @@ from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
-)
+
+# from ska_integration_test_harness.facades.tmc_central_node_facade import (
+#     TMCCentralNodeFacade,
+# )
+# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
+#     TMCSubarrayNodeFacade,
+# )
+from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_tango_testing.integration import TangoEventTracer
@@ -49,8 +51,7 @@ def test_telescope_configure_command():
 @when("I issue the Configure command to subarray")
 def send_configure_command(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -63,14 +64,12 @@ def send_configure_command(
     sends the command without waiting for termination. The action result
     is stored in the context fixture.
     """
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
+    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
     context_fixt.when_action_name = "Configure"
 
     json_input = MyFileJSONInput("subarray", "configure_mid1")
 
-    context_fixt.when_action_result = subarray_node_facade.configure(
+    context_fixt.when_action_result = tmc.configure(
         json_input,
         wait_termination=False,
     )
@@ -79,7 +78,7 @@ def send_configure_command(
 @then("the TMC, CSP and SDP subarrays transition to CONFIGURING obsState")
 def verify_configuring_state(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -89,13 +88,13 @@ def verify_configuring_state(
     """
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
+        f"({tmc.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
         f"from {str(context_fixt.starting_state)} to CONFIGURING."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        tmc.subarray_node,
         "obsState",
         ObsState.CONFIGURING,
         previous_value=context_fixt.starting_state,
@@ -117,7 +116,7 @@ def verify_configuring_state(
 @then("the TMC, CSP and SDP subarrays transition to READY obsState")
 def verify_ready_state(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -133,13 +132,13 @@ def verify_ready_state(
     """
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
+        f"({tmc.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
         f"from {str(context_fixt.starting_state)} to READY."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        tmc.subarray_node,
         "obsState",
         ObsState.READY,
         previous_value=context_fixt.starting_state,

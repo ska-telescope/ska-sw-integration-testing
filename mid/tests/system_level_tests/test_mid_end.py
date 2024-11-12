@@ -11,12 +11,14 @@ from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
-)
+
+# from ska_integration_test_harness.facades.tmc_central_node_facade import (
+#     TMCCentralNodeFacade,
+# )
+# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
+#     TMCSubarrayNodeFacade,
+# )
+from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
@@ -45,20 +47,17 @@ def test_telescope_end_command():
 @given("subarray is in READY ObsState")
 def subarray_in_ready_state(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
     default_commands_inputs: TestHarnessInputs,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
     """Ensure the subarray is in the READY state."""
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
+    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
     context_fixt.starting_state = ObsState.READY
 
-    subarray_node_facade.force_change_of_obs_state(
+    tmc.force_change_of_obs_state(
         ObsState.READY,
         default_commands_inputs,
         wait_termination=True,
@@ -68,7 +67,7 @@ def subarray_in_ready_state(
 @when("I issue the End command to subarray")
 def send_end_command(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
 ):
     """
     Send the End command to the subarray.
@@ -79,7 +78,7 @@ def send_end_command(
     """
     context_fixt.when_action_name = "End"
 
-    context_fixt.when_action_result = subarray_node_facade.end_observation(
+    context_fixt.when_action_result = tmc.end_observation(
         wait_termination=False,
     )
 
@@ -87,7 +86,7 @@ def send_end_command(
 @then("the TMC, CSP and SDP subarrays transition to IDLE obsState")
 def verify_idle_state(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -95,13 +94,13 @@ def verify_idle_state(
     """Verify the subarray's transition to the IDLE state."""
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
+        f"({tmc.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
         f"from {str(context_fixt.starting_state)} to IDLE."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        tmc.subarray_node,
         "obsState",
         ObsState.IDLE,
         previous_value=context_fixt.starting_state,

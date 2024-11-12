@@ -9,12 +9,14 @@ from ska_integration_test_harness.facades.csp_facade import (
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
-)
+
+# from ska_integration_test_harness.facades.tmc_central_node_facade import (
+#     TMCCentralNodeFacade,
+# )
+# from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
+#     TMCSubarrayNodeFacade,
+# )
+from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
@@ -44,8 +46,7 @@ def test_telescope_release_resources():
 @when("I release all resources assigned to it")
 def invoke_releaseresources(
     context_fixt: SubarrayTestContextData,
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -53,16 +54,14 @@ def invoke_releaseresources(
     """
     Send the ReleaseResources command to the subarray.
     """
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
-    )
+    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
     context_fixt.when_action_name = "ReleaseResources"
 
     json_input = MyFileJSONInput(
         "centralnode", "release_resources_mid"
     ).with_attribute("subarray_id", 1)
 
-    context_fixt.when_action_result = central_node_facade.release_resources(
+    context_fixt.when_action_result = tmc.release_resources(
         json_input,
         wait_termination=False,
     )
@@ -72,8 +71,7 @@ def invoke_releaseresources(
 def csp_sdp_tmc_subarray_empty(
     context_fixt,
     # subarray_id: str,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -83,13 +81,13 @@ def csp_sdp_tmc_subarray_empty(
     """
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
+        f"({tmc.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
         f"from {str(context_fixt.starting_state)} to EMPTY."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        tmc.subarray_node,
         "obsState",
         ObsState.EMPTY,
         previous_value=context_fixt.starting_state,
