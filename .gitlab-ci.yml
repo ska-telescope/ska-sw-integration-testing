@@ -244,7 +244,7 @@ k8s-test-mid-tmc-with-csp:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
   variables:
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp-subarray-tests'
     MARK: 'tmc_csp'
     CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
   script:
@@ -276,7 +276,7 @@ stop-k8s-test-mid-with-csp:
   when: manual
   variables:
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp-subarray-tests'
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
@@ -293,7 +293,7 @@ k8s-test-mid-tmc-with-sdp:
   variables:
     TELESCOPE: 'SKA-mid'
     PORT: "10000"
-    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp-subarray-tests'
     SUBARRAY_COUNT: 2 # Set subarray count for testing.
     SDP_SIMULATION_ENABLED: 'false' # Disable SDP simulation.
     TARANTA_ENABLED: 'true'
@@ -329,7 +329,7 @@ stop-k8s-test-mid-tmc-with-sdp:
   when: manual
   variables:
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp-subarray-tests'
     SDP_SIMULATION_ENABLED: 'false'
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
@@ -357,7 +357,7 @@ k8s-test-dish-lmc:
     DISH_NAMESPACE_2: "integration-ska-mid-tmc-dish036"
     DISH_NAMESPACE_3: "integration-ska-mid-tmc-dish063"
     DISH_NAMESPACE_4: "integration-ska-mid-tmc-dish100"
-    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish-subarray-tests"
     DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
   script:
     - make k8s-test MARK=tmc_dish
@@ -388,7 +388,7 @@ stop-k8s-test-dish-lmc:
   when: manual
   variables:
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish-subarray-tests"
   script:
     - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
   environment:
@@ -403,7 +403,7 @@ k8s-test-mid:
   variables:
     CONFIG: "Mid"
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration'
+    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration-subarray-tests'
     MARK: 'system_level_test_mid'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
@@ -434,7 +434,7 @@ stop-k8s-test-mid:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration'
+    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration-subarray-tests'
   script:
     - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
   environment:
