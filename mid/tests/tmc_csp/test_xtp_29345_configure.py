@@ -18,7 +18,6 @@ from tests.resources.test_harness.utils.common_utils import (
     wait_added_for_skb372,
 )
 
-
 @pytest.mark.tmc_csp
 @scenario(
     "../../mid/features/tmc_csp/xtp_29345_configure.feature",
