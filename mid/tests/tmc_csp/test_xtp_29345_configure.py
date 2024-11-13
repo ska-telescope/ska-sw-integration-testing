@@ -83,6 +83,7 @@ def invoke_configure_command(
         subarray_node.subarray_node,
         "longRunningCommandResult",
         (pytest.command_result[1][0], COMMAND_COMPLETED),
+        lookahead=20,
     )
 
 
