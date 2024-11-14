@@ -11,7 +11,6 @@ from tests.resources.test_harness.helpers import (
 )
 
 
-@pytest.mark.skip
 @pytest.mark.tmc_sdp
 @scenario(
     "../../mid/features/tmc_sdp/xtp-29382_configure.feature",
