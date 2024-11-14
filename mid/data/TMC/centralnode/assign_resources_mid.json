@@ -4,7 +4,10 @@
   "subarray_id": 1,
   "dish": {
     "receptor_ids": [
-      "SKA001"
+      "SKA001",
+      "SKA036",
+      "SKA063",
+      "SKA100"
     ]
   },
   "sdp": {
@@ -17,9 +20,13 @@
         4
       ],
       "receptors": [
-        "SKA001"
+        "SKA001",
+        "SKA036",
+        "SKA063",
+        "SKA100"
+
       ],
-      "receive_nodes": 1
+      "receive_nodes": 10
     },
     "execution_block": {
       "eb_id": "eb-test-20210630-00059",
