@@ -81,8 +81,8 @@ def telescope_wrapper(
 def default_commands_inputs() -> TestHarnessInputs:
     """Default JSON inputs for TMC commands."""
     return TestHarnessInputs(
-        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid1"),
-        configure_input=MyFileJSONInput("subarray", "configure_mid1"),
+        assign_input=MyFileJSONInput("centralnode", "assign_resources_mid"),
+        configure_input=MyFileJSONInput("subarray", "configure_mid"),
         scan_input=MyFileJSONInput("subarray", "scan_mid"),
         release_input=MyFileJSONInput("centralnode", "release_resources_mid"),
         default_vcc_config_input=DEFAULT_VCC_CONFIG_INPUT,

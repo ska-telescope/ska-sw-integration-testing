@@ -60,7 +60,7 @@ def send_configure_command(
     _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
     context_fixt.when_action_name = "Configure"
 
-    json_input = MyFileJSONInput("subarray", "configure_mid1")
+    json_input = MyFileJSONInput("subarray", "configure_mid")
 
     context_fixt.when_action_result = tmc.configure(
         json_input,
