@@ -102,7 +102,8 @@ def verify_configuring_state(
         ObsState.CONFIGURING,
         previous_value=context_fixt.starting_state,
     )
-    # override the starting state for the next step
+    # store current (already verified) state to use it as previous step
+    # in next assertions
     context_fixt.starting_state = ObsState.CONFIGURING
 
 
