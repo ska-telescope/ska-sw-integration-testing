@@ -125,7 +125,7 @@
           }
         },
         {
-          "scan_type_id": "science",
+          "scan_type_id": "target:a",
           "derive_from": ".default",
           "beams": {
             "vis0": {
