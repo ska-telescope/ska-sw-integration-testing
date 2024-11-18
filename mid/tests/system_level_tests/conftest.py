@@ -375,3 +375,26 @@ def assert_long_running_command_completion(
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )
+
+
+@then(
+    "the TMC receives LongRunningCommandResult event OK from subsystems"
+    "CSP,SDP and DISH"
+)
+def verify_long_running_command_result_on_subarray(
+    event_tracer,
+    tmc: TMCFacade,
+    context_fixt,
+):
+    """
+    Asserts that the TMC Subarray Node reports a successful
+    completion of a long-running command.
+    """
+    assert_that(event_tracer).described_as(
+        f"TMC Subarray Node ({tmc.subarray_node}) is "
+        " expected to report a longRunningCommand successful completion."
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        tmc.subarray_node,
+        "longRunningCommandResult",
+        get_expected_long_run_command_result(context_fixt),
+    )
