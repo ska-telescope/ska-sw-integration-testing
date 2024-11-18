@@ -1,4 +1,4 @@
-"""Test module for AssignResources functionality (XTP-65630)"""
+"""Test module for AssignResources functionality (XTP-68818)"""
 
 import pytest
 from assertpy import assert_that
@@ -7,70 +7,71 @@ from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
 )
+from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
+from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
 )
 from ska_tango_testing.integration import TangoEventTracer
 from tests.system_level_tests.conftest import (
+    DISH_IDS,
     SubarrayTestContextData,
     _setup_event_subscriptions,
 )
-from tests.system_level_tests.utils.json_file_input_handler import (
-    MyFileJSONInput,
-)
 
-TIMEOUT = 100
+TIMEOUT = 200
 
 
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/" + "xtp_65630_telescope_subarray_transitions.feature",
-    "Assign resources to Mid subarray",
+    "End command on Mid telescope",
 )
-def test_telescope_assign_resources():
+def test_telescope_end_command():
     """BDD test scenario for verifying successful execution of
-    the AssignResources command with TMC,CSP and SDP
+    the End command with TMC,CSP and SDP
     devices for pairwise testing"""
 
 
-#  @given("telescope is in ON state") -> conftest
-
-
-@given("subarray is in EMPTY ObsState")
-def subarray_in_empty_obsstate(
+@given("subarray is in READY ObsState")
+def subarray_in_ready_state(
     context_fixt: SubarrayTestContextData,
+    default_commands_inputs: TestHarnessInputs,
     tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
-    """Verify the subarray's transition to the EMPTY state."""
+    """Ensure the subarray is in the READY state."""
     _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.EMPTY
+    context_fixt.starting_state = ObsState.READY
+
     tmc.force_change_of_obs_state(
-        ObsState.EMPTY,
-        TestHarnessInputs(),
+        ObsState.READY,
+        default_commands_inputs,
         wait_termination=True,
     )
 
 
-@when("I assign resources to the subarray")
-def invoke_assignresources(
+@when("I issue the End command to subarray")
+def send_end_command(
     context_fixt: SubarrayTestContextData,
     tmc: TMCFacade,
 ):
+    """
+    Send the End command to the subarray.
 
-    context_fixt.when_action_name = "AssignResources"
-    json_input = MyFileJSONInput(
-        "centralnode", "assign_resources_mid"
-    ).with_attribute("subarray_id", 1)
+    This step uses the subarray_node_facade to send an End command to the
+    specified subarray. It sends the command without waiting for termination
+    and stores the action result in the context fixture.
+    """
+    context_fixt.when_action_name = "End"
 
-    context_fixt.when_action_result = tmc.assign_resources(
-        json_input,
+    context_fixt.when_action_result = tmc.end_observation(
         wait_termination=False,
     )
 
@@ -83,9 +84,7 @@ def verify_idle_state(
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
 ):
-    """
-    Verify the subarray's transition to the IDLE state."""
-
+    """Verify the subarray's transition to the IDLE state."""
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
         f"({tmc.subarray_node})"
@@ -111,15 +110,18 @@ def verify_idle_state(
     )
 
 
-@then("the requested resources are assigned to subarray")
-def assert_assigned_resources(tmc: TMCFacade):
-    """
-    This method asserts that the assigned resources in the subarray node
-    match the expected resources "SKA001", "SKA036", "SKA063", and "SKA100".
-
-    Args:
-        tmc: The facade object for the subarray node.
-    """
-    assert_that(tmc.subarray_node.assignedResources).described_as(
-        "Wrong set of resources being assigned in subarray_node"
-    ).contains_only("SKA001", "SKA036", "SKA063", "SKA100")
+@then("the DishMaster transitions to pointingState READY")
+def verify_pointing_state_after_end(
+    event_tracer: TangoEventTracer,
+    dishes: DishesFacade,
+):
+    """Verify that each DishMaster transitions to
+    pointingState READY"""
+    for dish_id in DISH_IDS:
+        assert_that(event_tracer).described_as(
+            f"The DishMaster {dish_id} must transition to READY pointingState"
+        ).has_change_event_occurred(
+            dishes.dish_master_dict[dish_id],
+            "pointingState",
+            PointingState.READY,
+        )

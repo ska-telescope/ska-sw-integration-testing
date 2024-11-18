@@ -10,12 +10,7 @@ from ska_control_model import ObsState, ResultCode
 from ska_integration_test_harness.facades.csp_facade import CSPFacade
 from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import SDPFacade
-from ska_integration_test_harness.facades.tmc_central_node_facade import (
-    TMCCentralNodeFacade,
-)
-from ska_integration_test_harness.facades.tmc_subarray_node_facade import (
-    TMCSubarrayNodeFacade,
-)
+from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.init.test_harness_builder import (
     TestHarnessBuilder,
 )
@@ -75,8 +70,8 @@ def telescope_wrapper(
 
     # build the wrapper of the telescope and its sub-systems
     telescope = test_harness_builder.build()
+    telescope.actions_default_timeout = 600
     yield telescope
-
     # after a test is completed, reset the telescope to its initial state
     # (obsState=READY, telescopeState=OFF, no resources assigned)
     telescope.tear_down()
@@ -95,17 +90,9 @@ def default_commands_inputs() -> TestHarnessInputs:
 
 
 @pytest.fixture
-def central_node_facade(telescope_wrapper: TelescopeWrapper):
-    """Create a facade to TMC central node and all its operations."""
-    central_node_facade = TMCCentralNodeFacade(telescope_wrapper)
-    yield central_node_facade
-
-
-@pytest.fixture
-def subarray_node_facade(telescope_wrapper: TelescopeWrapper):
-    """Create a facade to TMC subarray node and all its operations."""
-    subarray_node = TMCSubarrayNodeFacade(telescope_wrapper)
-    yield subarray_node
+def tmc(telescope_wrapper: TelescopeWrapper) -> TMCFacade:
+    """Create a facade to TMC devices."""
+    return TMCFacade(telescope_wrapper)
 
 
 @pytest.fixture
@@ -144,7 +131,7 @@ def event_tracer() -> TangoEventTracer:
 @given("a Mid telescope")
 def given_the_sut(
     event_tracer: TangoEventTracer,
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     dishes: DishesFacade,
@@ -152,9 +139,7 @@ def given_the_sut(
     """
     Telescope consisting of csp , sdp and dish devices
     """
-    event_tracer.subscribe_event(
-        central_node_facade.central_node, "telescopeState"
-    )
+    event_tracer.subscribe_event(tmc.central_node, "telescopeState")
     event_tracer.subscribe_event(csp.csp_master, "State")
     event_tracer.subscribe_event(csp.csp_subarray, "State")
     event_tracer.subscribe_event(sdp.sdp_master, "State")
@@ -170,7 +155,7 @@ def given_the_sut(
 
     log_events(
         {
-            central_node_facade.central_node: ["telescopeState"],
+            tmc.central_node: ["telescopeState"],
             csp.csp_master: ["State"],
             csp.csp_subarray: ["State"],
         }
@@ -192,18 +177,18 @@ def given_the_sut(
 
 @given("a Telescope consisting of SDP, CSP and DISH that is OFF")
 def check_state_is_off(
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
 ):
     """Send the ON command to the telescope."""
-    central_node_facade.move_to_off(wait_termination=True)
+    tmc.move_to_off(wait_termination=True)
 
 
 @given("a Telescope consisting of SDP, CSP and DISH that is ON")
 def check_state_is_on(
-    central_node_facade: TMCCentralNodeFacade,
+    tmc: TMCFacade,
 ):
     """Send the ON command to the telescope."""
-    central_node_facade.move_to_on(wait_termination=True)
+    tmc.move_to_on(wait_termination=True)
 
 
 @then("DishMaster must transition to STANDBY-LP mode")
@@ -269,8 +254,7 @@ def context_fixt() -> SubarrayTestContextData:
 
 
 def _setup_event_subscriptions(
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -282,31 +266,23 @@ def _setup_event_subscriptions(
         csp: Facade for the CSP.
         event_tracer: Event tracer for capturing events.
     """
-    event_tracer.subscribe_event(
-        subarray_node_facade.subarray_node, "obsState"
-    )
+    event_tracer.subscribe_event(tmc.subarray_node, "obsState")
     event_tracer.subscribe_event(csp.csp_subarray, "obsState")
     event_tracer.subscribe_event(sdp.sdp_subarray, "obsState")
-    event_tracer.subscribe_event(
-        subarray_node_facade.subarray_node, "assignedResources"
-    )
-    event_tracer.subscribe_event(
-        central_node_facade.central_node, "longRunningCommandResult"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_facade.subarray_node, "longRunningCommandResult"
-    )
+    event_tracer.subscribe_event(tmc.subarray_node, "assignedResources")
+    event_tracer.subscribe_event(tmc.central_node, "longRunningCommandResult")
+    event_tracer.subscribe_event(tmc.subarray_node, "longRunningCommandResult")
 
     log_events(
         {
-            subarray_node_facade.subarray_node: [
+            tmc.subarray_node: [
                 "obsState",
                 "longRunningCommandResult",
                 "assignedResources",
             ],
             csp.csp_subarray: ["obsState"],
             sdp.sdp_subarray: ["obsState"],
-            central_node_facade.central_node: ["longRunningCommandResult"],
+            tmc.central_node: ["longRunningCommandResult"],
         },
         event_enum_mapping={"obsState": ObsState},
     )
@@ -323,25 +299,26 @@ def get_expected_long_run_command_result(context_fixt) -> tuple[str, str]:
     )
 
 
-def subarray_can_be_used(
-    subarray_id: str,
-    central_node_facade: TMCCentralNodeFacade,
-    subarray_node_facade: TMCSubarrayNodeFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
+@given("subarray is in the IDLE obsState")
+def subarray_in_idle_state(
+    context_fixt: SubarrayTestContextData,
+    tmc: TMCFacade,
+    default_commands_inputs: TestHarnessInputs,
 ):
-    """Set up the subarray (and the subscriptions) to be used in the test."""
-    subarray_node_facade.set_subarray_id(int(subarray_id))
-    _setup_event_subscriptions(
-        central_node_facade, subarray_node_facade, csp, sdp, event_tracer
+    """Ensure the subarray is in the IDLE state."""
+    context_fixt.starting_state = ObsState.IDLE
+
+    tmc.force_change_of_obs_state(
+        ObsState.IDLE,
+        default_commands_inputs,
+        wait_termination=True,
     )
 
 
 @then("the TMC, CSP and SDP subarrays transition to RESOURCING obsState")
 def verify_resourcing_state(
     context_fixt: SubarrayTestContextData,
-    subarray_node_facade: TMCSubarrayNodeFacade,
+    tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
@@ -351,13 +328,13 @@ def verify_resourcing_state(
     """
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
-        f"({subarray_node_facade.subarray_node})"
+        f"({tmc.subarray_node})"
         f", CSP Subarray device ({csp.csp_subarray}) "
         f"and SDP Subarray device ({sdp.sdp_subarray}) "
         "ObsState attribute values should move "
         f"from {str(context_fixt.starting_state)} to RESOURCING."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_facade.subarray_node,
+        tmc.subarray_node,
         "obsState",
         ObsState.RESOURCING,
         previous_value=context_fixt.starting_state,
@@ -383,7 +360,7 @@ def verify_resourcing_state(
 )
 def assert_long_running_command_completion(
     event_tracer,
-    central_node_facade,
+    tmc: TMCFacade,
     context_fixt,
 ):
     """
@@ -391,10 +368,10 @@ def assert_long_running_command_completion(
     completion of a long-running command.
     """
     assert_that(event_tracer).described_as(
-        f"TMC Central Node ({central_node_facade.central_node}) is "
+        f"TMC Central Node ({tmc.central_node}) is "
         " expected to report a longRunningCommand successful completion."
     ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_facade.central_node,
+        tmc.central_node,
         "longRunningCommandResult",
         get_expected_long_run_command_result(context_fixt),
     )

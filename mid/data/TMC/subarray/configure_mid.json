@@ -1,27 +1,26 @@
 {
-  "interface": "https://schema.skao.int/ska-tmc-configure/2.3",
-  "transaction_id": "txn-....-00001",
+  "interface": "https://schema.skao.int/ska-tmc-configure/3.0",
   "pointing": {
     "target": {
       "reference_frame": "ICRS",
       "target_name": "Polaris Australis",
       "ra": "21:08:47.92",
       "dec": "-88:57:22.9"
-    },
-    "correction": "UPDATE"
+    }
   },
-  "dish": {
-    "receiver_band": "1"
+  "sdp": {
+    "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
+    "scan_type": "target:a"
   },
   "csp": {
-    "interface": "https://schema.skao.int/ska-csp-configure/2.0",
+    "interface": "https://schema.skao.int/ska-csp-configurescan/3.0",
     "subarray": {
-      "subarray_name": "science period 23"
+      "subarray_name": "Receptor(s)"
     },
     "common": {
-      "config_id": "sbi-mvp01-20200325-00001-science_A",
-      "frequency_band": "1",
-      "subarray_id": 1
+      "config_id": "4 receptor, band 1, 1 FSP, no options",
+      "subarray_id": 1,
+      "frequency_band": "1"
     },
     "cbf": {
       "fsp": [
@@ -29,62 +28,24 @@
           "fsp_id": 1,
           "function_mode": "CORR",
           "frequency_slice_id": 1,
-          "integration_factor": 1,
           "zoom_factor": 0,
-          "channel_averaging_map": [
+          "integration_factor": 10,
+          "output_link_map": [
             [
               0,
-              2
-            ],
-            [
-              744,
-              0
+              1
             ]
           ],
           "channel_offset": 0,
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ]
-        },
-        {
-          "fsp_id": 2,
-          "function_mode": "CORR",
-          "frequency_slice_id": 2,
-          "integration_factor": 1,
-          "zoom_factor": 1,
-          "channel_averaging_map": [
-            [
-              0,
-              2
-            ],
-            [
-              744,
-              0
-            ]
-          ],
-          "channel_offset": 740,
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ],
-          "zoom_window_tuning": 650000
+          "zoom_window_tuning": 450000
         }
-      ],
-      "vlbi": {
-        
-      }
+      ]
     }
   },
-  "sdp": {
-    "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
-    "scan_type": "target:a"
-  },
   "tmc": {
-    "scan_duration": 5.0
+    "scan_duration": 10.0
+  },
+  "dish": {
+    "receiver_band": "1"
   }
 }
