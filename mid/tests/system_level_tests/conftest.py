@@ -378,7 +378,7 @@ def assert_long_running_command_completion(
 
 
 @then(
-    "the TMC receives LongRunningCommandResult event OK from subsystems"
+    "the TMC receives LongRunningCommandResult event OK from subsystems "
     "CSP,SDP and DISH"
 )
 def verify_long_running_command_result_on_subarray(
