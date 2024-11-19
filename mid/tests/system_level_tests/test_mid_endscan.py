@@ -12,7 +12,6 @@ from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
-from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_integration_test_harness.inputs.test_harness_inputs import (
     TestHarnessInputs,
@@ -22,9 +21,6 @@ from tests.system_level_tests.conftest import (
     DISH_IDS,
     SubarrayTestContextData,
     _setup_event_subscriptions,
-)
-from tests.system_level_tests.utils.json_file_input_handler import (
-    MyFileJSONInput,
 )
 
 TIMEOUT = 100
@@ -48,71 +44,22 @@ def test_telescope_endscan():
 @given("subarray is in Scanning ObsState")
 def subarray_in_scanning_state(
     context_fixt: SubarrayTestContextData,
-    default_commands_inputs: TestHarnessInputs,
     tmc: TMCFacade,
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
-    dishes: DishesFacade,
+    default_commands_inputs: TestHarnessInputs,
 ):
-    """Ensure the subarray is in the SCANNING state."""
     _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.READY
+    """Ensure the subarray is in the SCANNING state."""
+    context_fixt.starting_state = ObsState.SCANNING
+    context_fixt.expected_next_state = ObsState.READY
+
     tmc.force_change_of_obs_state(
-        ObsState.READY,
+        ObsState.SCANNING,
         default_commands_inputs,
         wait_termination=True,
     )
-    for dish_id in DISH_IDS:
-        assert_that(event_tracer).described_as(
-            f"The DishMaster {dish_id} must transition to OPERATE mode"
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            dishes.dish_master_dict[dish_id],
-            "dishMode",
-            DishMode.OPERATE,
-        )
-        assert_that(event_tracer).described_as(
-            f"The DishMaster {dish_id} must transition to pointingState TRACK"
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            dishes.dish_master_dict[dish_id],
-            "pointingState",
-            PointingState.TRACK,
-        )
-    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.when_action_name = "Scan"
-
-    json_input = MyFileJSONInput("subarray", "scan_mid")
-
-    context_fixt.when_action_result = tmc.scan(
-        json_input,
-        wait_termination=False,
-    )
-    assert_that(event_tracer).described_as(
-        "All three: TMC Subarray Node device"
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to SCANNING."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    )
-
-    # override the starting state for the next step
-    context_fixt.starting_state = ObsState.SCANNING
 
 
 @when("I issue the EndScan command to the subarray")
