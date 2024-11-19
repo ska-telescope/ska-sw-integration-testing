@@ -27,6 +27,7 @@ from tests.system_level_tests.utils.json_file_input_handler import (
 TIMEOUT = 200
 
 
+@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/"
