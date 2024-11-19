@@ -119,6 +119,3 @@ def verify_scanning_state(
         ObsState.SCANNING,
         previous_value=context_fixt.starting_state,
     )
-
-    # override the starting state for the next step
-    context_fixt.starting_state = ObsState.SCANNING

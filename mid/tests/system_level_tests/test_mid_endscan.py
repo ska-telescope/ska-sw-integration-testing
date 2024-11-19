@@ -116,9 +116,6 @@ def verify_ready_state(
         previous_value=context_fixt.starting_state,
     )
 
-    # override the starting state for the next step
-    context_fixt.starting_state = ObsState.READY
-
 
 @then("the DishMaster transitions to pointingState TRACK")
 def dish_master_transitions_to_track(
