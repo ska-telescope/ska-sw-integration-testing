@@ -127,7 +127,7 @@ def dish_master_transitions_to_track(
     for dish_id in DISH_IDS:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to pointingState TRACK"
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
+        ).has_change_event_occurred(
             dishes.dish_master_dict[dish_id],
             "pointingState",
             PointingState.TRACK,
