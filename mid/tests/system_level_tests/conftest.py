@@ -354,6 +354,25 @@ def verify_resourcing_state(
     context_fixt.starting_state = ObsState.RESOURCING
 
 
+@given("subarray is in the READY obsState")
+def subarray_in_ready_state(
+    context_fixt: SubarrayTestContextData,
+    tmc: TMCFacade,
+    default_commands_inputs: TestHarnessInputs,
+    csp: CSPFacade,
+    sdp: SDPFacade,
+    event_tracer: TangoEventTracer,
+):
+    """Ensure the subarray is in the READY state."""
+    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
+    context_fixt.starting_state = ObsState.READY
+    tmc.force_change_of_obs_state(
+        ObsState.READY,
+        default_commands_inputs,
+        wait_termination=True,
+    )
+
+
 @then(
     "the TMC receives LongRunningCommandResult event OK "
     "from subsystems CSP and SDP"

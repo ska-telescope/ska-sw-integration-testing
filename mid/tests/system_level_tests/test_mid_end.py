@@ -2,7 +2,7 @@
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
@@ -13,15 +13,8 @@ from ska_integration_test_harness.facades.sdp_facade import (
 )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.pointing_state import PointingState
-from ska_integration_test_harness.inputs.test_harness_inputs import (
-    TestHarnessInputs,
-)
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    DISH_IDS,
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 
 TIMEOUT = 100
 
@@ -36,26 +29,6 @@ def test_telescope_end_command():
     """BDD test scenario for verifying successful execution of
     the End command with TMC,CSP and SDP
     devices for pairwise testing"""
-
-
-@given("subarray is in READY ObsState")
-def subarray_in_ready_state(
-    context_fixt: SubarrayTestContextData,
-    default_commands_inputs: TestHarnessInputs,
-    tmc: TMCFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """Ensure the subarray is in the READY state."""
-    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.READY
-
-    tmc.force_change_of_obs_state(
-        ObsState.READY,
-        default_commands_inputs,
-        wait_termination=True,
-    )
 
 
 @when("I issue the End command to subarray")

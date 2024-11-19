@@ -14,15 +14,8 @@ from ska_integration_test_harness.facades.sdp_facade import (
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.dish_mode import DishMode
 from ska_integration_test_harness.inputs.pointing_state import PointingState
-from ska_integration_test_harness.inputs.test_harness_inputs import (
-    TestHarnessInputs,
-)
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    DISH_IDS,
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -43,25 +36,6 @@ def test_telescope_scan():
 
 
 #  @given("telescope is in ON state") -> conftest
-
-
-@given("subarray is in the READY obsState")
-def subarray_in_ready_state(
-    context_fixt: SubarrayTestContextData,
-    tmc: TMCFacade,
-    default_commands_inputs: TestHarnessInputs,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """Ensure the subarray is in the READY state."""
-    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.READY
-    tmc.force_change_of_obs_state(
-        ObsState.READY,
-        default_commands_inputs,
-        wait_termination=True,
-    )
 
 
 @given("the DishMaster is in dishMode OPERATE and pointingState TRACK")
