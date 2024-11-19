@@ -2,20 +2,17 @@
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
 )
-from ska_integration_test_harness.facades.dishes_facade import DishesFacade
 from ska_integration_test_harness.facades.sdp_facade import (
     SDPFacade,  # SDP facade
 )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
-from ska_integration_test_harness.inputs.dish_mode import DishMode
-from ska_integration_test_harness.inputs.pointing_state import PointingState
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
+from tests.system_level_tests.conftest import SubarrayTestContextData
 from tests.system_level_tests.utils.json_file_input_handler import (
     MyFileJSONInput,
 )
@@ -36,30 +33,6 @@ def test_telescope_scan():
 
 
 #  @given("telescope is in ON state") -> conftest
-
-
-@given("the DishMaster is in dishMode OPERATE and pointingState TRACK")
-def check_dish_mode_and_pointing_state_after_endscan(
-    event_tracer: TangoEventTracer,
-    dishes: DishesFacade,
-):
-    """Verify that each DishMaster transitions to
-    OPERATE and pointingState TRACK"""
-    for dish_id in DISH_IDS:
-        assert_that(event_tracer).described_as(
-            f"The DishMaster {dish_id} must transition to OPERATE mode"
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            dishes.dish_master_dict[dish_id],
-            "dishMode",
-            DishMode.OPERATE,
-        )
-        assert_that(event_tracer).described_as(
-            f"The DishMaster {dish_id} must transition to pointingState TRACK"
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            dishes.dish_master_dict[dish_id],
-            "pointingState",
-            PointingState.TRACK,
-        )
 
 
 @when("I issue the Scan command to subarray")

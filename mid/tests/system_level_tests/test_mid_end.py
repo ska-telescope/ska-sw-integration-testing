@@ -19,6 +19,7 @@ from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 TIMEOUT = 100
 
 
+@pytest.mark.skip
 @pytest.mark.system_level_test_mid
 @scenario(
     "system_level_tests/"

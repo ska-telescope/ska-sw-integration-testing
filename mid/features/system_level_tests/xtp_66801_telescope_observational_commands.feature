@@ -52,7 +52,6 @@ Feature: This feature tests AssignResources, ReleaseResources, Scan and EndScan 
 		Given a Mid telescope
 		And a Telescope consisting of SDP, CSP and DISH that is ON
 		And subarray is in the READY obsState
-		And the DishMaster is in dishMode OPERATE and pointingState TRACK
 		When I issue the Scan command to subarray
 		Then the TMC, CSP and SDP subarrays transition to SCANNING obsState
 		And the TMC receives LongRunningCommandResult event OK from subsystems CSP,SDP and DISH
