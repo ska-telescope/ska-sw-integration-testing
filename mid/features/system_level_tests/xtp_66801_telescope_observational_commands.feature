@@ -33,7 +33,7 @@ Feature: This feature tests AssignResources, ReleaseResources, Scan and EndScan 
 		Then the TMC, CSP and SDP subarrays transition to CONFIGURING obsState
 		And the TMC, CSP and SDP subarrays transition to READY obsState
 		And the DishMaster transitions to dishMode OPERATE and pointingState TRACK
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP,SDP and DISH
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP, SDP and DISH
         
 
 	@XTP-68818 @XTP-66801 @TEAM_SAHYADRI
@@ -44,7 +44,7 @@ Feature: This feature tests AssignResources, ReleaseResources, Scan and EndScan 
 		When I issue the End command to subarray
 		Then the TMC, CSP and SDP subarrays transition to IDLE obsState
 		And the DishMaster transitions to pointingState READY
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP,SDP and DISH
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP, SDP and DISH
 		
 
 	@XTP-68819 @XTP-66801 @TEAM_SAHYADRI
@@ -54,7 +54,7 @@ Feature: This feature tests AssignResources, ReleaseResources, Scan and EndScan 
 		And subarray is in the READY obsState
 		When I issue the Scan command to subarray
 		Then the TMC, CSP and SDP subarrays transition to SCANNING obsState
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP,SDP and DISH
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP, SDP and DISH
 
 	@XTP-68822 @XTP-66801 @TEAM_SAHYADRI
 	Scenario: Executes EndScan command on Mid telescope
@@ -64,4 +64,4 @@ Feature: This feature tests AssignResources, ReleaseResources, Scan and EndScan 
 		When I issue the EndScan command to the subarray
 		Then the TMC, CSP and SDP subarrays transition to ObsState READY
 		And the DishMaster transitions to pointingState TRACK
-		And the TMC receives LongRunningCommandResult event OK from subsystems CSP,SDP and DISH
+		And the TMC receives LongRunningCommandResult event OK from subsystems CSP, SDP and DISH
