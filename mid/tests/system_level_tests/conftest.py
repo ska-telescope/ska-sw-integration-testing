@@ -487,6 +487,8 @@ def subarray_in_ready_state(
         get_expected_long_run_command_result(context_fixt),
     )
     context_fixt.starting_state = ObsState.IDLE
+    context_fixt.when_action_name = "Configure"
+    json_input = MyFileJSONInput("subarray", "configure_mid")
     context_fixt.when_action_result = tmc.configure(
         json_input,
         wait_termination=False,
