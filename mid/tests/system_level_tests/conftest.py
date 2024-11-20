@@ -428,12 +428,6 @@ def subarray_in_ready_state(
     event_tracer: TangoEventTracer,
 ):
     _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.EMPTY
-    tmc.force_change_of_obs_state(
-        ObsState.EMPTY,
-        TestHarnessInputs(),
-        wait_termination=True,
-    )
     # We haven't used force change obstate directly as we are not able to
     # verify the completion of command with longrunningcommandresult against
     # the command_id
