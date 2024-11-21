@@ -69,6 +69,7 @@ def verify_scanning_state(
     """
     Verify the subarray's transition to the SCANNING state.
     """
+    context_fixt.starting_state = ObsState.READY
     assert_that(event_tracer).described_as(
         "All three: TMC Subarray Node device"
         f"({tmc.subarray_node})"

@@ -59,6 +59,7 @@ def verify_idle_state(
     event_tracer: TangoEventTracer,
 ):
     """Verify the subarray's transition to the IDLE state."""
+    context_fixt.starting_state = ObsState.READY
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
         f"({tmc.subarray_node})"
