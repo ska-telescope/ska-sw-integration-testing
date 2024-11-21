@@ -317,7 +317,7 @@ k8s-test-mid-tmc-with-sdp:
   rules:
     - exists: 
         - mid/tests/**/*
-  allow_failure: true
+  
 
 
 # Job to stop the test environment for TMC with SDP.

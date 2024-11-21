@@ -1,8 +1,8 @@
-"""Test module for AssignResources functionality (XTP-68818)"""
+"""Test module for End functionality (XTP-68818)"""
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import scenario, then, when
 from ska_control_model import ObsState
 from ska_integration_test_harness.facades.csp_facade import (
     CSPFacade,  # CSP facade
@@ -13,48 +13,22 @@ from ska_integration_test_harness.facades.sdp_facade import (
 )
 from ska_integration_test_harness.facades.tmc_facade import TMCFacade
 from ska_integration_test_harness.inputs.pointing_state import PointingState
-from ska_integration_test_harness.inputs.test_harness_inputs import (
-    TestHarnessInputs,
-)
 from ska_tango_testing.integration import TangoEventTracer
-from tests.system_level_tests.conftest import (
-    DISH_IDS,
-    SubarrayTestContextData,
-    _setup_event_subscriptions,
-)
+from tests.system_level_tests.conftest import DISH_IDS, SubarrayTestContextData
 
-TIMEOUT = 200
+TIMEOUT = 100
 
 
 @pytest.mark.system_level_test_mid
 @scenario(
-    "system_level_tests/" + "xtp_65630_telescope_subarray_transitions.feature",
+    "system_level_tests/"
+    + "xtp_66801_telescope_observational_commands.feature",
     "End command on Mid telescope",
 )
 def test_telescope_end_command():
     """BDD test scenario for verifying successful execution of
     the End command with TMC,CSP and SDP
     devices for pairwise testing"""
-
-
-@given("subarray is in READY ObsState")
-def subarray_in_ready_state(
-    context_fixt: SubarrayTestContextData,
-    default_commands_inputs: TestHarnessInputs,
-    tmc: TMCFacade,
-    csp: CSPFacade,
-    sdp: SDPFacade,
-    event_tracer: TangoEventTracer,
-):
-    """Ensure the subarray is in the READY state."""
-    _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
-    context_fixt.starting_state = ObsState.READY
-
-    tmc.force_change_of_obs_state(
-        ObsState.READY,
-        default_commands_inputs,
-        wait_termination=True,
-    )
 
 
 @when("I issue the End command to subarray")
@@ -85,6 +59,7 @@ def verify_idle_state(
     event_tracer: TangoEventTracer,
 ):
     """Verify the subarray's transition to the IDLE state."""
+    context_fixt.starting_state = ObsState.READY
     assert_that(event_tracer).described_as(
         f"All three: TMC Subarray Node device "
         f"({tmc.subarray_node})"
