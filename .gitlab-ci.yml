@@ -60,8 +60,9 @@ k8s-test-low:
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
     MCCS_SIMULATION_ENABLED: 'false'
+    EXIT_AT_FAIL: 'true'
   script:
-    - make k8s-test MARK='system_level_tests'
+    - make k8s-test MARK='system_level_tests' EXIT_AT_FAIL='true'
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
@@ -407,8 +408,9 @@ k8s-test-mid:
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
     DISH_SIMULATION_ENABLED: 'false'
+    EXIT_AT_FAIL: 'true'
   script:
-    - make k8s-test MARK='system_level_test_mid'
+    - make k8s-test MARK='system_level_test_mid' EXIT_AT_FAIL='true'
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish

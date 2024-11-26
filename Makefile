@@ -107,7 +107,7 @@ k8s-pre-test: test-requirements
 PYTHON_TEST_NAME ?= ## -k parameter for pytest
 
 ifneq ($(PYTHON_TEST_NAME),)
-	PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(PYTHON_TEST_NAME)'
+PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(PYTHON_TEST_NAME)'
 endif
 
 # ----------------------------------------------------------------------------
@@ -141,8 +141,8 @@ PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) \
 
 # Add BDD HTML test report (if enabled)
 ifneq ($(HTML_REPORT_TARGET_FILE),)
-	PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) \
-		--bdd-report="$(HTML_REPORT_TARGET_FILE)"
+PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) \
+	--bdd-report="$(HTML_REPORT_TARGET_FILE)"
 endif
 
 # ----------------------------------------------------------------------------
