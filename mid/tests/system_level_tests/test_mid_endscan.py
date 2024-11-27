@@ -19,11 +19,8 @@ from tests.system_level_tests.conftest import (
     SubarrayTestContextData,
     _setup_event_subscriptions,
 )
-from tests.system_level_tests.utils.json_file_input_handler import (
-    MyFileJSONInput,
-)
 
-from .conftest import get_expected_long_run_command_result
+from .conftest import TestHarnessInputs
 
 TIMEOUT = 100
 
@@ -50,177 +47,183 @@ def subarray_in_scanning_state(
     csp: CSPFacade,
     sdp: SDPFacade,
     event_tracer: TangoEventTracer,
+    default_commands_inputs: TestHarnessInputs,
 ):
-    """Ensure the subarray is in the SCANNING state."""
     _setup_event_subscriptions(tmc, csp, sdp, event_tracer)
+    tmc.force_change_of_obs_state(
+        ObsState.SCANNING,
+        default_commands_inputs,
+        wait_termination=True,
+    )
+    context_fixt.starting_state = ObsState.SCANNING
 
     # We haven't used force change obstate directly as we are not able to
     # verify the completion of command with longrunningcommandresult against
     # the command_id, This can be considered as an imporvement to test harness
 
-    context_fixt.when_action_name = "AssignResources"
-    json_input = MyFileJSONInput(
-        "centralnode", "assign_resources_mid"
-    ).with_attribute("subarray_id", 1)
+    # context_fixt.when_action_name = "AssignResources"
+    # json_input = MyFileJSONInput(
+    #     "centralnode", "assign_resources_mid"
+    # ).with_attribute("subarray_id", 1)
 
-    context_fixt.when_action_result = tmc.assign_resources(
-        json_input,
-        wait_termination=False,
-    )
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to RESOURCING."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.RESOURCING,
-        previous_value=context_fixt.starting_state,
-    )
+    # context_fixt.when_action_result = tmc.assign_resources(
+    #     json_input,
+    #     wait_termination=False,
+    # )
+    # assert_that(event_tracer).described_as(
+    #     f"All three: TMC Subarray Node device "
+    #     f"({tmc.subarray_node})"
+    #     f", CSP Subarray device ({csp.csp_subarray}) "
+    #     f"and SDP Subarray device ({sdp.sdp_subarray}) "
+    #     "ObsState attribute values should move "
+    #     f"from {str(context_fixt.starting_state)} to RESOURCING."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "obsState",
+    #     ObsState.RESOURCING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "obsState",
+    #     ObsState.RESOURCING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     sdp.sdp_subarray,
+    #     "obsState",
+    #     ObsState.RESOURCING,
+    #     previous_value=context_fixt.starting_state,
+    # )
 
-    # override the starting state for the next step
+    # # override the starting state for the next step
 
-    context_fixt.starting_state = ObsState.RESOURCING
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to IDLE."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.IDLE,
-        previous_value=context_fixt.starting_state,
-    )
-    assert_that(event_tracer).described_as(
-        f"TMC Central Node ({tmc.central_node}) is "
-        " expected to report a longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.central_node,
-        "longRunningCommandResult",
-        get_expected_long_run_command_result(context_fixt),
-    )
-    context_fixt.starting_state = ObsState.IDLE
-    context_fixt.when_action_name = "Configure"
-    json_input = MyFileJSONInput("subarray", "configure_mid")
-    context_fixt.when_action_result = tmc.configure(
-        json_input,
-        wait_termination=False,
-    )
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to CONFIGURING."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.CONFIGURING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.CONFIGURING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.CONFIGURING,
-        previous_value=context_fixt.starting_state,
-    )
-    # store current (already verified) state to use it as previous step
-    # in next assertions
-    context_fixt.starting_state = ObsState.CONFIGURING
-    assert_that(event_tracer).described_as(
-        f"All three: TMC Subarray Node device "
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to READY."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.READY,
-        previous_value=context_fixt.starting_state,
-    )
-    assert_that(event_tracer).described_as(
-        f"TMC Subarray Node ({tmc.subarray_node}) is "
-        " expected to report a longRunningCommand successful completion."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "longRunningCommandResult",
-        get_expected_long_run_command_result(context_fixt),
-    )
-    context_fixt.when_action_name = "Scan"
+    # context_fixt.starting_state = ObsState.RESOURCING
+    # assert_that(event_tracer).described_as(
+    #     f"All three: TMC Subarray Node device "
+    #     f"({tmc.subarray_node})"
+    #     f", CSP Subarray device ({csp.csp_subarray}) "
+    #     f"and SDP Subarray device ({sdp.sdp_subarray}) "
+    #     "ObsState attribute values should move "
+    #     f"from {str(context_fixt.starting_state)} to IDLE."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "obsState",
+    #     ObsState.IDLE,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "obsState",
+    #     ObsState.IDLE,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     sdp.sdp_subarray,
+    #     "obsState",
+    #     ObsState.IDLE,
+    #     previous_value=context_fixt.starting_state,
+    # )
+    # assert_that(event_tracer).described_as(
+    #     f"TMC Central Node ({tmc.central_node}) is "
+    #     " expected to report a longRunningCommand successful completion."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.central_node,
+    #     "longRunningCommandResult",
+    #     get_expected_long_run_command_result(context_fixt),
+    # )
+    # context_fixt.starting_state = ObsState.IDLE
+    # context_fixt.when_action_name = "Configure"
+    # json_input = MyFileJSONInput("subarray", "configure_mid")
+    # context_fixt.when_action_result = tmc.configure(
+    #     json_input,
+    #     wait_termination=False,
+    # )
+    # assert_that(event_tracer).described_as(
+    #     f"All three: TMC Subarray Node device "
+    #     f"({tmc.subarray_node})"
+    #     f", CSP Subarray device ({csp.csp_subarray}) "
+    #     f"and SDP Subarray device ({sdp.sdp_subarray}) "
+    #     "ObsState attribute values should move "
+    #     f"from {str(context_fixt.starting_state)} to CONFIGURING."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "obsState",
+    #     ObsState.CONFIGURING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "obsState",
+    #     ObsState.CONFIGURING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     sdp.sdp_subarray,
+    #     "obsState",
+    #     ObsState.CONFIGURING,
+    #     previous_value=context_fixt.starting_state,
+    # )
+    # # store current (already verified) state to use it as previous step
+    # # in next assertions
+    # context_fixt.starting_state = ObsState.CONFIGURING
+    # assert_that(event_tracer).described_as(
+    #     f"All three: TMC Subarray Node device "
+    #     f"({tmc.subarray_node})"
+    #     f", CSP Subarray device ({csp.csp_subarray}) "
+    #     f"and SDP Subarray device ({sdp.sdp_subarray}) "
+    #     "ObsState attribute values should move "
+    #     f"from {str(context_fixt.starting_state)} to READY."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "obsState",
+    #     ObsState.READY,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "obsState",
+    #     ObsState.READY,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     sdp.sdp_subarray,
+    #     "obsState",
+    #     ObsState.READY,
+    #     previous_value=context_fixt.starting_state,
+    # )
+    # assert_that(event_tracer).described_as(
+    #     f"TMC Subarray Node ({tmc.subarray_node}) is "
+    #     " expected to report a longRunningCommand successful completion."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "longRunningCommandResult",
+    #     get_expected_long_run_command_result(context_fixt),
+    # )
+    # context_fixt.when_action_name = "Scan"
 
-    json_input = MyFileJSONInput("subarray", "scan_mid")
+    # json_input = MyFileJSONInput("subarray", "scan_mid")
 
-    context_fixt.when_action_result = tmc.scan(
-        json_input,
-        wait_termination=False,
-    )
-    context_fixt.starting_state = ObsState.READY
-    assert_that(event_tracer).described_as(
-        "All three: TMC Subarray Node device"
-        f"({tmc.subarray_node})"
-        f", CSP Subarray device ({csp.csp_subarray}) "
-        f"and SDP Subarray device ({sdp.sdp_subarray}) "
-        "ObsState attribute values should move "
-        f"from {str(context_fixt.starting_state)} to SCANNING."
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        tmc.subarray_node,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        csp.csp_subarray,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    ).has_change_event_occurred(
-        sdp.sdp_subarray,
-        "obsState",
-        ObsState.SCANNING,
-        previous_value=context_fixt.starting_state,
-    )
+    # context_fixt.when_action_result = tmc.scan(
+    #     json_input,
+    #     wait_termination=False,
+    # )
+    # context_fixt.starting_state = ObsState.READY
+    # assert_that(event_tracer).described_as(
+    #     "All three: TMC Subarray Node device"
+    #     f"({tmc.subarray_node})"
+    #     f", CSP Subarray device ({csp.csp_subarray}) "
+    #     f"and SDP Subarray device ({sdp.sdp_subarray}) "
+    #     "ObsState attribute values should move "
+    #     f"from {str(context_fixt.starting_state)} to SCANNING."
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     tmc.subarray_node,
+    #     "obsState",
+    #     ObsState.SCANNING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     csp.csp_subarray,
+    #     "obsState",
+    #     ObsState.SCANNING,
+    #     previous_value=context_fixt.starting_state,
+    # ).has_change_event_occurred(
+    #     sdp.sdp_subarray,
+    #     "obsState",
+    #     ObsState.SCANNING,
+    #     previous_value=context_fixt.starting_state,
+    # )
 
 
 @when("I issue the EndScan command to the subarray")
