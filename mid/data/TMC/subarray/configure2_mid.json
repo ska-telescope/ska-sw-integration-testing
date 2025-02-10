@@ -24,6 +24,8 @@
       "subarray_id": 1
     },
     "midcbf": {
+      "frequency_band_offset_stream1": 80,
+        "frequency_band_offset_stream2": 80,
       "correlation": {
         "processing_regions": [{
             "fsp_ids": [1],

@@ -5,82 +5,18 @@
       "frequency_band": "1",
       "subarray_id": 1
     },
-    "cbf": {
-      "fsp": [
-        {
-          "fsp_id": 1,
-          "function_mode": "CORR",
-          "frequency_slice_id": 1,
-          "integration_factor": 1,
-          "channel_averaging_map": [
-            [
-              0,
-              2
-            ],
-            [
-              744,
-              0
-            ]
-          ],
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ],
-          "channel_offset": 0,
-          "output_host": [
-            [
-              0,
-              "192.168.0.1"
-            ]
-          ],
-          "output_port": [
-            [
-              0,
-              9000
-            ]
-          ]
-        },
-        {
-          "fsp_id": 2,
-          "function_mode": "CORR",
-          "frequency_slice_id": 2,
-          "integration_factor": 1,
-          "channel_averaging_map": [
-            [
-              0,
-              2
-            ],
-            [
-              744,
-              0
-            ]
-          ],
-          "output_link_map": [
-            [
-              200,
-              1
-            ]
-          ],
-          "channel_offset": 740,
-          "output_host": [
-            [
-              0,
-              "192.168.0.1"
-            ]
-          ],
-          "output_port": [
-            [
-              0,
-              9000
-            ]
-          ]
-        }
-      ],
-      "vlbi": {
-        
-      },
-      "delay_model_subscription_point": "ska_mid/tm_leaf_node/csp_subarray01/delayModel"
+    "midcbf": {
+      "frequency_band_offset_stream1": 80,
+      "frequency_band_offset_stream2": 80,
+      "correlation": {
+          "processing_regions": [{
+              "fsp_ids": [1,2],
+              "start_freq" : 350000000,
+              "channel_width" : 13440,
+              "channel_count" : 14880,
+              "sdp_start_channel_id": 0,
+              "integration_factor": 1
+          }]
+      }
     }
   }
