@@ -1,5 +1,5 @@
 {
-  "interface": "https://schema.skao.int/ska-tmc-configure/3.0",
+  "interface": "https://schema.skao.int/ska-tmc-configure/4.1",
   "pointing": {
     "target": {
       "reference_frame": "ICRS",
