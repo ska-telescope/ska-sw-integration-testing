@@ -15,13 +15,9 @@
     "scan_type": "target:a"
   },
   "csp": {
-    "interface": "https://schema.skao.int/ska-csp-configurescan/4.0",
-    "subarray": {
-      "subarray_name": "Receptor(s)"
-    },
+    "interface": "https://schema.skao.int/ska-csp-configurescan/4.1",
     "common": {
       "config_id": "4 receptor, band 1, 1 FSP, no options",
-      "subarray_id": 1,
       "frequency_band": "1"
     },
     "midcbf": {
