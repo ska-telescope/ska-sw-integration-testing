@@ -16,7 +16,7 @@
     "receiver_band": "1"
   },
   "csp": {
-    "interface": "https://schema.skao.int/ska-csp-configurescan/4.1",
+    "interface": "https://schema.skao.int/ska-csp-configurescan/4.0",
     "subarray": {
       "subarray_name": "science period 23"
     },

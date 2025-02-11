@@ -9,7 +9,7 @@
     },
     "dish": {"receiver_band": "1"},
     "csp": {
-        "interface": "https://schema.skao.int/ska-csp-configure/2.0",
+        "interface": "https://schema.skao.int/ska-csp-configure/4.0",
         "subarray": {"subarray_name": "science period 23"},
         "common": {
             "config_id": "sbi-mvp01-20200325-00001-science_A",
