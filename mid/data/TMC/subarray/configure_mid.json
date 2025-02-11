@@ -1,5 +1,5 @@
 {
-  "interface": "https://schema.skao.int/ska-tmc-configure/4.1",
+  "interface": "https://schema.skao.int/ska-tmc-configure/4.0",
   "pointing": {
     "target": {
       "reference_frame": "ICRS",
@@ -23,8 +23,6 @@
       "frequency_band": "1"
     },
     "midcbf": {
-      "frequency_band_offset_stream1": 80,
-      "frequency_band_offset_stream2": 80,
       "correlation": {
           "processing_regions": [{
               "fsp_ids": [1,2],
