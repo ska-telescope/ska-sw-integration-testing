@@ -8,6 +8,7 @@
       "dec": "-88:57:22.9",
       "ca_offset_arcsec": 0.0,
       "ie_offset_arcsec": 0.0
+    }
   },
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
