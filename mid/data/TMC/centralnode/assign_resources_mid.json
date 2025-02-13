@@ -13,7 +13,7 @@
           "receive_nodes": 1
        },
        "execution_block": {
-          "eb_id": EXECUTION_BLOCK_ID,
+          "eb_id": "eb-mvp01-20210623-00000",
           "context": {},
           "max_length":21600.0,
     
@@ -86,14 +86,14 @@
        },
        "processing_blocks":[
           {
-              "pb_id": PROCESSING_BLOCK_ID_REALTIME,
+              "pb_id": "pb-mvp01-20210623-00000",
               "script": {
                  "kind": "realtime",
                  "name": "vis-receive",
-                 "version": "4.5.0" # as per latest SDP release REL-1682 minimum supported version is 4.5.0
+                 "version": "4.5.0" 
               },
               "parameters": {
-                  "dry_run": True,
+                  "dry_run": true,
                   "channels_per_port": 20,
                   "pod_settings": [{
                      "networkMapping": {"ip": "1.2.3.4/0"}
