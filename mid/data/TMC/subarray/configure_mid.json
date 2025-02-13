@@ -12,7 +12,7 @@
   },
   "sdp": {
     "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
-    "scan_type": "target:a"
+    "scan_type": "science"
   },
   "csp": {
     "interface": "https://schema.skao.int/ska-csp-configurescan/4.1",
