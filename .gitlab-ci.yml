@@ -96,6 +96,7 @@ k8s-test-low-tmc-with-csp:
   stage: integration
   tags:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually 
   variables:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
@@ -143,6 +144,7 @@ k8s-test-low-tmc-with-sdp:
   stage: integration
   tags:
     - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-low'
     PORT: "10000"
@@ -192,6 +194,7 @@ k8s-test-tmc-with-mccs-low:
   stage: integration
   tags:
     - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-low'
     PORT: "10000"
@@ -242,6 +245,7 @@ k8s-test-mid-tmc-with-csp:
   stage: integration
   tags:
     - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
@@ -290,6 +294,7 @@ k8s-test-mid-tmc-with-sdp:
   stage: integration
   tags:
     - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     PORT: "10000"
@@ -343,6 +348,7 @@ k8s-test-dish-lmc:
   stage: integration
   tags:
     - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     DISH_SIMULATION_ENABLED: "false"
