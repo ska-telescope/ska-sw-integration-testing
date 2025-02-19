@@ -86,7 +86,7 @@ stop-k8s-test-low:
   variables:
     KUBE_NAMESPACE: 'integration-ska-low' #'ci-dev-ska-low-integration'
   script:
-    - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/low-$CI_COMMIT_REF_SLUG
     action: stop 
@@ -133,7 +133,7 @@ stop-k8s-test-low-with-csp:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE} # Delete the test runner pod in the Kubernetes namespace.
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/csp-low-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
@@ -184,7 +184,7 @@ stop-k8s-test-low-tmc-with-sdp:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/sdp-low-$CI_COMMIT_REF_SLUG
     action: stop
@@ -234,7 +234,7 @@ stop-k8s-test-tmc-with-mccs:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/mccs-$CI_COMMIT_REF_SLUG
     action: stop
@@ -282,7 +282,7 @@ stop-k8s-test-mid-with-csp:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/csp-mid-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
@@ -337,7 +337,7 @@ stop-k8s-test-mid-tmc-with-sdp:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/sdp-mid-$CI_COMMIT_REF_SLUG
     action: stop
@@ -395,7 +395,7 @@ stop-k8s-test-dish-lmc:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/dish-$CI_COMMIT_REF_SLUG
     action: stop
@@ -440,7 +440,7 @@ stop-k8s-test-mid:
   variables:
     KUBE_NAMESPACE: 'integration-ska-mid' #'ci-dev-ska-mid-integration'
   script:
-    - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/mid-$CI_COMMIT_REF_SLUG
     action: stop 
