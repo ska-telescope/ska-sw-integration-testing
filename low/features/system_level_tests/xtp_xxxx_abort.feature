@@ -1,0 +1,13 @@
+Feature: This feature describes abort and reset for the Low telescope subarray 
+    with TMC, including expected state transitions across TMC, CSP, SDP, and MCCS subsystems.
+
+Scenario: TMC validates Abort Command
+    Given a Low telescope
+    And telescope is in ON state
+    Then a Subarray in <obs_state> obsState
+    When I Abort it
+    Then the TMC, CSP, SDP, and MCCS subarrays transitions to ABORTED obsState
+
+    Examples:
+    | obs_state   |
+    | IDLE        |
