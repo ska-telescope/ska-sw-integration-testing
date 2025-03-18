@@ -17,7 +17,7 @@ TIMEOUT = 100
 
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
+    "system_level_tests/" + "xtp_xxxx_abort.feature",
     " TMC validates Abort Command",
 )
 def test_telescope_abort():
