@@ -1,6 +1,9 @@
+import json
+
 import pytest
-from pytest_bdd import given, parsers, scenario, then, when
-from ska_control_model import ObsState
+from assertpy import assert_that
+from pytest_bdd import parsers, scenario, then, when
+from ska_control_model import ObsState, ResultCode
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
@@ -9,6 +12,8 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
+    set_subarray_to_ready,
+    set_subarray_to_scanning,
     subscribe_to_obsstate_events,
 )
 
@@ -30,7 +35,7 @@ def test_telescope_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarray is in IDLE ObsState"))
+@then(parsers.parse("subarray is in IDLE ObsState"))
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -46,12 +51,54 @@ def subarray_in_idle_obsstate(
     )
 
 
+@then(parsers.parse("subarray is in READY ObsState"))
+def subarray_in_ready_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    set_subarray_to_ready(
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
+
+
+@then(parsers.parse("subarray is in SCANNING ObsState"))
+def subarray_in_scanning_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    set_subarray_to_scanning(
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
+
+
 @when("I Abort it")
 def invoke_end(
-    subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, pytest.unique_id = subarray_node_low.abort_subarray()
+    _, unique_id = subarray_node_low.abort_subarray()
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER ABORT COMMAND: "
+        "Central Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected have longRunningCommand as"
+        '(unique_id,(ResultCode.STARTED,"Command Started"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (
+            unique_id[0],
+            json.dumps((int(ResultCode.STARTED), "Command Started")),
+        ),
+    )
 
 
 @then("the TMC, CSP, SDP and MCCS subarrays transition to ABORTED obsState")

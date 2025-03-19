@@ -121,6 +121,11 @@ def execute_command(
         _, pytest.unique_id = subarray_node_low.store_configuration_data(
             input_json
         )
+    elif command_name.lower() == "scan":
+        input_json = prepare_json_args_for_commands(
+            "scan_low", command_input_factory
+        )
+        _, pytest.unique_id = subarray_node_low.store_scan_data(input_json)
     else:
         subarray_node_low.execute_transition(command_name)
 
@@ -152,4 +157,20 @@ def set_subarray_to_ready(
         command_name="configure",
         command_input_factory=command_input_factory,
         expected_obs_state=ObsState.READY,
+    )
+
+
+def set_subarray_to_scanning(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    """Helper method to set subarray to READY ObsState using
+    execute_command."""
+    execute_command(
+        subarray_node_low=subarray_node_low,
+        event_tracer=event_tracer,
+        command_name="scan",
+        command_input_factory=command_input_factory,
+        expected_obs_state=ObsState.SCANNING,
     )
