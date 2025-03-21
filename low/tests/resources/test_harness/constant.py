@@ -109,7 +109,7 @@ COMMAND_NOT_ALLOWED_DEFECT = json.dumps(
     }
 )
 
-#As per ADR-9 changes and REL-1975, changing the device names
+# As per ADR-9 changes and REL-1975, changing the device names
 low_centralnode = "low-tmc/central-node/0"
 tmc_low_subarraynode1 = "low-tmc/subarray/01"
 tmc_low_subarraynode2 = "low-tmc/subarray/02"
