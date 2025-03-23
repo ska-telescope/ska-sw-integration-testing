@@ -12,8 +12,6 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
-    set_subarray_to_ready,
-    set_subarray_to_scanning,
     subscribe_to_obsstate_events,
 )
 
