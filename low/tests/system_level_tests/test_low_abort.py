@@ -20,7 +20,6 @@ from tests.system_level_tests.utils import (
 TIMEOUT = 100
 
 
-@pytest.mark.skip
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_xxxx_abort.feature",
@@ -35,7 +34,7 @@ def test_telescope_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@then(parsers.parse("subarray is in IDLE ObsState"))
+@then(parsers.parse("subarrays is in IDLE ObsState"))
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -51,7 +50,7 @@ def subarray_in_idle_obsstate(
     )
 
 
-@then(parsers.parse("subarray is in READY ObsState"))
+@then(parsers.parse("subarrays is in READY ObsState"))
 def subarray_in_ready_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
@@ -65,7 +64,7 @@ def subarray_in_ready_obsstate(
     )
 
 
-@then(parsers.parse("subarray is in SCANNING ObsState"))
+@then(parsers.parse("subarrays is in SCANNING ObsState"))
 def subarray_in_scanning_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
@@ -76,6 +75,34 @@ def subarray_in_scanning_obsstate(
         subarray_node_low,
         command_input_factory,
         event_tracer,
+    )
+
+
+@then(parsers.parse("subarrays is in RESOURCING ObsState"))
+def subsystem_subarrays_in_resourcing(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
+):
+    """Check if all subarrays are in RESOURCING obsState."""
+    check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
+
+
+@then("subarrays is in CONFIGURING obsState")
+def subsystem_subarrays_in_configuring(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
+    """Check if all subarrays are in CONFIGURING obsState."""
+    # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
+    # observation state by verifying the observed state changes for each
+    # subarray device. This function can be used to validate any obsState.
+    check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.CONFIGURING,
     )
 
 

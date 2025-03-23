@@ -12,3 +12,15 @@ Scenario: TMC validates Abort Command
     | obs_state   |
     | IDLE        |
     | READY       |
+
+Scenario: TMC validates Abort Command in intermediate obsState
+    Given a Low telescope
+    And telescope is in ON state
+    Given a Subarray in intermediate obsState <obs_state>
+    When I Abort it
+    Then the Subarray transitions to ABORTED obsState
+
+    Examples:
+    | obs_state         |
+    | RESOURCING        |
+    | CONFIGURING       |
