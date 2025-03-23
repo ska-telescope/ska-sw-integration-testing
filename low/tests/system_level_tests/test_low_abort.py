@@ -127,7 +127,7 @@ def invoke_end(
     )
 
 
-@then("the TMC, CSP, SDP and MCCS subarrays transition to ABORTED obsState")
+@then("the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState")
 def subsystem_subarrays_in_idle(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,

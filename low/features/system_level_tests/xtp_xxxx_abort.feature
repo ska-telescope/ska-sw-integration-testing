@@ -6,7 +6,7 @@ Scenario: TMC validates Abort Command
     And telescope is in ON state
     Then subarrays is in IDLE ObsState
     When I Abort it
-    Then the TMC, CSP, SDP, and MCCS subarrays transitions to ABORTED obsState
+    Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
 
 
 Scenario: TMC validates Abort Command in intermediate obsState
