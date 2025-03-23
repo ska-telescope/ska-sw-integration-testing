@@ -169,8 +169,8 @@ def central_node_receiving_error(
     expected_long_running_command_result = (
         stored_unique_id[0],
         "Exception occurred on the following devices"
-        ": ska_low/tm_leaf_node/mccs_master: Timeout has occurred, "
-        "command failedska_low/tm_subarray_node/1: "
+        ": low-tmc/leaf-node-mccs/0: Timeout has occurred, "
+        "command failed  low-tmc/subarray/01: "
         "Timeout has occurred, command failed",
     )
     assert event_recorder.has_change_event_occurred(

@@ -142,8 +142,8 @@ def tmc_reports_unavailability_to_client(
     Method to verify TMC subarray reports unavailability to client.
     """
     exception_message = (
-        " ska_mid/tm_subarray_node/1: Exception occurred on the"
-        + " following devices: ska_mid/tm_leaf_node/sdp_subarray01:"
+        " mid-tmc/subarray/01 : Exception occurred on the"
+        + " following devices: mid-tmc/subarray-leaf-node-sdp/01:"
         + " The processing controller, helm deployer, or both are OFFLINE:"
         + " cannot start processing blocks.\n"
     )
