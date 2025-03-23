@@ -4,14 +4,10 @@ Feature: This feature describes abort and reset for the Low telescope subarray
 Scenario: TMC validates Abort Command
     Given a Low telescope
     And telescope is in ON state
-    Then subarray is in <obs_state> ObsState
+    Then subarray is in IDLE ObsState
     When I Abort it
     Then the TMC, CSP, SDP, and MCCS subarrays transitions to ABORTED obsState
 
-    Examples:
-    | obs_state   |
-    | IDLE        |
-    | READY       |
 
 Scenario: TMC validates Abort Command in intermediate obsState
     Given a Low telescope

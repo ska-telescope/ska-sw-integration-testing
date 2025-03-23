@@ -20,6 +20,7 @@ from tests.system_level_tests.utils import (
 TIMEOUT = 100
 
 
+@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_xxxx_abort.feature",
