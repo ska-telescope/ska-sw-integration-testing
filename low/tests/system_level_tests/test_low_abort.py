@@ -62,10 +62,19 @@ def subarray_in_idle_obsstate(
 
 @then(parsers.parse("subarrays is in READY ObsState"))
 def subarray_in_ready_obsstate(
+    central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
+    # First ensure the subarray is in IDLE state
+    set_subarray_to_idle(
+        central_node_low,
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
+    # Then set it to READY state
     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     set_subarray_to_ready(
         subarray_node_low,
