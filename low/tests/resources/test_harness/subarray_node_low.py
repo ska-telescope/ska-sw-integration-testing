@@ -47,6 +47,7 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_restart,
 )
 from tests.resources.test_support.common_utils.common_helpers import Resource
+from tests.system_level_tests.utils import get_low_devices_dictionary
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -72,26 +73,42 @@ class SubarrayNodeWrapperLow:
     to test subarray node.
     """
 
-    def __init__(self) -> None:
-        self.tmc_subarraynode1 = tmc_low_subarraynode1
+    def __init__(self, subarray_id="1") -> None:
+        self.subarray_id = subarray_id
         self.central_node = DeviceProxy(low_centralnode)
-        self.subarray_node = DeviceProxy(tmc_low_subarraynode1)
+
+        subarray_devices_dict = get_low_devices_dictionary(subarray_id)
+        self.tmc_subarraynode = subarray_devices_dict["tmc_subarraynode"]
+        self.subarray_node = DeviceProxy(
+            subarray_devices_dict["tmc_subarraynode"]
+        )
+        self.csp_subarray_leaf_node = DeviceProxy(
+            subarray_devices_dict["csp_subarray_leaf_node"]
+        )
+        self.sdp_subarray_leaf_node = DeviceProxy(
+            subarray_devices_dict["sdp_subarray_leaf_node"]
+        )
+        self.mccs_subarray_leaf_node = DeviceProxy(
+            subarray_devices_dict["mccs_subarray_leaf_node"]
+        )
+        self.csp_subarray = DeviceProxy(subarray_devices_dict["csp_subarray"])
+        self.sdp_subarray = DeviceProxy(subarray_devices_dict["sdp_subarray"])
+        self.mccs_subarray = DeviceProxy(
+            subarray_devices_dict["mccs_subarray"]
+        )
+
         # Set timeout to 5 sec.
         # Sometimes command timeout with default 3 sec time
         self.subarray_node.set_timeout_millis(5000)
-        self.csp_subarray_leaf_node = DeviceProxy(low_csp_subarray_leaf_node)
-        self.sdp_subarray_leaf_node = DeviceProxy(low_sdp_subarray_leaf_node)
-        self.mccs_subarray_leaf_node = DeviceProxy(mccs_subarray_leaf_node)
         self._state = DevState.OFF
         self._obs_state = SubarrayObsState.EMPTY
-        self.csp_subarray1 = DeviceProxy(low_csp_subarray1)
-        self.sdp_subarray1 = DeviceProxy(low_sdp_subarray1)
-        self.mccs_subarray1 = DeviceProxy(mccs_subarray1)
+
         self.subarray_devices = {
-            "csp_subarray": DeviceProxy(low_csp_subarray1),
-            "sdp_subarray": DeviceProxy(low_sdp_subarray1),
-            "mccs_subarray": DeviceProxy(mccs_subarray1),
+            "csp_subarray": self.csp_subarray,
+            "sdp_subarray": self.sdp_subarray,
+            "mccs_subarray": self.mccs_subarray,
         }
+
         self.json_factory = JsonFactory()
         self.release_input = (
             self.json_factory.create_centralnode_configuration(
@@ -111,7 +128,7 @@ class SubarrayNodeWrapperLow:
     @property
     def state(self) -> DevState:
         """TMC SubarrayNode operational state"""
-        self._state = Resource(self.tmc_subarraynode1).get("State")
+        self._state = Resource(self.tmc_subarraynode).get("State")
         return self._state
 
     @state.setter
@@ -126,7 +143,7 @@ class SubarrayNodeWrapperLow:
     @property
     def obs_state(self):
         """TMC SubarrayNode observation state"""
-        self._obs_state = Resource(self.tmc_subarraynode1).get("obsState")
+        self._obs_state = Resource(self.tmc_subarraynode).get("obsState")
         return self._obs_state
 
     @obs_state.setter
@@ -141,9 +158,7 @@ class SubarrayNodeWrapperLow:
     @property
     def health_state(self) -> HealthState:
         """Telescope health state representing overall health of telescope"""
-        self._health_state = Resource(self.tmc_subarraynode1).get(
-            "healthState"
-        )
+        self._health_state = Resource(self.tmc_subarraynode).get("healthState")
         return self._health_state
 
     @health_state.setter
@@ -158,7 +173,7 @@ class SubarrayNodeWrapperLow:
     @property
     def obs_state(self):
         """TMC SubarrayNode observation state"""
-        self._obs_state = Resource(self.tmc_subarraynode1).get("obsState")
+        self._obs_state = Resource(self.tmc_subarraynode).get("obsState")
         return self._obs_state
 
     @obs_state.setter
@@ -170,8 +185,8 @@ class SubarrayNodeWrapperLow:
         """
         self._obs_state = value
 
-    @sync_configure(device_dict=device_dict_low)
-    def store_configuration_data(self, input_json: str):
+    @sync_configure()
+    def store_configuration_data(self, input_json: str, subarray_id: str):
         """Invoke configure command on subarray Node
         Args:
             input_string (str): config input json
@@ -274,7 +289,7 @@ class SubarrayNodeWrapperLow:
 
     def move_to_off(self):
         # Move Subarray to OFF state
-        Resource(self.tmc_subarraynode1).assert_attribute("State").equals("ON")
+        Resource(self.tmc_subarraynode).assert_attribute("State").equals("ON")
         result, message = self.subarray_node.Off()
         LOGGER.info("Invoked OFF on SubarrayNode")
         return result, message
@@ -283,16 +298,16 @@ class SubarrayNodeWrapperLow:
         """Reset Simulator devices to it's original state"""
         if SIMULATED_DEVICES_DICT["all_mocks"]:
             sim_device_proxy_list = [
-                self.sdp_subarray1,
-                self.csp_subarray1,
-                self.mccs_subarray1,
+                self.sdp_subarray,
+                self.csp_subarray,
+                self.mccs_subarray,
             ]
         elif SIMULATED_DEVICES_DICT["csp_and_sdp"]:
-            sim_device_proxy_list = [self.sdp_subarray1, self.csp_subarray1]
+            sim_device_proxy_list = [self.sdp_subarray, self.csp_subarray]
         elif SIMULATED_DEVICES_DICT["csp_and_mccs"]:
-            sim_device_proxy_list = [self.csp_subarray1, self.mccs_subarray1]
+            sim_device_proxy_list = [self.csp_subarray, self.mccs_subarray]
         elif SIMULATED_DEVICES_DICT["sdp_and_mccs"]:
-            sim_device_proxy_list = [self.sdp_subarray1, self.mccs_subarray1]
+            sim_device_proxy_list = [self.sdp_subarray, self.mccs_subarray]
         else:
             sim_device_proxy_list = []
 
@@ -363,33 +378,33 @@ class SubarrayNodeWrapperLow:
         """Clears the command call data"""
         if SIMULATED_DEVICES_DICT["csp_and_sdp"]:
             for sim_device in [
-                self.sdp_subarray1,
-                self.csp_subarray1,
+                self.sdp_subarray,
+                self.csp_subarray,
             ]:
                 sim_device.ClearCommandCallInfo()
                 if clear_transition:
                     sim_device.ResetTransitions()
         elif SIMULATED_DEVICES_DICT["csp_and_mccs"]:
             for sim_device in [
-                self.csp_subarray1,
-                self.mccs_subarray1,
+                self.csp_subarray,
+                self.mccs_subarray,
             ]:
                 sim_device.ClearCommandCallInfo()
                 if clear_transition:
                     sim_device.ResetTransitions()
         elif SIMULATED_DEVICES_DICT["sdp_and_mccs"]:
             for sim_device in [
-                self.sdp_subarray1,
-                self.mccs_subarray1,
+                self.sdp_subarray,
+                self.mccs_subarray,
             ]:
                 sim_device.ClearCommandCallInfo()
                 if clear_transition:
                     sim_device.ResetTransitions()
         elif SIMULATED_DEVICES_DICT["all_mocks"]:
             for sim_device in [
-                self.sdp_subarray1,
-                self.csp_subarray1,
-                self.mccs_subarray1,
+                self.sdp_subarray,
+                self.csp_subarray,
+                self.mccs_subarray,
             ]:
                 sim_device.ClearCommandCallInfo()
                 if clear_transition:

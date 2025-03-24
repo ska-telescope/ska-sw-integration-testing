@@ -47,7 +47,11 @@ def invoke_assignresources(
         "assign_resources_low_real", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
     central_node_low.set_serial_number_of_cbf_processor()
     _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
     assert_that(event_tracer).described_as(
@@ -63,7 +67,8 @@ def invoke_assignresources(
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.IDLE,
     )
@@ -103,7 +108,8 @@ def subsystem_subarrays_in_empty(
     """Checks if Subarray's obsState attribute value is EMPTY"""
 
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.EMPTY,
     )

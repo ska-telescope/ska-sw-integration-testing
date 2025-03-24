@@ -1,11 +1,27 @@
 import json
+import logging
 
 import pytest
 from assertpy import assert_that
 from ska_control_model import ObsState
+from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DeviceProxy
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.constant import (
+    low_centralnode,
+    low_csp_master,
+    low_csp_subarray_leaf_prefix,
+    low_csp_subarray_prefix,
+    low_sdp_master,
+    low_sdp_subarray_leaf_prefix,
+    low_sdp_subarray_prefix,
+    mccs_controller,
+    mccs_master_leaf_node,
+    mccs_subarray_leaf_prefix,
+    mccs_subarray_prefix,
+    tmc_low_subarray_prefix,
+)
 from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
@@ -18,33 +34,32 @@ from tests.resources.test_support.common_utils.tmc_helpers import (
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
+configure_logging(logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
 
 
-def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
+def subscribe_to_obsstate_events(
+    event_tracer, subarray_devices, subarray_node
+):
     """Subscribe to obsState events for all relevant subarray devices."""
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["csp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
+    event_tracer.subscribe_event(subarray_devices["sdp_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_devices["csp_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_devices["mccs_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_node, "obsState")
 
 
 def check_subarray_obsstate(
-    subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_devices: dict,
+    subarray_node,
     event_tracer: TangoEventTracer,
     obs_state: ObsState,
 ):
     """Check if each subarray device is in the expected obsState."""
     subarray_devices = {
-        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
-        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
-        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
-        "TMC": subarray_node_low.subarray_node,
+        "SDP": subarray_devices["sdp_subarray"],
+        "CSP": subarray_devices["csp_subarray"],
+        "MCCS": subarray_devices["mccs_subarray"],
+        "TMC": subarray_node,
     }
 
     for name, device in subarray_devices.items():
@@ -61,10 +76,24 @@ def set_subarray_to_idle(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
+    subarray_id: str,
 ):
     """Helper method to set subarray to IDLE ObsState."""
     # Subscribe to obsState change events
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    json = ""
+    if subarray_id == "1":
+        json = "assign_resources_low_real_suabarray1_station1"
+    elif subarray_id == "2":
+        subarray_node_low = SubarrayNodeWrapperLow("2")
+        json = "assign_resources_low_real_suabarray2_station2"
+    else:
+        LOGGER.info("Invalid Subarray Id")
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
+
     cbf_proc1 = DeviceProxy("low-cbf/processor/0.0.0")
     cbf_proc2 = DeviceProxy("low-cbf/processor/0.0.1")
 
@@ -77,7 +106,7 @@ def set_subarray_to_idle(
     cbf_proc2.register()
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low_real", command_input_factory
+        json, command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
     # central_node_low.set_serial_number_of_cbf_processor()
@@ -98,9 +127,22 @@ def set_subarray_to_idle(
     )
 
     # Confirm subarray is in IDLE ObsState
-    check_subarray_obsstate(
-        subarray_node_low, event_tracer, obs_state=ObsState.IDLE
-    )
+    if subarray_id == "1":
+        check_subarray_obsstate(
+            subarray_node_low.subarray_devices,
+            subarray_node_low.subarray_node,
+            event_tracer,
+            obs_state=ObsState.IDLE,
+        )
+    if subarray_id == "2":
+        check_subarray_obsstate(
+            subarray_node_low.subarray_2_devices,
+            subarray_node_low.subarray_node_2,
+            event_tracer,
+            obs_state=ObsState.IDLE,
+        )
+    else:
+        LOGGER.info("Invalid Subarray Id")
 
 
 def execute_command(
@@ -135,7 +177,10 @@ def execute_command(
             (pytest.unique_id[0], COMMAND_COMPLETED),
         )
         check_subarray_obsstate(
-            subarray_node_low, event_tracer, obs_state=expected_obs_state
+            subarray_node_low.subarray_devices,
+            subarray_node_low.subarray_node,
+            event_tracer,
+            obs_state=expected_obs_state,
         )
 
 
@@ -153,3 +198,32 @@ def set_subarray_to_ready(
         command_input_factory=command_input_factory,
         expected_obs_state=ObsState.READY,
     )
+
+
+def get_low_devices_dictionary(subarray_id: str):
+    """Helper method to provide the dictionary with Low Subarray devices
+    for given Subarray Id"""
+    devices_dict = {}
+    devices_dict["tmc_subarraynode"] = tmc_low_subarray_prefix + subarray_id
+    devices_dict["sdp_subarray"] = low_sdp_subarray_prefix + subarray_id.zfill(
+        2
+    )
+    devices_dict["csp_subarray"] = low_csp_subarray_prefix + subarray_id.zfill(
+        2
+    )
+    devices_dict[
+        "sdp_subarray_leaf_node"
+    ] = low_sdp_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict[
+        "csp_subarray_leaf_node"
+    ] = low_csp_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict[
+        "mccs_subarray_leaf_node"
+    ] = mccs_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict["mccs_subarray"] = mccs_subarray_prefix + subarray_id.zfill(2)
+    devices_dict["csp_master"] = low_csp_master
+    devices_dict["sdp_master"] = low_sdp_master
+    devices_dict["mccs_master"] = mccs_controller
+    devices_dict["mccs_master_leaf_node"] = mccs_master_leaf_node
+    devices_dict["central_node"] = low_centralnode
+    return devices_dict

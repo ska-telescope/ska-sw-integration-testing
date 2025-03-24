@@ -17,16 +17,22 @@ from tests.resources.test_harness.constant import (
     low_csp_master,
     low_csp_master_leaf_node,
     low_csp_subarray1,
+    low_csp_subarray2,
     low_csp_subarray_leaf_node,
+    low_csp_subarray_leaf_node_2,
     low_sdp_master,
     low_sdp_master_leaf_node,
     low_sdp_subarray1,
+    low_sdp_subarray2,
     low_sdp_subarray_leaf_node,
+    low_sdp_subarray_leaf_node_2,
     mccs_controller,
     mccs_master_leaf_node,
     mccs_subarray1,
+    mccs_subarray2,
     pst,
     tmc_low_subarraynode1,
+    tmc_low_subarraynode2,
 )
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
@@ -54,20 +60,36 @@ class CentralNodeWrapperLow(object):
     def __init__(self) -> None:
         self.central_node = DeviceProxy(low_centralnode)
         self.subarray_node = DeviceProxy(tmc_low_subarraynode1)
+        self.subarray_node_2 = DeviceProxy(tmc_low_subarraynode2)
         self.csp_master_leaf_node = DeviceProxy(low_csp_master_leaf_node)
         self.sdp_master_leaf_node = DeviceProxy(low_sdp_master_leaf_node)
         self.mccs_master_leaf_node = DeviceProxy(mccs_master_leaf_node)
+
         self.subarray_devices = {
             "csp_subarray": DeviceProxy(low_csp_subarray1),
             "sdp_subarray": DeviceProxy(low_sdp_subarray1),
             "mccs_subarray": DeviceProxy(mccs_subarray1),
         }
+        self.subarray_2_devices = {
+            "csp_subarray": DeviceProxy(low_csp_subarray2),
+            "sdp_subarray": DeviceProxy(low_sdp_subarray2),
+            "mccs_subarray": DeviceProxy(mccs_subarray2),
+        }
         self.csp_subarray_leaf_node = DeviceProxy(low_csp_subarray_leaf_node)
         self.sdp_subarray_leaf_node = DeviceProxy(low_sdp_subarray_leaf_node)
+        self.csp_subarray_leaf_node_2 = DeviceProxy(
+            low_csp_subarray_leaf_node_2
+        )
+        self.sdp_subarray_leaf_node_2 = DeviceProxy(
+            low_sdp_subarray_leaf_node_2
+        )
         self.subarray_device_by_id: dict = {"1": self.subarray_devices}
         self.csp_subarray1 = DeviceProxy(low_csp_subarray1)
         self.sdp_subarray1 = DeviceProxy(low_sdp_subarray1)
         self.mccs_subarray1 = DeviceProxy(mccs_subarray1)
+        self.csp_subarray2 = DeviceProxy(low_csp_subarray2)
+        self.sdp_subarray2 = DeviceProxy(low_sdp_subarray2)
+        self.mccs_subarray2 = DeviceProxy(mccs_subarray2)
         self.sdp_master = DeviceProxy(low_sdp_master)
         self.csp_master = DeviceProxy(low_csp_master)
         self.mccs_master = DeviceProxy(mccs_controller)

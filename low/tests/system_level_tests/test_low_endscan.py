@@ -48,6 +48,7 @@ def subarray_in_ready_obsstate(
         subarray_node_low,
         command_input_factory,
         event_tracer,
+        "1",
     )
     # Then set it to READY state
     """Checks if Subarray's obsState attribute value is SCANNING"""
@@ -72,7 +73,8 @@ def subarray_in_ready_obsstate(
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.SCANNING,
     )
@@ -108,7 +110,8 @@ def subsystem_subarrays_in_scanning(
     """Checks if Subarray's obsState attribute value is READY"""
 
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,
     )

@@ -1,11 +1,17 @@
 """sync decorators."""
 import functools
+import logging
 import os
 from contextlib import contextmanager
 
+from ska_ser_logging import configure_logging
 from tests.resources.test_harness.utils.wait_helpers import Waiter
 from tests.resources.test_support.common_utils.base_utils import DeviceUtils
 from tests.resources.test_support.common_utils.common_helpers import Resource
+from tests.system_level_tests.utils import get_low_devices_dictionary
+
+configure_logging(logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
 
 MCCS_SIMULATION_ENABLED = os.getenv("MCCS_SIMULATION_ENABLED")
 if MCCS_SIMULATION_ENABLED.lower() == "false":
@@ -140,12 +146,18 @@ def sync_restart(device_dict, timeout=500):
     return decorator_sync_restart
 
 
-def sync_configure(device_dict):
+def sync_configure():
     # defined as a decorator
     def decorator_sync_configure(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             invoked_from_ready = False
+            subarray_id = "1"
+            for key, value in kwargs.items():
+                LOGGER.info("key %s: value %s", key, value)
+                if key == "subarray_id":
+                    subarray_id = value
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             if Resource(device_dict.get("tmc_subarraynode")) == "READY":
                 invoked_from_ready = True

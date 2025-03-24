@@ -48,6 +48,7 @@ def subarray_in_ready_obsstate(
         subarray_node_low,
         command_input_factory,
         event_tracer,
+        "1",
     )
     # Then set it to READY state
     set_subarray_to_ready(
@@ -88,7 +89,8 @@ def subsystem_subarrays_in_idle(
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.IDLE,
     )
