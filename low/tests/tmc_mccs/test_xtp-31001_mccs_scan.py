@@ -74,7 +74,7 @@ def subarray_in_ready_obsstate(
     input_str = prepare_json_args_for_commands(
         "configure_low", command_input_factory
     )
-    subarray_node_low.store_configuration_data(input_str)
+    subarray_node_low.store_configuration_data(input_str, "1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node, "obsState", ObsState.READY
     )

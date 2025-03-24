@@ -140,7 +140,7 @@ def execute_command(
             "configure_low_real", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_configuration_data(
-            input_json
+            input_json, "1"
         )
     else:
         subarray_node_low.execute_transition(command_name)

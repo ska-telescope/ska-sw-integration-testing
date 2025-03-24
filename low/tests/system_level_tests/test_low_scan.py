@@ -69,7 +69,7 @@ def subarray_in_ready_obsstate(
     configure_json = update_scan_duration(configure_input_json, scan_duration)
 
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_json
+        configure_json, "1"
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node

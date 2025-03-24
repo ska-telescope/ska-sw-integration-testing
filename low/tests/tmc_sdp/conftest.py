@@ -143,7 +143,7 @@ def execute_configure_scan_sequence(
     for scan_id, scan_type in combined_dict.items():
         configure_json = update_scan_type(configure_json, scan_type)
         _, unique_id = subarray_node_low.store_configuration_data(
-            configure_json
+            configure_json, "1"
         )
 
         if configure_cycle == "initial":

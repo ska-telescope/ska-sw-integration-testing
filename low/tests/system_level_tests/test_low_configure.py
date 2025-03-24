@@ -65,7 +65,7 @@ def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
         "configure_low_real", command_input_factory
     )
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_input_json
+        configure_input_json, "1"
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node

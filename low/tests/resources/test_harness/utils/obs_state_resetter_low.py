@@ -38,7 +38,7 @@ class ReadyObsStateResetter(ObsStateResetter):
     def reset(self):
         self.device.clear_all_data()
         self.device.store_resources(self.assign_input)
-        self.device.store_configuration_data(self.configure_input)
+        self.device.store_configuration_data(self.configure_input, "1")
 
 
 class IdleObsStateResetter(ObsStateResetter):
@@ -130,7 +130,7 @@ class ScanningObsStateResetter(ObsStateResetter):
     def reset(self):
         self.device.clear_all_data()
         self.device.store_resources(self.assign_input)
-        self.device.store_configuration_data(self.configure_input)
+        self.device.store_configuration_data(self.configure_input, "1")
         self.device.store_scan_data(self.scan_input)
 
 

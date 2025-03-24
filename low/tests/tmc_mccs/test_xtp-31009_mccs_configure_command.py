@@ -98,7 +98,7 @@ def invoke_configure(
     input_json = prepare_json_args_for_commands(
         "configure_low", command_input_factory
     )
-    subarray_node_low.store_configuration_data(input_json)
+    subarray_node_low.store_configuration_data(input_json, "1")
 
 
 @then("the MCCS subarray obsState must transition to the READY")
