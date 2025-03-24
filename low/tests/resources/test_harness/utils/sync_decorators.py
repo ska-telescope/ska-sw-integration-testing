@@ -223,7 +223,9 @@ def get_low_devices_dictionary(subarray_id: str):
     """Helper method to provide the dictionary with Low Subarray devices
     for given Subarray Id"""
     devices_dict = {}
-    devices_dict["tmc_subarraynode"] = tmc_low_subarray_prefix + subarray_id
+    devices_dict[
+        "tmc_subarraynode"
+    ] = tmc_low_subarray_prefix + subarray_id.zfill(2)
     devices_dict["sdp_subarray"] = low_sdp_subarray_prefix + subarray_id.zfill(
         2
     )
