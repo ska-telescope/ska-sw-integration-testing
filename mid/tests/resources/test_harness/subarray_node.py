@@ -231,10 +231,10 @@ class SubarrayNodeWrapper(object):
             "sdp_subarray": DeviceProxy(f"mid-sdp/subarray/{subarray_id}"),
         }
         self.csp_subarray_leaf_node = DeviceProxy(
-            f"ska_mid/tm_leaf_node/csp_subarray{subarray_id}"
+            f"mid-tmc/subarray-leaf-node-csp/{subarray_id}"
         )
         self.sdp_subarray_leaf_node = DeviceProxy(
-            f"ska_mid/tm_leaf_node/sdp_subarray{subarray_id}"
+            f"mid-tmc/subarray-leaf-node-sdp/{subarray_id}"
         )
 
     def move_to_on(self):

@@ -200,7 +200,7 @@ def connect_to_dish(central_node_mid, event_recorder):
     )
     LOGGER.info("dish1 device info is: %s", check_dish1_info)
     check_dish1_leaf_info = central_node_mid.db.get_device_info(
-        "ska_mid/tm_leaf_node/d0001"
+        "mid-tmc/leaf-node-dish/SKA001"
     )
     LOGGER.info("dish1 leaf node device info is: %s", check_dish1_leaf_info)
 
