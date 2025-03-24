@@ -23,7 +23,7 @@ TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
-@pytest.mark.skip(reason="To be tested")
+# @pytest.mark.skip(reason="To be tested")
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/"
