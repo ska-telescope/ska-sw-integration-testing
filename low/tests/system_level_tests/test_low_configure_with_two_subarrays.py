@@ -26,7 +26,8 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 @pytest.mark.skip(reason="To be tested")
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
+    "system_level_tests/"
+    + "xtp_64112_telescope_two_subarrays_testing.feature",
     "Configure two Low telescope subarrays using TMC",
 )
 def test_configure_command_with_two_subarrays():
