@@ -12,21 +12,32 @@ from tests.resources.test_harness.subarray_node_low import (
 from tests.system_level_tests.utils import (
     check_subarray_obsstate,
     set_subarray_to_idle,
+    set_subarray_to_ready,
     subscribe_to_obsstate_events,
 )
 
 TIMEOUT = 100
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_xxxx_abort.feature",
-    "TMC validates Abort Command",
+    "IDLE to ABORT - CMD Abort",
 )
-def test_telescope_abort():
+def test_idle_to_abort():
     """
-    Test case to verify Abort functionality
+    Test IDLE to ABORT transitions
+    """
+
+
+@pytest.mark.system_level_tests
+@scenario(
+    "system_level_tests/" + "xtp_xxxx_abort.feature",
+    "READY to ABORT - CMD Abort",
+)
+def test_ready_to_abort():
+    """
+    Test READY to ABORT transitions
     """
 
 
@@ -49,18 +60,18 @@ def subarray_in_idle_obsstate(
     )
 
 
-# @then(parsers.parse("subarrays is in READY ObsState"))
-# def subarray_in_ready_obsstate(
-#     subarray_node_low: SubarrayNodeWrapperLow,
-#     command_input_factory,
-#     event_tracer: TangoEventTracer,
-# ):
-#     subscribe_to_obsstate_events(event_tracer, subarray_node_low)
-#     set_subarray_to_ready(
-#         subarray_node_low,
-#         command_input_factory,
-#         event_tracer,
-#     )
+@then(parsers.parse("subarrays is in READY ObsState"))
+def subarray_in_ready_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    set_subarray_to_ready(
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
 
 
 # @then(parsers.parse("subarrays is in SCANNING ObsState"))
