@@ -70,9 +70,11 @@ def set_subarray_to_idle(
     if subarray_id == "1":
         # json = "assign_resources_low_real_subarray1_station1"
         json = "assign_resources_low_real"
+        LOGGER.info("Subarray Id 1")
     elif subarray_id == "2":
         subarray_node_low = SubarrayNodeWrapperLow("2")
         json = "assign_resources_low_real_subarray2_station2"
+        LOGGER.info("Subarray Id 2")
     else:
         LOGGER.info("Invalid Subarray Id")
     subscribe_to_obsstate_events(
@@ -114,22 +116,12 @@ def set_subarray_to_idle(
     )
 
     # Confirm subarray is in IDLE ObsState
-    if subarray_id == "1":
-        check_subarray_obsstate(
-            subarray_node_low.subarray_devices,
-            subarray_node_low.subarray_node,
-            event_tracer,
-            obs_state=ObsState.IDLE,
-        )
-    if subarray_id == "2":
-        check_subarray_obsstate(
-            subarray_node_low.subarray_2_devices,
-            subarray_node_low.subarray_node_2,
-            event_tracer,
-            obs_state=ObsState.IDLE,
-        )
-    else:
-        LOGGER.info("Invalid Subarray Id")
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.IDLE,
+    )
 
 
 def execute_command(
