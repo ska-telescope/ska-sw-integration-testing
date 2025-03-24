@@ -35,7 +35,7 @@ def test_idle_to_abort():
     """
 
 
-@pytest.mark.test
+@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_xxxx_abort.feature",
@@ -173,7 +173,7 @@ def subarray_in_scanning_obsstate(
 
 
 @when("I Abort it")
-def invoke_end(
+def invoke_abort(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
@@ -195,11 +195,11 @@ def invoke_end(
 
 
 @then("the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState")
-def subsystem_subarrays_in_idle(
+def subsystem_subarrays_in_aborted(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
 ):
-    """Check if all subarrays are in IDLE obsState."""
+    """Check if all subarrays are in ABORTED obsState."""
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
