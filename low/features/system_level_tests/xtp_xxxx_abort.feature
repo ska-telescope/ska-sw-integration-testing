@@ -15,6 +15,13 @@ Scenario: READY to ABORT - CMD Abort
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsStat
 
+Scenario: SCANNING to ABORT - CMD Abort
+    Given a Low telescope
+    And telescope is in ON state
+    Then subarrays is in SCANNING ObsState
+    When I Abort it
+    Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsStat
+
 
 Scenario: TMC validates Abort Command in intermediate obsState
     Given a Low telescope
