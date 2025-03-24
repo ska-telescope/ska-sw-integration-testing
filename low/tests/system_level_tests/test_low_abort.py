@@ -35,12 +35,12 @@ def test_idle_to_abort():
     """
 
 
+@pytest.mark.test
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_xxxx_abort.feature",
     "READY to ABORT - CMD Abort",
 )
-@pytest.mark.skip
 def test_ready_to_abort():
     """
     Test READY to ABORT transitions
