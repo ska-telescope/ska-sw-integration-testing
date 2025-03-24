@@ -8,20 +8,6 @@ from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DeviceProxy
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.constant import (
-    low_centralnode,
-    low_csp_master,
-    low_csp_subarray_leaf_prefix,
-    low_csp_subarray_prefix,
-    low_sdp_master,
-    low_sdp_subarray_leaf_prefix,
-    low_sdp_subarray_prefix,
-    mccs_controller,
-    mccs_master_leaf_node,
-    mccs_subarray_leaf_prefix,
-    mccs_subarray_prefix,
-    tmc_low_subarray_prefix,
-)
 from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
@@ -198,32 +184,3 @@ def set_subarray_to_ready(
         command_input_factory=command_input_factory,
         expected_obs_state=ObsState.READY,
     )
-
-
-def get_low_devices_dictionary(subarray_id: str):
-    """Helper method to provide the dictionary with Low Subarray devices
-    for given Subarray Id"""
-    devices_dict = {}
-    devices_dict["tmc_subarraynode"] = tmc_low_subarray_prefix + subarray_id
-    devices_dict["sdp_subarray"] = low_sdp_subarray_prefix + subarray_id.zfill(
-        2
-    )
-    devices_dict["csp_subarray"] = low_csp_subarray_prefix + subarray_id.zfill(
-        2
-    )
-    devices_dict[
-        "sdp_subarray_leaf_node"
-    ] = low_sdp_subarray_leaf_prefix + subarray_id.zfill(2)
-    devices_dict[
-        "csp_subarray_leaf_node"
-    ] = low_csp_subarray_leaf_prefix + subarray_id.zfill(2)
-    devices_dict[
-        "mccs_subarray_leaf_node"
-    ] = mccs_subarray_leaf_prefix + subarray_id.zfill(2)
-    devices_dict["mccs_subarray"] = mccs_subarray_prefix + subarray_id.zfill(2)
-    devices_dict["csp_master"] = low_csp_master
-    devices_dict["sdp_master"] = low_sdp_master
-    devices_dict["mccs_master"] = mccs_controller
-    devices_dict["mccs_master_leaf_node"] = mccs_master_leaf_node
-    devices_dict["central_node"] = low_centralnode
-    return devices_dict

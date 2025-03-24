@@ -38,6 +38,7 @@ from tests.resources.test_harness.utils.obs_state_resetter_low import (
     ObsStateResetterFactory,
 )
 from tests.resources.test_harness.utils.sync_decorators import (
+    get_low_devices_dictionary,
     sync_abort,
     sync_assign_resources,
     sync_configure,
@@ -47,7 +48,6 @@ from tests.resources.test_harness.utils.sync_decorators import (
     sync_restart,
 )
 from tests.resources.test_support.common_utils.common_helpers import Resource
-from tests.system_level_tests.utils import get_low_devices_dictionary
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

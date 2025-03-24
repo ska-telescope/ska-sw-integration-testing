@@ -5,10 +5,23 @@ import os
 from contextlib import contextmanager
 
 from ska_ser_logging import configure_logging
+from tests.resources.test_harness.constant import (
+    low_centralnode,
+    low_csp_master,
+    low_csp_subarray_leaf_prefix,
+    low_csp_subarray_prefix,
+    low_sdp_master,
+    low_sdp_subarray_leaf_prefix,
+    low_sdp_subarray_prefix,
+    mccs_controller,
+    mccs_master_leaf_node,
+    mccs_subarray_leaf_prefix,
+    mccs_subarray_prefix,
+    tmc_low_subarray_prefix,
+)
 from tests.resources.test_harness.utils.wait_helpers import Waiter
 from tests.resources.test_support.common_utils.base_utils import DeviceUtils
 from tests.resources.test_support.common_utils.common_helpers import Resource
-from tests.system_level_tests.utils import get_low_devices_dictionary
 
 configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
@@ -204,3 +217,32 @@ def sync_endscan(device_dict):
         return wrapper
 
     return decorator_sync_endscan
+
+
+def get_low_devices_dictionary(subarray_id: str):
+    """Helper method to provide the dictionary with Low Subarray devices
+    for given Subarray Id"""
+    devices_dict = {}
+    devices_dict["tmc_subarraynode"] = tmc_low_subarray_prefix + subarray_id
+    devices_dict["sdp_subarray"] = low_sdp_subarray_prefix + subarray_id.zfill(
+        2
+    )
+    devices_dict["csp_subarray"] = low_csp_subarray_prefix + subarray_id.zfill(
+        2
+    )
+    devices_dict[
+        "sdp_subarray_leaf_node"
+    ] = low_sdp_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict[
+        "csp_subarray_leaf_node"
+    ] = low_csp_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict[
+        "mccs_subarray_leaf_node"
+    ] = mccs_subarray_leaf_prefix + subarray_id.zfill(2)
+    devices_dict["mccs_subarray"] = mccs_subarray_prefix + subarray_id.zfill(2)
+    devices_dict["csp_master"] = low_csp_master
+    devices_dict["sdp_master"] = low_sdp_master
+    devices_dict["mccs_master"] = mccs_controller
+    devices_dict["mccs_master_leaf_node"] = mccs_master_leaf_node
+    devices_dict["central_node"] = low_centralnode
+    return devices_dict
