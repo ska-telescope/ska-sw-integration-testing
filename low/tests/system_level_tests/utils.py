@@ -99,7 +99,9 @@ def set_subarray_to_idle(
     )
     assign_input_json = update_eb_pb_ids(input_json)
     # central_node_low.set_serial_number_of_cbf_processor()
-    _, unique_id = central_node_low.store_resources(assign_input_json)
+    _, unique_id = central_node_low.store_resources(
+        assign_input_json, subarray_id
+    )
 
     # Verify longRunningCommandResult for the TMC Central Node
     assert_that(event_tracer).described_as(

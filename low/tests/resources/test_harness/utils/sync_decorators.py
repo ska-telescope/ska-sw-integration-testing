@@ -101,11 +101,17 @@ def sync_release_resources(device_dict, timeout=200):
     return decorator_sync_release_resources
 
 
-def sync_assign_resources(device_dict):
+def sync_assign_resources():
     # defined as a decorator
     def decorator_sync_assign_resources(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            subarray_id = "1"
+            for key, value in kwargs.items():
+                LOGGER.info("key %s: value %s", key, value)
+                if key == "subarray_id":
+                    subarray_id = value
+            device_dict = get_low_devices_dictionary(subarray_id)
             device = DeviceUtils(
                 obs_state_device_names=[
                     device_dict.get("csp_subarray"),
