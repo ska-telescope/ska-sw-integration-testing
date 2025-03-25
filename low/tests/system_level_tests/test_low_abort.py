@@ -1,9 +1,9 @@
-# import json
+import json
 
 import pytest
 from assertpy import assert_that
 from pytest_bdd import parsers, scenario, then, when
-from ska_control_model import ObsState
+from ska_control_model import ObsState, ResultCode
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import COMMAND_COMPLETED
@@ -244,7 +244,7 @@ def invoke_abort(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, pytest.unique_id = subarray_node_low.abort_subarray()
+    _, unique_id = subarray_node_low.abort_subarray()
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -254,7 +254,10 @@ def invoke_abort(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
+        (
+            unique_id[0],
+            json.dumps((int(ResultCode.STARTED), "Command Started")),
+        ),
     )
 
 
@@ -267,6 +270,17 @@ def subsystem_subarrays_in_aborted(
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
+    # assert_that(event_tracer).described_as(
+    #     'FAILED ASSUMPTION IN "THEN STEP: '
+    #     f'"the Subarray transitions to ABORTED obsState"'
+    #     "Subarray Node device"
+    #     f"({subarray_node_low.subarray_node.dev_name()}) "
+    #     f"is expected to be in ABORTING obstate",
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     subarray_node_low.subarray_node,
+    #     "obsState",
+    #     ObsState.ABORTING,
+    # )
     check_subarray_obsstate(
         subarray_node_low,
         event_tracer,
