@@ -175,11 +175,13 @@ def sync_configure():
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             invoked_from_ready = False
-            subarray_id = "1"
-            for key, value in kwargs.items():
-                LOGGER.info("key %s: value %s", key, value)
-                if key == "subarray_id":
-                    subarray_id = value
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[2]
+            # for key, value in kwargs.items():
+            #     LOGGER.info("key %s: value %s", key, value)
+            #     if key == "subarray_id":
+            #         subarray_id = value
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             if Resource(device_dict.get("tmc_subarraynode")) == "READY":
