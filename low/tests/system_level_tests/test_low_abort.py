@@ -199,7 +199,16 @@ def subarray_in_resourcing_obsstate(
 
 
 @then("subarrays is in CONFIGURING obsState")
-def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
+def invoke_configure(
+    central_node_low, subarray_node_low, event_tracer, command_input_factory
+):
+    # First ensure the subarray is in IDLE state
+    set_subarray_to_idle(
+        central_node_low,
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
     configure_input_json = prepare_json_args_for_commands(
         "configure_low_real", command_input_factory
     )
