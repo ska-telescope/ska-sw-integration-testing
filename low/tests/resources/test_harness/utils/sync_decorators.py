@@ -106,6 +106,8 @@ def sync_assign_resources():
     def decorator_sync_assign_resources(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = "1"
             for key, value in kwargs.items():
                 LOGGER.info("key %s: value %s", key, value)

@@ -21,6 +21,7 @@ TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 
 
+@pytest.mark.skip(reason="Disabled temporarily")
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",

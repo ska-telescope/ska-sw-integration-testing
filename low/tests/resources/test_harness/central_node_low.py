@@ -680,6 +680,7 @@ class CentralNodeWrapperLow(object):
         """
         # This methods needs to change, with subsequent changes in the Tear
         # Down of the fixtures. Will be done as an improvement later.
+        LOGGER.info("Assigning the resources to Subarray %s", subarray_id)
         result, message = self.central_node.AssignResources(assign_json)
         LOGGER.info("Invoked AssignResources on CentralNode")
         return result, message
