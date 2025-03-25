@@ -29,3 +29,10 @@ Scenario: RESOURCING to ABORT -CMD Abort
     Then subarrays is in RESOURCING ObsState
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
+
+Scenario: CONFIGURING to ABORT -CMD Abort
+    Given a Low telescope
+    And telescope is in ON state
+    Then subarrays is in CONFIGURING ObsState
+    When I Abort it
+    Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
