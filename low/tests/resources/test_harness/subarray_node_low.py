@@ -215,8 +215,8 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked Restart on SubarrayNode")
         return result, message
 
-    @sync_assign_resources(device_dict=device_dict_low)
-    def store_resources(self, assign_json: str):
+    @sync_assign_resources()
+    def store_resources(self, assign_json: str, subarray_id: str):
         """Invoke Assign Resource command on subarray Node
         Args:
             assign_json (str): Assign resource input json

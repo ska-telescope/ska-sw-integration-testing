@@ -76,7 +76,7 @@ def subarray_in_scanning_obsstate(
         "assign_resources_low", command_input_factory
     )
 
-    _, unique_id = central_node_low.store_resources(input_str)
+    _, unique_id = central_node_low.store_resources(input_str, "1")
 
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node, "obsState", ObsState.IDLE

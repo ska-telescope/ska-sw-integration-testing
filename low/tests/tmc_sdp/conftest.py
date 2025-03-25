@@ -90,7 +90,7 @@ def assign_resources_to_subarray(
         "assign_resources_low_multiple_scan", command_input_factory
     )
     input_json = update_eb_pb_ids(input_json)
-    _, unique_id = central_node_low.store_resources(input_json)
+    _, unique_id = central_node_low.store_resources(input_json, "1")
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",

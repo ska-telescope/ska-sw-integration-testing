@@ -75,7 +75,9 @@ def subarray_in_idle_obsstate(
         "assign_resources_low", command_input_factory
     )
     central_node_real_csp_low.set_serial_number_of_cbf_processor()
-    _, unique_id = central_node_real_csp_low.store_resources(assign_input_json)
+    _, unique_id = central_node_real_csp_low.store_resources(
+        assign_input_json, "1"
+    )
     event_recorder.subscribe_event(
         subarray_node_low.subarray_devices["csp_subarray"], "obsState"
     )

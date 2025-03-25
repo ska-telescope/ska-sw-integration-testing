@@ -66,7 +66,7 @@ def subarray_in_ready_obsstate(
     input_str = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
-    central_node_low.store_resources(input_str)
+    central_node_low.store_resources(input_str, "1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node, "obsState", ObsState.IDLE
     )

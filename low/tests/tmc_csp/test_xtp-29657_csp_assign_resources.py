@@ -77,7 +77,7 @@ def invoke_assignresources(
         "assign_resources_low", command_input_factory
     )
     central_node_real_csp_low.set_serial_number_of_cbf_processor()
-    _, unique_id = central_node_real_csp_low.store_resources(input_json)
+    _, unique_id = central_node_real_csp_low.store_resources(input_json, "1")
     event_recorder.has_change_event_occurred(
         central_node_real_csp_low.central_node,
         "longRunningCommandResult",

@@ -77,7 +77,7 @@ def assign_resources_to_subarray(
     receptors = receptors.replace('"', "").split(", ")
     input_json = update_receptors_in_assign_json(input_json, receptors)
     input_json = update_eb_pb_ids(input_json)
-    _, unique_id = central_node_low.store_resources(input_json)
+    _, unique_id = central_node_low.store_resources(input_json, "1")
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",

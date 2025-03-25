@@ -37,7 +37,7 @@ class ReadyObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
         self.device.store_configuration_data(self.configure_input, "1")
 
 
@@ -51,7 +51,7 @@ class IdleObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
 
 
 class EmptyObsStateResetter(ObsStateResetter):
@@ -88,7 +88,7 @@ class ConfiguringObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
         self.device.execute_transition(
             command_name="Configure", argin=self.configure_input
         )
@@ -103,7 +103,7 @@ class AbortingObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
         self.device.execute_transition(command_name="Abort", argin=None)
 
 
@@ -116,7 +116,7 @@ class AbortedObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
         self.device.abort_subarray()
 
 
@@ -129,7 +129,7 @@ class ScanningObsStateResetter(ObsStateResetter):
 
     def reset(self):
         self.device.clear_all_data()
-        self.device.store_resources(self.assign_input)
+        self.device.store_resources(self.assign_input, "1")
         self.device.store_configuration_data(self.configure_input, "1")
         self.device.store_scan_data(self.scan_input)
 

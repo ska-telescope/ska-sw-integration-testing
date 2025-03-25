@@ -53,7 +53,9 @@ def invoke_assignresources(
         subarray_node_low.subarray_node,
     )
     central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
+    _, pytest.unique_id = central_node_low.store_resources(
+        assign_input_json, "1"
+    )
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
         "'the subarray is in IDLE obsState'"
