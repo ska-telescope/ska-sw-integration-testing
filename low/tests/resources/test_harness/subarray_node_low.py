@@ -75,9 +75,11 @@ class SubarrayNodeWrapperLow:
 
     def __init__(self, subarray_id="1") -> None:
         self.subarray_id = subarray_id
+        LOGGER.info("Subarray Id: %s", self.subarray_id)
         self.central_node = DeviceProxy(low_centralnode)
 
         subarray_devices_dict = get_low_devices_dictionary(subarray_id)
+        LOGGER.info("subarray_devices_dict: %s", subarray_devices_dict)
         self.tmc_subarraynode = subarray_devices_dict["tmc_subarraynode"]
         self.subarray_node = DeviceProxy(
             subarray_devices_dict["tmc_subarraynode"]
