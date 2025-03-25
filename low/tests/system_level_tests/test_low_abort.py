@@ -59,6 +59,18 @@ def test_scanning_to_abort():
     """
 
 
+@pytest.mark.test1
+@pytest.mark.system_level_tests
+@scenario(
+    "system_level_tests/" + "xtp_xxxx_abort.feature",
+    "RESOURCING to ABORT -CMD Abort",
+)
+def test_resourcing_to_abort():
+    """
+    Test RESOURCING to ABORT transitions
+    """
+
+
 #  @given("telescope is in ON state") -> conftest
 
 
@@ -144,17 +156,17 @@ def subarray_in_scanning_obsstate(
     )
 
 
-# @then(parsers.parse("subarrays is in RESOURCING ObsState"))
-# def subsystem_subarrays_in_resourcing(
-#     subarray_node_low: SubarrayNodeWrapperLow,
-#     event_tracer: TangoEventTracer,
-# ):
-#     """Check if all subarrays are in RESOURCING obsState."""
-#     check_subarray_obsstate(
-#         subarray_node_low,
-#         event_tracer,
-#         obs_state=ObsState.RESOURCING,
-#     )
+@then(parsers.parse("subarrays is in RESOURCING ObsState"))
+def subsystem_subarrays_in_resourcing(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    event_tracer: TangoEventTracer,
+):
+    """Check if all subarrays are in RESOURCING obsState."""
+    check_subarray_obsstate(
+        subarray_node_low,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
 
 
 # @then("subarrays is in CONFIGURING obsState")
