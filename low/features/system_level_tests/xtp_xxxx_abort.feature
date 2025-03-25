@@ -26,6 +26,6 @@ Scenario: SCANNING to ABORT - CMD Abort
 Scenario: RESOURCING to ABORT -CMD Abort
     Given a Low telescope
     And telescope is in ON state
-    Given a Subarrays in RESOURCING obsState
+    Given subarrays is in RESOURCING ObsState
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
