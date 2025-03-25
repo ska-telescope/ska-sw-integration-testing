@@ -108,12 +108,14 @@ def sync_assign_resources():
         def wrapper(*args, **kwargs):
             LOGGER.info("args: %s", args)
             LOGGER.info("kwargs: %s", kwargs)
-            subarray_id = "1"
-            for key, value in kwargs.items():
-                LOGGER.info("key %s: value %s", key, value)
-                if key == "subarray_id":
-                    subarray_id = value
+            subarray_id = args[2]
+            LOGGER.info("subarray_id: %s", subarray_id)
+            # for key, value in kwargs.items():
+            #     LOGGER.info("key %s: value %s", key, value)
+            #     if key == "subarray_id":
+            #         subarray_id = value
             device_dict = get_low_devices_dictionary(subarray_id)
+            LOGGER.info("device_dict: %s", device_dict)
             device = DeviceUtils(
                 obs_state_device_names=[
                     device_dict.get("csp_subarray"),
