@@ -11,6 +11,7 @@ from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.tmc_helpers import (
+    prepare_json_args_for_centralnode_commands,
     prepare_json_args_for_commands,
 )
 from tests.system_level_tests.utils import (
@@ -157,11 +158,31 @@ def subarray_in_scanning_obsstate(
 
 
 @then(parsers.parse("subarrays is in RESOURCING ObsState"))
-def subsystem_subarrays_in_resourcing(
+def subarray_in_resourcing_obsstate(
+    central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
+    command_input_factory,
     event_tracer: TangoEventTracer,
 ):
-    """Check if all subarrays are in RESOURCING obsState."""
+    """Invokes ReleaseResources command on TMC"""
+    release_input = prepare_json_args_for_centralnode_commands(
+        "release_resources_low", command_input_factory
+    )
+    _, pytest.unique_id = central_node_low.invoke_release_resources(
+        release_input
+    )
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "WHEN" STEP: '
+        "'the subarray is in EMPTY obsState'"
+        "TMC Central Node device"
+        f"({central_node_low.central_node.dev_name()}) "
+        "is expected have longRunningCommand as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        central_node_low.central_node,
+        "longRunningCommandResult",
+        (pytest.unique_id[0], COMMAND_COMPLETED),
+    )
     check_subarray_obsstate(
         subarray_node_low,
         event_tracer,
