@@ -1,9 +1,9 @@
-import json
+# import json
 
 import pytest
 from assertpy import assert_that
 from pytest_bdd import parsers, scenario, then, when
-from ska_control_model import ObsState, ResultCode
+from ska_control_model import ObsState
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import COMMAND_COMPLETED
@@ -207,7 +207,7 @@ def invoke_abort(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, unique_id = subarray_node_low.abort_subarray()
+    _, pytest.unique_id = subarray_node_low.abort_subarray()
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -217,10 +217,7 @@ def invoke_abort(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (
-            unique_id[0],
-            json.dumps((int(ResultCode.STARTED), "Command Started")),
-        ),
+        (pytest.unique_id[0], COMMAND_COMPLETED),
     )
 
 
