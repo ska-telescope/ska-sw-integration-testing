@@ -125,6 +125,14 @@ def set_subarray_to_idle(
         (unique_id[0], COMMAND_COMPLETED),
     )
 
+    # Confirm subarray is in RESOURCING ObsState
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
+
     # Confirm subarray is in IDLE ObsState
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
