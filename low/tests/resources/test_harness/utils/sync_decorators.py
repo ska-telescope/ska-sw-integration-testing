@@ -142,11 +142,16 @@ def sync_assign_resources():
     return decorator_sync_assign_resources
 
 
-def sync_abort(device_dict, timeout=1000):
+def sync_abort(timeout=1000):
     # define as a decorator
     def decorator_sync_abort(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[1]
+            LOGGER.info("subarray_id: %s", subarray_id)
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_aborted()
             result = func(*args, **kwargs)
@@ -158,11 +163,16 @@ def sync_abort(device_dict, timeout=1000):
     return decorator_sync_abort
 
 
-def sync_restart(device_dict, timeout=500):
+def sync_restart(timeout=500):
     # define as a decorator
     def decorator_sync_restart(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[1]
+            LOGGER.info("subarray_id: %s", subarray_id)
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_going_to_empty()
             result = func(*args, **kwargs)
@@ -224,11 +234,15 @@ def sync_end():
     return decorator_sync_end
 
 
-def sync_endscan(device_dict):
+def sync_endscan():
     # defined as a decorator
     def decorator_sync_endscan(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[1]
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_ready()
             result = func(*args, **kwargs)

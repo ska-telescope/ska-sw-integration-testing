@@ -132,7 +132,7 @@ def invoke_endscan(
 ):
     """Invokes EndScan command on TMC"""
     subarray_node_low.set_subarray_id(subarray_id)
-    subarray_node_low.remove_scan_data()
+    subarray_node_low.remove_scan_data("1")
 
 
 @then("the MCCS subarray is transitioned to ObsState READY")

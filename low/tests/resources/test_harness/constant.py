@@ -149,18 +149,26 @@ low_sdp_subarray_prefix = "low-sdp/subarray/"
 low_csp_subarray_prefix = "low-csp/subarray/"
 mccs_subarray_prefix = "low-mccs/subarray/"
 
-device_dict_low = {
+
+device_dict_low_for_cn = {
     "csp_master": low_csp_master,
     "tmc_subarraynode": tmc_low_subarraynode1,
+    "tmc_subarraynode2": tmc_low_subarraynode2,
     "sdp_master": low_sdp_master,
     "mccs_master": mccs_controller,
     "sdp_subarray": low_sdp_subarray1,
+    "sdp_subarray2": low_sdp_subarray2,
     "csp_subarray": low_csp_subarray1,
+    "csp_subarray2": low_csp_subarray2,
     "sdp_subarray_leaf_node": low_sdp_subarray_leaf_node,
+    "sdp_subarray_leaf_node2": low_sdp_subarray_leaf_node_2,
     "csp_subarray_leaf_node": low_csp_subarray_leaf_node,
+    "csp_subarray_leaf_node2": low_csp_subarray_leaf_node_2,
     "mccs_master_leaf_node": mccs_master_leaf_node,
     "mccs_subarray_leaf_node": mccs_subarray_leaf_node,
+    "mccs_subarray_leaf_node2": mccs_subarray_leaf_node_2,
     "mccs_subarray": mccs_subarray1,
+    "mccs_subarray2": mccs_subarray2,
     "central_node": low_centralnode,
 }
 

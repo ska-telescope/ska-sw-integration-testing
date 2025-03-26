@@ -87,7 +87,7 @@ def invoke_endscan(
     event_tracer: TangoEventTracer,
 ):
     """Invokes EndSCan command before scan duration"""
-    _, pytest.unique_id = subarray_node_low.remove_scan_data()
+    _, pytest.unique_id = subarray_node_low.remove_scan_data("1")
 
     # Verify longRunningCommandResult for the TMC Subarray Node
     assert_that(event_tracer).described_as(

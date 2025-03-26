@@ -7,7 +7,6 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
 from tests.resources.test_harness.constant import (
-    device_dict_low,
     low_centralnode,
     low_csp_master,
     low_csp_subarray1,
@@ -205,13 +204,13 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked End on SubarrayNode")
         return result, message
 
-    @sync_abort(device_dict=device_dict_low)
+    @sync_abort()
     def abort_subarray(self):
         result, message = self.subarray_node.Abort()
         LOGGER.info("Invoked Abort on SubarrayNode")
         return result, message
 
-    @sync_restart(device_dict=device_dict_low)
+    @sync_restart()
     def restart_subarray(self):
         result, message = self.subarray_node.Restart()
         LOGGER.info("Invoked Restart on SubarrayNode")
@@ -227,7 +226,7 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked AssignResources on CentralNode")
         return result, message
 
-    @sync_release_resources(device_dict=device_dict_low)
+    @sync_release_resources()
     def release_resources_subarray(self):
         result, message = self.subarray_node.ReleaseAllResources()
         LOGGER.info("Invoked Release Resource on SubarrayNode")
@@ -242,8 +241,8 @@ class SubarrayNodeWrapperLow:
         result, message = self.central_node.ReleaseResources(input_string)
         return result, message
 
-    @sync_endscan(device_dict=device_dict_low)
-    def remove_scan_data(self):
+    @sync_endscan()
+    def remove_scan_data(self, subarray_id):
         result, message = self.subarray_node.EndScan()
         LOGGER.info("Invoked EndScan on SubarrayNode")
         return result, message

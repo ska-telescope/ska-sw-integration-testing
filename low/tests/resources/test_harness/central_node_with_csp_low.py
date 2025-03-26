@@ -6,7 +6,10 @@ from ska_ser_logging import configure_logging
 from ska_tango_base.control_model import HealthState
 from tango import DeviceProxy, DevState
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.constant import device_dict_low, processor1
+from tests.resources.test_harness.constant import (
+    device_dict_low_for_cn,
+    processor1,
+)
 from tests.resources.test_harness.utils.wait_helpers import Waiter
 
 configure_logging(logging.DEBUG)
@@ -21,9 +24,9 @@ class CentralNodeCspWrapperLow(CentralNodeWrapperLow):
     def __init__(self) -> None:
         super().__init__()
         self.processor1 = DeviceProxy(processor1)
-        device_dict_low["cbf_subarray1"] = "low-cbf/subarray/01"
-        device_dict_low["cbf_controller"] = "low-cbf/control/0"
-        self.wait = Waiter(**device_dict_low)
+        device_dict_low_for_cn["cbf_subarray1"] = "low-cbf/subarray/01"
+        device_dict_low_for_cn["cbf_controller"] = "low-cbf/control/0"
+        self.wait = Waiter(**device_dict_low_for_cn)
 
     def move_to_on(self):
         """
@@ -52,16 +55,17 @@ class CentralNodeCspWrapperLow(CentralNodeWrapperLow):
         # reset HealthState.UNKNOWN for mock devices
         LOGGER.info("Calling Tear down for central node.")
         self._reset_health_state_for_mock_devices()
-        if self.subarray_node.obsState == ObsState.IDLE:
-            LOGGER.info("Calling ReleaseResources on CentralNode")
-            self.invoke_release_resources(self.release_input)
-        elif self.subarray_node.obsState == ObsState.RESOURCING:
-            LOGGER.info("Calling Abort and Restart on SubarrayNode")
-            self.pst.obsreset()
-            self.subarray_abort()
-            self.subarray_restart()
-        elif self.subarray_node.obsState == ObsState.ABORTED:
-            self.subarray_restart()
+        for id, subarray in self.tmc_subarrays.items():
+            if subarray.obsState == ObsState.IDLE:
+                LOGGER.info("Calling ReleaseResources on CentralNode")
+                self.invoke_release_resources(self.release_input, id)
+            elif subarray.obsState == ObsState.RESOURCING:
+                LOGGER.info("Calling Abort and Restart on SubarrayNode")
+                self.pst.obsreset()
+                self.subarray_abort(id)
+                self.subarray_restart(id)
+            elif subarray.obsState == ObsState.ABORTED:
+                self.subarray_restart(id)
         self.move_to_off()
 
     def move_to_off(self):

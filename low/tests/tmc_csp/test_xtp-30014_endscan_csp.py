@@ -132,7 +132,7 @@ def invoke_endscan_command(subarray_node_low: SubarrayNodeWrapperLow):
         subarray_node_low (SubarrayNodeWrapperLow): Fixture for TMC
           SubarrayNode.
     """
-    subarray_node_low.remove_scan_data()
+    subarray_node_low.remove_scan_data("1")
 
 
 @then("the CSP subarray transitions to obsState READY")
