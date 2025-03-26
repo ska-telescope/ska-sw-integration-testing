@@ -1,10 +1,12 @@
 """Test module for TMC Configure functionality (XTP-66007)"""
 import json
+import logging
 
 import pytest
 from assertpy import assert_that
 from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState
+from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.subarray_node_low import (
@@ -21,6 +23,9 @@ from tests.system_level_tests.utils import (
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
+
+configure_logging(logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
 
 
 # @pytest.mark.skip(reason="To be tested")
@@ -93,6 +98,12 @@ def invoke_configure(
         configure_input_json_2, "2"
     )
 
+    LOGGER.info(
+        "LRCR Subarray1: %s",
+        subarray_node_low.subarray_node.read_attribute(
+            "longRunningCommandResult"
+        ).value,
+    )
     # Verify longRunningCommandResult for the TMC Subarray Node 1
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '

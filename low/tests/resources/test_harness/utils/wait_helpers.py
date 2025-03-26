@@ -225,6 +225,7 @@ class Waiter:
                 "obsState", changed_to="CONFIGURING"
             )
         )
+        LOGGER.info("SubarrayNode: %s", self.tmc_subarraynode1)
 
     def set_wait_for_obs_state(self, obs_state=None):
         self.waits.append(
