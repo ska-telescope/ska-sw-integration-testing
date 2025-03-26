@@ -199,8 +199,8 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked Configure on SubarrayNode")
         return result, message
 
-    @sync_end(device_dict=device_dict_low)
-    def end_observation(self):
+    @sync_end()
+    def end_observation(self, subarray_id: str):
         result, message = self.subarray_node.End()
         LOGGER.info("Invoked End on SubarrayNode")
         return result, message
@@ -233,8 +233,8 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked Release Resource on SubarrayNode")
         return result, message
 
-    @sync_release_resources(device_dict=device_dict_low)
-    def release_resources(self, input_string):
+    @sync_release_resources()
+    def release_resources(self, input_string, subarray_id):
         """Invoke Release Resource command on central Node
         Args:
             input_string (str): Release resource input json
@@ -437,12 +437,12 @@ class SubarrayNodeWrapperLow:
         elif self.subarray_node.obsState == ObsState.IDLE:
             """Invoke Release"""
             LOGGER.info("Invoking Release Resources on Subarray")
-            self.release_resources(self.release_input)
+            self.release_resources(self.release_input, self.subarray_id)
         elif self.subarray_node.obsState == ObsState.READY:
             """Invoke End"""
             LOGGER.info("Invoking End command on Subarray")
-            self.end_observation()
-            self.release_resources(self.release_input)
+            self.end_observation(self.subarray_id)
+            self.release_resources(self.release_input, self.subarray_id)
         else:
             self.force_change_of_obs_state("EMPTY")
         if SIMULATED_DEVICES_DICT["sdp_and_mccs"]:

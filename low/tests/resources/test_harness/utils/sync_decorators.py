@@ -86,10 +86,15 @@ def sync_set_to_standby(func):
     return wrapper
 
 
-def sync_release_resources(device_dict, timeout=200):
+def sync_release_resources(timeout=200):
     def decorator_sync_release_resources(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[2]
+            LOGGER.info("subarray_id: %s", subarray_id)
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_going_to_empty()
             result = func(*args, **kwargs)
@@ -199,11 +204,15 @@ def sync_configure():
     return decorator_sync_configure
 
 
-def sync_end(device_dict):
+def sync_end():
     # defined as a decorator
     def decorator_sync_end(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            LOGGER.info("args: %s", args)
+            LOGGER.info("kwargs: %s", kwargs)
+            subarray_id = args[1]
+            device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_idle()
             result = func(*args, **kwargs)
