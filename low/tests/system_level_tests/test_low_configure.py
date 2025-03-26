@@ -63,7 +63,7 @@ def subarray_in_idle_obsstate(
 @when("I configure it for a scan")
 def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
+        "configure_low_real_subarray1", command_input_factory
     )
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
         configure_input_json, "1"

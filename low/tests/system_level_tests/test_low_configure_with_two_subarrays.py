@@ -79,15 +79,18 @@ def subarray2_in_idle_obsstate(
 def invoke_configure(
     subarray_node_low, subarray_node_2_low, event_tracer, command_input_factory
 ):
-    configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
+    configure_input_json_1 = prepare_json_args_for_commands(
+        "configure_low_real_subarray1", command_input_factory
+    )
+    configure_input_json_2 = prepare_json_args_for_commands(
+        "configure_low_real_subarray2", command_input_factory
     )
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_input_json, "1"
+        configure_input_json_1, "1"
     )
 
     _, pytest.unique_id = subarray_node_2_low.store_configuration_data(
-        configure_input_json, "2"
+        configure_input_json_2, "2"
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node 1

@@ -64,7 +64,7 @@ def subarray_in_ready_obsstate(
     # Then set it to READY state
 
     configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
+        "configure_low_real_subarray1", command_input_factory
     )
 
     configure_json = update_scan_duration(configure_input_json, scan_duration)

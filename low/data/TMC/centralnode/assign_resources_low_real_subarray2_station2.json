@@ -102,7 +102,7 @@
         "apertures": [
           {
             "station_id": 2,
-            "aperture_id": "AP001.01"
+            "aperture_id": "AP002.01"
           }
         ],
         "number_of_channels": 96
