@@ -7,6 +7,7 @@ from ska_control_model import ObsState, ResultCode
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 from tests.resources.test_harness.constant import COMMAND_COMPLETED
+from tests.resources.test_harness.helpers import update_eb_pb_ids
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -175,16 +176,16 @@ def subarray_in_resourcing_obsstate(
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
-    """Invokes ReleaseResources command on TMC"""
-    release_input = prepare_json_args_for_centralnode_commands(
-        "release_resources_low", command_input_factory
+    """Invokes AssignResources command on TMC"""
+    input_json = prepare_json_args_for_centralnode_commands(
+        "assign_resources_low_real", command_input_factory
     )
-    _, pytest.unique_id = central_node_low.invoke_release_resources(
-        release_input
-    )
+    assign_input_json = update_eb_pb_ids(input_json)
+    central_node_low.set_serial_number_of_cbf_processor()
+    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '
-        "'the subarray is in EMPTY obsState'"
+        "'the subarray is in IDLE obsState'"
         "TMC Central Node device"
         f"({central_node_low.central_node.dev_name()}) "
         "is expected have longRunningCommand as"
