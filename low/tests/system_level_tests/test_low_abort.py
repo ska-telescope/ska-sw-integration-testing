@@ -270,17 +270,17 @@ def subsystem_subarrays_in_aborted(
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
-    # assert_that(event_tracer).described_as(
-    #     'FAILED ASSUMPTION IN "THEN STEP: '
-    #     f'"the Subarray transitions to ABORTED obsState"'
-    #     "Subarray Node device"
-    #     f"({subarray_node_low.subarray_node.dev_name()}) "
-    #     f"is expected to be in ABORTING obstate",
-    # ).within_timeout(TIMEOUT).has_change_event_occurred(
-    #     subarray_node_low.subarray_node,
-    #     "obsState",
-    #     ObsState.ABORTING,
-    # )
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "THEN STEP: '
+        f'"the Subarray transitions to ABORTED obsState"'
+        "Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        f"is expected to be in ABORTING obstate",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "obsState",
+        ObsState.ABORTING,
+    )
     check_subarray_obsstate(
         subarray_node_low,
         event_tracer,
