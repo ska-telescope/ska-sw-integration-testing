@@ -226,7 +226,7 @@ def sync_end():
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_idle()
             result = func(*args, **kwargs)
-            the_waiter.wait(200)
+            the_waiter.wait(500)
             return result
 
         return wrapper
