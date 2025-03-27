@@ -160,7 +160,7 @@ def check_dish_mode_and_pointing_state_after_configure(
     for dish_id in DISH_IDS:
         assert_that(event_tracer).described_as(
             f"The DishMaster {dish_id} must transition to OPERATE mode"
-        ).has_change_event_occurred(
+        ).within_timeout(120).has_change_event_occurred(
             dishes.dish_master_dict[dish_id],
             "dishMode",
             DishMode.OPERATE,

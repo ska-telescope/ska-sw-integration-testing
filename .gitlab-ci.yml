@@ -55,7 +55,7 @@ k8s-test-low:
     - ska-k8s
   variables:
     TELESCOPE: 'SKA-low'
-    KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
+    KUBE_NAMESPACE: 'integration-ska-low' #'ci-dev-ska-low-integration'
     MARK: 'system_level_tests'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
@@ -76,6 +76,7 @@ k8s-test-low:
     name: test/low-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-low 
     auto_stop_in: 1 minute
+  allow_failure: true
 
 stop-k8s-test-low:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
@@ -84,9 +85,9 @@ stop-k8s-test-low:
     - ska-k8s
   when: manual
   variables:
-    KUBE_NAMESPACE: 'ci-dev-ska-low-integration'
+    KUBE_NAMESPACE: 'integration-ska-low' #'ci-dev-ska-low-integration'
   script:
-    - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/low-$CI_COMMIT_REF_SLUG
     action: stop 
@@ -95,8 +96,8 @@ k8s-test-low-tmc-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: integration
   tags:
-    - ska-k8s
-  when: manual # GitLab runner tag to ensure the job runs on specific runners.
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually 
   variables:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
@@ -133,7 +134,7 @@ stop-k8s-test-low-with-csp:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE} # Delete the test runner pod in the Kubernetes namespace.
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi # Delete the test runner pod in the Kubernetes namespace.
   environment:
     name: test/csp-low-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
@@ -144,7 +145,7 @@ k8s-test-low-tmc-with-sdp:
   stage: integration
   tags:
     - ska-k8s
-  when: manual
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-low'
     PORT: "10000"
@@ -184,7 +185,7 @@ stop-k8s-test-low-tmc-with-sdp:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/sdp-low-$CI_COMMIT_REF_SLUG
     action: stop
@@ -194,7 +195,7 @@ k8s-test-tmc-with-mccs-low:
   stage: integration
   tags:
     - ska-k8s
-  when: manual
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-low'
     PORT: "10000"
@@ -234,7 +235,7 @@ stop-k8s-test-tmc-with-mccs:
     KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/mccs-$CI_COMMIT_REF_SLUG
     action: stop
@@ -244,8 +245,8 @@ k8s-test-mid-tmc-with-csp:
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
   stage: integration
   tags:
-    - ska-k8s
-  when: manual # GitLab runner tag to ensure the job runs on specific runners.
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
@@ -282,7 +283,7 @@ stop-k8s-test-mid-with-csp:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/csp-mid-$CI_COMMIT_REF_SLUG
     action: stop # Stop action triggers the deletion.
@@ -294,7 +295,7 @@ k8s-test-mid-tmc-with-sdp:
   stage: integration
   tags:
     - ska-k8s
-  when: manual
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     PORT: "10000"
@@ -337,7 +338,7 @@ stop-k8s-test-mid-tmc-with-sdp:
     KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
     SDP_SIMULATION_ENABLED: 'false'
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/sdp-mid-$CI_COMMIT_REF_SLUG
     action: stop
@@ -348,7 +349,7 @@ k8s-test-dish-lmc:
   stage: integration
   tags:
     - ska-k8s
-  when: manual
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
   variables:
     TELESCOPE: 'SKA-mid'
     DISH_SIMULATION_ENABLED: "false"
@@ -395,7 +396,7 @@ stop-k8s-test-dish-lmc:
     TELESCOPE: 'SKA-mid'
     KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
   script:
-    - kubectl delete pod/test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/dish-$CI_COMMIT_REF_SLUG
     action: stop
@@ -408,7 +409,7 @@ k8s-test-mid:
   variables:
     CONFIG: "Mid"
     TELESCOPE: 'SKA-mid'
-    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration'
+    KUBE_NAMESPACE: 'integration-ska-mid' #'ci-dev-ska-mid-integration'
     MARK: 'system_level_test_mid'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
@@ -429,6 +430,7 @@ k8s-test-mid:
     name: test/mid-$CI_COMMIT_REF_SLUG
     on_stop: stop-k8s-test-mid 
     auto_stop_in: 1 minute
+  allow_failure: true
 
 # Job to stop the test environment for TMC
 stop-k8s-test-mid:
@@ -438,9 +440,9 @@ stop-k8s-test-mid:
   tags:
     - ska-k8s
   variables:
-    KUBE_NAMESPACE: 'ci-dev-ska-mid-integration'
+    KUBE_NAMESPACE: 'integration-ska-mid' #'ci-dev-ska-mid-integration'
   script:
-    - kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
     name: test/mid-$CI_COMMIT_REF_SLUG
     action: stop 

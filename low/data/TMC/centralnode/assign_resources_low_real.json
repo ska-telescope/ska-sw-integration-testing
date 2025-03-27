@@ -89,7 +89,7 @@
         "script": {
           "kind": "realtime",
           "name": "vis-receive",
-          "version": "4.4.0"
+          "version": "5.1.1"
         }
       }
     ]

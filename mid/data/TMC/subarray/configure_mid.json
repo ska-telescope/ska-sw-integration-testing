@@ -1,48 +1,42 @@
 {
-  "interface": "https://schema.skao.int/ska-tmc-configure/4.1",
-  "transaction_id": "",
+  "interface": "https://schema.skao.int/ska-tmc-configure/4.0",
   "pointing": {
-      "target": {
-          "reference_frame": "ICRS",
-          "target_name": "Polaris Australis",
-          "ra": "21:08:47.92",
-          "dec": "-88:57:22.9",
-          "ca_offset_arcsec": 0.0,
-          "ie_offset_arcsec": 0.0
-      },
-      "correction": "UPDATE"
+    "target": {
+      "reference_frame": "ICRS",
+      "target_name": "Polaris Australis",
+      "ra": "21:08:47.92",
+      "dec": "-88:57:22.9",
+      "ca_offset_arcsec": 0.0,
+      "ie_offset_arcsec": 0.0
+    }
   },
-  "dish": {
-      "receiver_band": "1"
+  "sdp": {
+    "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
+    "scan_type": "science"
   },
   "csp": {
     "interface": "https://schema.skao.int/ska-csp-configurescan/4.1",
     "common": {
-        "config_id": "sbi-mvp01-20200325-00001-science_A",
-        "frequency_band": "2",
-        "eb_id": "eb-m001-20230712-56789"
+      "config_id": "4 receptor, band 1, 1 FSP, no options",
+      "frequency_band": "1"
     },
     "midcbf": {
-        "frequency_band_offset_stream1": 80,
-        "frequency_band_offset_stream2": 80,
-        "correlation": {
-            "processing_regions": [{
-                "fsp_ids": [1,2],
-                "start_freq" : 950000000,
-                "channel_width" : 13440,
-                "channel_count" : 14880,
-                "sdp_start_channel_id": 0,
-                "integration_factor": 1
-            }]
-        }
+      "correlation": {
+          "processing_regions": [{
+              "fsp_ids": [1,2],
+              "start_freq" : 350000000,
+              "channel_width" : 13440,
+              "channel_count" : 14880,
+              "sdp_start_channel_id": 0,
+              "integration_factor": 1
+          }]
+      }
     }
-},
-  "sdp": {
-      "interface": "https://schema.skao.int/ska-sdp-configure/0.4",
-      "scan_type": "target:a"
   },
   "tmc": {
-      "scan_duration": 10.0,
-      "partial_configuration": false
+    "scan_duration": 10.0
+  },
+  "dish": {
+    "receiver_band": "1"
   }
 }
