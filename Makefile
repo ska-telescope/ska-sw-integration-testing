@@ -53,12 +53,12 @@ SDP_PROCCONTROL_REPLICAS ?= 1
 # test run will exit at the first failure. To continue running tests after a
 # failure, set the flag to 'false'.
 
-EXIT_AT_FAIL ?= false ## Flag for determining exit at failure. 
+EXIT_AT_FAIL ?= true ## Flag for determining exit at failure. 
 # Set 'true' to exit at first failure. Set 'false' to continue running 
 # tests after failure. It defaults to 'true' if not set.
 # Actually, any value other than 'false' will be treated as 'true'.
 
-ifeq ($(EXIT_AT_FAIL), false)
+ifeq ($(EXIT_AT_FAIL), true)
 ADD_ARGS += -x
 endif
 
