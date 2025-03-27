@@ -28,7 +28,7 @@ TIMEOUT = 100
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_6412_abort.feature",
+    "system_level_tests/" + "xtp_64112_abort.feature",
     "IDLE to ABORT - CMD Abort",
 )
 def test_idle_to_abort():
@@ -40,7 +40,7 @@ def test_idle_to_abort():
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_6412_abort.feature",
+    "system_level_tests/" + "xtp_64112_abort.feature",
     "READY to ABORT - CMD Abort",
 )
 def test_ready_to_abort():
@@ -52,7 +52,7 @@ def test_ready_to_abort():
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_6412_abort.feature",
+    "system_level_tests/" + "xtp_64112_abort.feature",
     "SCANNING to ABORT - CMD Abort",
 )
 def test_scanning_to_abort():
@@ -64,7 +64,7 @@ def test_scanning_to_abort():
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_6412_abort.feature",
+    "system_level_tests/" + "xtp_64112_abort.feature",
     "RESOURCING to ABORT -CMD Abort",
 )
 def test_resourcing_to_abort():
@@ -76,7 +76,7 @@ def test_resourcing_to_abort():
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
-    "system_level_tests/" + "xtp_6412_abort.feature",
+    "system_level_tests/" + "xtp_64112_abort.feature",
     "CONFIGURING to ABORT -CMD Abort",
 )
 def test_configuring_to_abort():
