@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import tango
 from ska_ser_logging import configure_logging
 from tests.resources.test_support.common_utils.common_helpers import (
     AttributeWatcher,
@@ -323,6 +324,22 @@ class Waiter:
             watch(Resource(self.tmc_subarraynode1)).to_become(
                 "obsState", changed_to="IDLE"
             )
+        )
+
+        LOGGER.info(
+            "SDP Subarray %s obsState: %s",
+            tango.DeviceProxy(self.sdp_subarray1).dev_name(),
+            tango.DeviceProxy(self.sdp_subarray1).obsState,
+        )
+        LOGGER.info(
+            "CSP Subarray %s obsState: %s",
+            tango.DeviceProxy(self.csp_subarray1).dev_name(),
+            tango.DeviceProxy(self.csp_subarray1).obsState,
+        )
+        LOGGER.info(
+            "TMC Subarray %s obsState: %s",
+            tango.DeviceProxy(self.tmc_subarraynode1).dev_name(),
+            tango.DeviceProxy(self.tmc_subarraynode1).obsState,
         )
 
     def set_wait_for_aborted(self):
