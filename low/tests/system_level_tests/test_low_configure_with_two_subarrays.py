@@ -104,6 +104,7 @@ def invoke_configure(
             "longRunningCommandResult"
         ).value,
     )
+    LOGGER.info("Unique id 1: %s", pytest.unique_id_sa_1[0])
     # Verify longRunningCommandResult for the TMC Subarray Node 1
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
@@ -118,6 +119,17 @@ def invoke_configure(
         (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
     )
 
+    LOGGER.info(
+        "LRCR Subarray2: %s",
+        subarray_node_2_low.subarray_node.read_attribute(
+            "longRunningCommandResult"
+        ).value,
+    )
+    LOGGER.info(
+        "Unique id 2:  %s ,%s",
+        pytest.unique_id_sa_2[0],
+        subarray_node_2_low.subarray_node.dev_name(),
+    )
     # Verify longRunningCommandResult for the TMC Subarray Node 2
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
