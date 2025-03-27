@@ -90,11 +90,11 @@ def invoke_configure(
     configure_input_json_2 = prepare_json_args_for_commands(
         "configure_low_real_subarray2", command_input_factory
     )
-    _, pytest.unique_id = subarray_node_low.store_configuration_data(
+    _, pytest.unique_id_sa_1 = subarray_node_low.store_configuration_data(
         configure_input_json_1, "1"
     )
 
-    _, pytest.unique_id = subarray_node_2_low.store_configuration_data(
+    _, pytest.unique_id_sa_2 = subarray_node_2_low.store_configuration_data(
         configure_input_json_2, "2"
     )
 
@@ -115,7 +115,7 @@ def invoke_configure(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
+        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node 2
@@ -129,7 +129,7 @@ def invoke_configure(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_2_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
+        (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
     )
 
 
