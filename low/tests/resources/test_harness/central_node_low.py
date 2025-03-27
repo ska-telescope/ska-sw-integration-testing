@@ -340,6 +340,12 @@ class CentralNodeWrapperLow(object):
         self._reset_health_state_for_mock_devices()
         self.reset_defects_for_devices()
         for id, subarray in self.tmc_subarrays.items():
+            LOGGER.info(
+                "Calling Tear down from Central node for Subarray %s, %s",
+                id,
+                subarray,
+            )
+            LOGGER.info("Subarray ObsState %s, %s", id, subarray.obsState)
             if subarray.obsState in [
                 ObsState.RESOURCING,
             ]:

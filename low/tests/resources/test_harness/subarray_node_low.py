@@ -416,9 +416,12 @@ class SubarrayNodeWrapperLow:
     def tear_down(self):
         """Tear down after each test run"""
 
-        LOGGER.info("Calling Tear down for subarray")
+        LOGGER.info(
+            "Calling Tear down for subarray %s", self.subarray_node.dev_name()
+        )
         self._reset_simulator_devices()
         self._clear_command_call_and_transition_data(clear_transition=True)
+        LOGGER.info("SubarrayNode ObsState %s", self.subarray_node.obsState)
 
         if self.subarray_node.obsState in [
             ObsState.SCANNING,
