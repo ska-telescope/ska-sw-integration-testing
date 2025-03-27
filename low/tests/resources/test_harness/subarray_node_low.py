@@ -205,13 +205,13 @@ class SubarrayNodeWrapperLow:
         return result, message
 
     @sync_abort()
-    def abort_subarray(self):
+    def abort_subarray(self, subarray_id: str):
         result, message = self.subarray_node.Abort()
         LOGGER.info("Invoked Abort on SubarrayNode")
         return result, message
 
     @sync_restart()
-    def restart_subarray(self):
+    def restart_subarray(self, subarray_id: str):
         result, message = self.subarray_node.Restart()
         LOGGER.info("Invoked Restart on SubarrayNode")
         return result, message
@@ -370,10 +370,10 @@ class SubarrayNodeWrapperLow:
             "CONFIGURING",
             "SCANNING",
         ]:
-            self.abort_subarray()
-            self.restart_subarray()
+            self.abort_subarray(self.subarray_id)
+            self.restart_subarray(self.subarray_id)
         elif self.obs_state == "ABORTED":
-            self.restart_subarray()
+            self.restart_subarray(self.subarray_id)
 
     def _clear_command_call_and_transition_data(self, clear_transition=False):
         """Clears the command call data"""
@@ -430,12 +430,12 @@ class SubarrayNodeWrapperLow:
         ]:
             """Invoke Abort and Restart"""
             LOGGER.info("Invoking Abort on Subarray")
-            self.abort_subarray()
-            self.restart_subarray()
+            self.abort_subarray(self.subarray_id)
+            self.restart_subarray(self.subarray_id)
         elif self.subarray_node.obsState == ObsState.ABORTED:
             """Invoke Restart"""
             LOGGER.info("Invoking Restart on Subarray")
-            self.restart_subarray()
+            self.restart_subarray(self.subarray_id)
         elif self.subarray_node.obsState == ObsState.IDLE:
             """Invoke Release"""
             LOGGER.info("Invoking Release Resources on Subarray")

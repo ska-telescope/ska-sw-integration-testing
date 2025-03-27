@@ -117,7 +117,7 @@ class AbortedObsStateResetter(ObsStateResetter):
     def reset(self):
         self.device.clear_all_data()
         self.device.store_resources(self.assign_input, "1")
-        self.device.abort_subarray()
+        self.device.abort_subarray("1")
 
 
 class ScanningObsStateResetter(ObsStateResetter):
