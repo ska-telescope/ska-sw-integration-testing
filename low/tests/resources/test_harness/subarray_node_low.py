@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from time import sleep
 
 from ska_control_model import ObsState
@@ -444,6 +445,7 @@ class SubarrayNodeWrapperLow:
             """Invoke End"""
             LOGGER.info("Invoking End command on Subarray")
             self.end_observation(self.subarray_id)
+            time.sleep(4)
             self.release_resources(self.release_input, self.subarray_id)
         else:
             self.force_change_of_obs_state("EMPTY")
