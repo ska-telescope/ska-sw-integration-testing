@@ -115,6 +115,9 @@ class CentralNodeWrapperLow(object):
         self.event_recorder.subscribe_event(
             self.subarray_node, "longRunningCommandResult"
         )
+        # self.event_recorder.subscribe_event(
+        #     self.subarray_node_2, "longRunningCommandResult"
+        # )
 
         self.event_tracer.subscribe_event(
             self.central_node, "longRunningCommandResult"
@@ -122,6 +125,10 @@ class CentralNodeWrapperLow(object):
         self.event_tracer.subscribe_event(
             self.subarray_node, "longRunningCommandResult"
         )
+        # self.event_tracer.subscribe_event(
+        #     self.subarray_node_2, "longRunningCommandResult"
+        # )
+
         log_events(
             {
                 self.central_node: ["longRunningCommandResult"],

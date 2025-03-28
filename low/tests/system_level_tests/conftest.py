@@ -19,6 +19,7 @@ COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
 def given_the_sut(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_2_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
 ) -> None:
     """
@@ -38,12 +39,12 @@ def given_the_sut(
         subarray_node_low.subarray_devices["csp_subarray"], "State"
     )
     event_tracer.subscribe_event(
-        central_node_low.subarray_devices["sdp_subarray"], "State"
+        subarray_node_low.subarray_devices["sdp_subarray"], "State"
     )
     event_tracer.subscribe_event(central_node_low.sdp_master, "State")
     event_tracer.subscribe_event(central_node_low.mccs_master, "State")
     event_tracer.subscribe_event(
-        central_node_low.subarray_devices["mccs_subarray"], "State"
+        subarray_node_low.subarray_devices["mccs_subarray"], "State"
     )
     event_tracer.subscribe_event(
         central_node_low.central_node, "telescopeState"
@@ -57,6 +58,21 @@ def given_the_sut(
     event_tracer.subscribe_event(
         subarray_node_low.subarray_devices["sdp_subarray"], "scanID"
     )
+
+    subarray_node_2_low = SubarrayNodeWrapperLow("2")
+    event_tracer.subscribe_event(
+        subarray_node_2_low.subarray_node, "longRunningCommandResult"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_2_low.subarray_devices["csp_subarray"], "State"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_2_low.subarray_devices["sdp_subarray"], "State"
+    )
+    event_tracer.subscribe_event(
+        subarray_node_2_low.subarray_devices["mccs_subarray"], "State"
+    )
+
     log_events(
         {
             central_node_low.central_node: [
@@ -99,18 +115,26 @@ def check_devices_state_on(
 def check_state_is_on(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_2_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
 ):
     """A method to check CentralNode.telescopeState"""
     central_node_low.move_to_on()
 
+    subarray_node_2_low = SubarrayNodeWrapperLow("2")
+
     devices = {
         "CSP Master": central_node_low.csp_master,
         "CSP Subarray": subarray_node_low.subarray_devices["csp_subarray"],
+        "CSP Subarray2": subarray_node_2_low.subarray_devices["csp_subarray"],
         "SDP Master": central_node_low.sdp_master,
         "SDP Subarray": subarray_node_low.subarray_devices["sdp_subarray"],
+        "SDP Subarray2": subarray_node_2_low.subarray_devices["sdp_subarray"],
         "MCCS Master": central_node_low.mccs_master,
         "MCCS Subarray": subarray_node_low.subarray_devices["mccs_subarray"],
+        "MCCS Subarray2": subarray_node_2_low.subarray_devices[
+            "mccs_subarray"
+        ],
     }
 
     # Check if all devices are in ON state
