@@ -1,4 +1,5 @@
 """CentralNodelow"""
+import json
 import logging
 
 from ska_control_model import ObsState
@@ -58,7 +59,14 @@ class CentralNodeCspWrapperLow(CentralNodeWrapperLow):
         for id, subarray in self.tmc_subarrays.items():
             if subarray.obsState == ObsState.IDLE:
                 LOGGER.info("Calling ReleaseResources on CentralNode")
-                self.invoke_release_resources(self.release_input, id)
+
+                release_json = json.loads(self.release_input)
+                release_json["subarray_id"] = int(id)
+                LOGGER.info(
+                    "release_json[subarray_id]: %s",
+                    release_json["subarray_id"],
+                )
+                self.invoke_release_resources(json.dumps(release_json), id)
             elif subarray.obsState == ObsState.RESOURCING:
                 LOGGER.info("Calling Abort and Restart on SubarrayNode")
                 self.pst.obsreset()

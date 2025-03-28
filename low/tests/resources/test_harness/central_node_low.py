@@ -409,8 +409,14 @@ class CentralNodeWrapperLow(object):
                 )
             elif subarray.obsState == ObsState.IDLE:
                 LOGGER.info("Calling Release Resource on centralnode")
+                release_json = json.loads(self.release_input)
+                release_json["subarray_id"] = int(id)
+                LOGGER.info(
+                    "release_json[subarray_id]: %s",
+                    release_json["subarray_id"],
+                )
                 _, unique_id = self.invoke_release_resources(
-                    self.release_input, id
+                    json.dumps(release_json), id
                 )
                 assert_that(self.event_tracer).described_as(
                     "FAILED ASSUMPTION AFTER RELEASE_RESOURCES COMMAND: "
@@ -707,7 +713,7 @@ class CentralNodeWrapperLow(object):
         return result, message
 
     @sync_release_resources()
-    def invoke_release_resources(self, input_string, subarray_id):
+    def invoke_release_resources(self, input_string, subarray_id: str):
         """Invoke Release Resource command on central Node
         Args:
             input_string (str): Release resource input json

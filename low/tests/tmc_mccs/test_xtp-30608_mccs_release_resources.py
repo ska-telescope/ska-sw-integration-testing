@@ -105,7 +105,9 @@ def invoke_releaseresources(
     release_input = prepare_json_args_for_centralnode_commands(
         "release_resources_low", command_input_factory
     )
-    _, unique_id = central_node_low.invoke_release_resources(release_input)
+    _, unique_id = central_node_low.invoke_release_resources(
+        release_input, "1"
+    )
     event_recorder.has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",

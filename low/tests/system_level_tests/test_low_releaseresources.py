@@ -88,7 +88,7 @@ def invoke_release_resources(
         "release_resources_low", command_input_factory
     )
     _, pytest.unique_id = central_node_low.invoke_release_resources(
-        release_input
+        release_input, "1"
     )
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '

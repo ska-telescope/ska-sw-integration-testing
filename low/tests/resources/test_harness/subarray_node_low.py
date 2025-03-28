@@ -1,6 +1,5 @@
 import json
 import logging
-import time
 from time import sleep
 
 from ska_control_model import ObsState
@@ -440,13 +439,20 @@ class SubarrayNodeWrapperLow:
         elif self.subarray_node.obsState == ObsState.IDLE:
             """Invoke Release"""
             LOGGER.info("Invoking Release Resources on Subarray")
-            self.release_resources(self.release_input, self.subarray_id)
+            release_json = json.loads(self.release_input)
+            release_json["subarray_id"] = int(self.subarray_id)
+            self.release_resources(json.dumps(release_json), self.subarray_id)
         elif self.subarray_node.obsState == ObsState.READY:
             """Invoke End"""
             LOGGER.info("Invoking End command on Subarray")
             self.end_observation(self.subarray_id)
-            time.sleep(4)
-            self.release_resources(self.release_input, self.subarray_id)
+
+            release_json = json.loads(self.release_input)
+            release_json["subarray_id"] = int(self.subarray_id)
+            LOGGER.info(
+                "release_json[subarray_id]: %s", release_json["subarray_id"]
+            )
+            self.release_resources(json.dumps(release_json), self.subarray_id)
         else:
             self.force_change_of_obs_state("EMPTY")
         if SIMULATED_DEVICES_DICT["sdp_and_mccs"]:

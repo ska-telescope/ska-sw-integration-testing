@@ -84,7 +84,7 @@ def release_resources_to_subarray(
         "release_resources_low", command_input_factory
     )
     _, unique_id = central_node_low.invoke_release_resources(
-        release_input_json
+        release_input_json, "1"
     )
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,
