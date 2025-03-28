@@ -84,40 +84,40 @@ def subarray2_in_idle_obsstate(
 def invoke_configure(
     subarray_node_low, subarray_node_2_low, event_tracer, command_input_factory
 ):
-    # configure_input_json_1 = prepare_json_args_for_commands(
-    #     "configure_low_real_subarray1", command_input_factory
-    # )
+    configure_input_json_1 = prepare_json_args_for_commands(
+        "configure_low_real_subarray1", command_input_factory
+    )
     configure_input_json_2 = prepare_json_args_for_commands(
         "configure_low_real_subarray2", command_input_factory
     )
-    # _, pytest.unique_id_sa_1 = subarray_node_low.store_configuration_data(
-    #     configure_input_json_1, "1"
-    # )
+    _, pytest.unique_id_sa_1 = subarray_node_low.store_configuration_data(
+        configure_input_json_1, "1"
+    )
 
     _, pytest.unique_id_sa_2 = subarray_node_2_low.store_configuration_data(
         configure_input_json_2, "2"
     )
 
-    # LOGGER.info(
-    #     "LRCR Subarray1: %s",
-    #     subarray_node_low.subarray_node.read_attribute(
-    #         "longRunningCommandResult"
-    #     ).value,
-    # )
-    # LOGGER.info("Unique id 1: %s", pytest.unique_id_sa_1[0])
-    # # Verify longRunningCommandResult for the TMC Subarray Node 1
-    # assert_that(event_tracer).described_as(
-    #     'FAILED ASSUMPTION IN "GIVEN" STEP: '
-    #     "'the subarray is in READY obsState'"
-    #     "TMC Subarray Node device"
-    #     f"({subarray_node_low.subarray_node.dev_name()}) "
-    #     "is expected to have longRunningCommandResult as"
-    #     '(unique_id,(ResultCode.OK,"Command Completed"))',
-    # ).within_timeout(TIMEOUT).has_change_event_occurred(
-    #     subarray_node_low.subarray_node,
-    #     "longRunningCommandResult",
-    #     (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
-    # )
+    LOGGER.info(
+        "LRCR Subarray1: %s",
+        subarray_node_low.subarray_node.read_attribute(
+            "longRunningCommandResult"
+        ).value,
+    )
+    LOGGER.info("Unique id 1: %s", pytest.unique_id_sa_1[0])
+    # Verify longRunningCommandResult for the TMC Subarray Node 1
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
+    )
 
     LOGGER.info(
         "LRCR Subarray2: %s",
@@ -159,12 +159,12 @@ def subsystem_subarrays_in_configuring(
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
 
-    # check_subarray_obsstate(
-    #     subarray_node_low.subarray_devices,
-    #     subarray_node_low.subarray_node,
-    #     event_tracer,
-    #     obs_state=ObsState.CONFIGURING,
-    # )
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.CONFIGURING,
+    )
     check_subarray_obsstate(
         subarray_node_2_low.subarray_devices,
         subarray_node_2_low.subarray_node,
@@ -187,12 +187,12 @@ def tmc_subarray_ready(
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
 
-    # check_subarray_obsstate(
-    #     subarray_node_low.subarray_devices,
-    #     subarray_node_low.subarray_node,
-    #     event_tracer,
-    #     obs_state=ObsState.READY,
-    # )
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.READY,
+    )
     check_subarray_obsstate(
         subarray_node_2_low.subarray_devices,
         subarray_node_2_low.subarray_node,
