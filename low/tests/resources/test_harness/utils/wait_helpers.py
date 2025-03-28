@@ -293,6 +293,21 @@ class Waiter:
                 "obsState", changed_to="READY"
             )
         )
+        LOGGER.info(
+            "SDP Subarray %s obsState: %s",
+            tango.DeviceProxy(self.sdp_subarray1).dev_name(),
+            tango.DeviceProxy(self.sdp_subarray1).obsState,
+        )
+        LOGGER.info(
+            "CSP Subarray %s obsState: %s",
+            tango.DeviceProxy(self.csp_subarray1).dev_name(),
+            tango.DeviceProxy(self.csp_subarray1).obsState,
+        )
+        LOGGER.info(
+            "TMC Subarray %s obsState: %s",
+            tango.DeviceProxy(self.tmc_subarraynode1).dev_name(),
+            tango.DeviceProxy(self.tmc_subarraynode1).obsState,
+        )
 
     def set_wait_for_idle(self):
         self.waits.append(

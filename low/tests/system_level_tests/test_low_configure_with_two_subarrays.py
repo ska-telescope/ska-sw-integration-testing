@@ -138,7 +138,7 @@ def invoke_configure(
         f"({subarray_node_2_low.subarray_node.dev_name()}) "
         "is expected to have longRunningCommandResult as"
         '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
+    ).within_timeout(200).has_change_event_occurred(
         subarray_node_2_low.subarray_node,
         "longRunningCommandResult",
         (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
