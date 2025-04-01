@@ -2,7 +2,7 @@ import json
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import scenario, then, when
+from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState, ResultCode
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -88,7 +88,7 @@ def test_configuring_to_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@then("subarrays is in IDLE ObsState")
+@given("subarrays is in IDLE ObsState")
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -104,7 +104,7 @@ def subarray_in_idle_obsstate(
     )
 
 
-@then("subarrays is in READY ObsState")
+@given("subarrays is in READY ObsState")
 def subarray_in_ready_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -127,7 +127,7 @@ def subarray_in_ready_obsstate(
     )
 
 
-@then("subarrays is in SCANNING ObsState")
+@given("subarrays is in SCANNING ObsState")
 def subarray_in_scanning_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -170,7 +170,7 @@ def subarray_in_scanning_obsstate(
     )
 
 
-@then("subarrays is in RESOURCING ObsState")
+@given("subarrays is in RESOURCING ObsState")
 def subarray_in_resourcing_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -203,7 +203,7 @@ def subarray_in_resourcing_obsstate(
     )
 
 
-@then("subarrays is in CONFIGURING obsState")
+@given("subarrays is in CONFIGURING obsState")
 def invoke_configure(
     central_node_low, subarray_node_low, event_tracer, command_input_factory
 ):
