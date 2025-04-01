@@ -172,18 +172,6 @@ def invoke_scan_on_two_subarrays(
     #     "scanID",
     #     int(scan_id_for_subarray1),
     # )
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "GIVEN" STEP: '
-        "'the subarray is in SCANNING obsState'"
-        "TMC Subarray Node device"
-        f"({subarray_node_low.subarray_node.dev_name()}) "
-        "is expected to have longRunningCommandResult as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_subarray1[0], COMMAND_COMPLETED),
-    )
 
     scan_id_for_subarray2 = 2
     scan_input_json = update_scan_id(scan_json, scan_id_for_subarray2)
@@ -199,18 +187,6 @@ def invoke_scan_on_two_subarrays(
     #     "scanID",
     #     int(scan_id_for_subarray1),
     # )
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "GIVEN" STEP: '
-        "'the subarray is in SCANNING obsState'"
-        "TMC Subarray Node device"
-        f"({subarray_node_2_low.subarray_node.dev_name()}) "
-        "is expected to have longRunningCommandResult as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_2_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_subarray2[0], COMMAND_COMPLETED),
-    )
 
 
 @then("the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState")
@@ -235,6 +211,32 @@ def subsystem_subarrays_in_scanning(
         subarray_node_2_low.subarray_node,
         event_tracer,
         obs_state=ObsState.SCANNING,
+    )
+
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in SCANNING obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_subarray1[0], COMMAND_COMPLETED),
+    )
+
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in SCANNING obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_2_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_2_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_subarray2[0], COMMAND_COMPLETED),
     )
 
 
