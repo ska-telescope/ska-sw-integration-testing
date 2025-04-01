@@ -4,11 +4,14 @@ import logging
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, parsers, scenario, then, when
+from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
+from tests.resources.test_harness.helpers import (  # update_scan_duration,
+    update_scan_id,
+)
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -37,22 +40,21 @@ LOGGER = logging.getLogger(__name__)
 )
 def test_configure_command_with_two_subarrays():
     """
-    Test case to verify Configure functionality with two subarrays
+    Test case to verify Configure and Scan functionality with two subarrays
     """
 
 
 # @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("I assign station 1 to subarray 1"))
-def subarray1_in_idle_obsstate(
+@given("I assign station 1 to subarray 1 and station 2 to subarray 2")
+def subarrays_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
-    # subscribe_to_obsstate_events(event_tracer,
-    # subarray_node_low.subarray_devices, subarray_node_low.subarray_node)
+    # Assign resources to subarray 1
     set_subarray_to_idle(
         central_node_low,
         subarray_node_low,
@@ -61,16 +63,7 @@ def subarray1_in_idle_obsstate(
         "1",
     )
 
-
-@given(parsers.parse("I assign station 2 to subarray 2"))
-def subarray2_in_idle_obsstate(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    command_input_factory,
-    event_tracer: TangoEventTracer,
-):
-    # subscribe_to_obsstate_events(event_tracer,
-    # subarray_node_low.subarray_devices, subarray_node_low.subarray_node)
+    # Assign resources to Subarray 2
     set_subarray_to_idle(
         central_node_low,
         subarray_node_low,
@@ -80,8 +73,8 @@ def subarray2_in_idle_obsstate(
     )
 
 
-@when("I configure the two subarrays for scan")
-def invoke_configure(
+@given("I configure the two subarrays for scan")
+def subarrays_in_ready_obsstate(
     subarray_node_low, subarray_node_2_low, event_tracer, command_input_factory
 ):
     configure_input_json_1 = prepare_json_args_for_commands(
@@ -144,12 +137,84 @@ def invoke_configure(
         (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
     )
 
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.READY,
+    )
+    check_subarray_obsstate(
+        subarray_node_2_low.subarray_devices,
+        subarray_node_2_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.READY,
+    )
 
-@then(
-    "the TMC, CSP, SDP, and MCCS subarray instances 1 and 2 transition to "
-    + "CONFIGURING obsState"
-)
-def subsystem_subarrays_in_configuring(
+
+@when("I invoke scan command on two subarrays")
+def invoke_scan_on_two_subarrays(
+    subarray_node_low, subarray_node_2_low, event_tracer, command_input_factory
+):
+    scan_json = prepare_json_args_for_commands(
+        "scan_low", command_input_factory
+    )
+    scan_id_for_subarray1 = 1
+    scan_input_json = update_scan_id(scan_json, scan_id_for_subarray1)
+    _, pytest.unique_id_subarray1 = subarray_node_low.store_scan_data(
+        scan_input_json
+    )
+    # assert_that(event_tracer).described_as(
+    #     "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+    #     "Scan ID on SDP devices"
+    #     "are expected to be as per JSON",
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     subarray_node_low.subarray_devices["sdp_subarray"],
+    #     "scanID",
+    #     int(scan_id_for_subarray1),
+    # )
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in SCANNING obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_subarray1[0], COMMAND_COMPLETED),
+    )
+
+    scan_id_for_subarray2 = 2
+    scan_input_json = update_scan_id(scan_json, scan_id_for_subarray2)
+    _, pytest.unique_id_subarray2 = subarray_node_2_low.store_scan_data(
+        scan_input_json
+    )
+    # assert_that(event_tracer).described_as(
+    #     "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+    #     "Scan ID on SDP devices"
+    #     "are expected to be as per JSON",
+    # ).within_timeout(TIMEOUT).has_change_event_occurred(
+    #     subarray_node_low.subarray_devices["sdp_subarray"],
+    #     "scanID",
+    #     int(scan_id_for_subarray1),
+    # )
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in SCANNING obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_2_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_2_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_subarray2[0], COMMAND_COMPLETED),
+    )
+
+
+@then("the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState")
+def subsystem_subarrays_in_scanning(
     subarray_node_low: SubarrayNodeWrapperLow,
     subarray_node_2_low,
     event_tracer: TangoEventTracer,
@@ -158,26 +223,23 @@ def subsystem_subarrays_in_configuring(
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
-
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
         event_tracer,
-        obs_state=ObsState.CONFIGURING,
+        obs_state=ObsState.SCANNING,
     )
+
     check_subarray_obsstate(
         subarray_node_2_low.subarray_devices,
         subarray_node_2_low.subarray_node,
         event_tracer,
-        obs_state=ObsState.CONFIGURING,
+        obs_state=ObsState.SCANNING,
     )
 
 
-@then(
-    "the TMC, CSP, SDP, and MCCS subarrays instances 1 and 2 transition "
-    + "to READY obsState"
-)
-def tmc_subarray_ready(
+@then("after the scan duration they transition back to READY obsState")
+def subsystem_subarrays_in_ready(
     subarray_node_low: SubarrayNodeWrapperLow,
     subarray_node_2_low,
     event_tracer: TangoEventTracer,
@@ -186,7 +248,6 @@ def tmc_subarray_ready(
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
-
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
