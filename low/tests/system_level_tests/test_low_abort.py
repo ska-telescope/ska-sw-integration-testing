@@ -39,7 +39,7 @@ def test_idle_to_abort():
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
-    "READY to ABORT - CMD Abort",
+    "IDLE to ABORT - CMD Abort",
 )
 def test_ready_to_abort():
     """
@@ -50,7 +50,7 @@ def test_ready_to_abort():
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
-    "SCANNING to ABORT - CMD Abort",
+    "IDLE to ABORT - CMD Abort",
 )
 def test_scanning_to_abort():
     """
