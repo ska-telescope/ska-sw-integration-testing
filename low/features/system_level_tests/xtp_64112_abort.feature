@@ -9,13 +9,6 @@ Scenario: IDLE to ABORT - CMD Abort
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
 
-    Examples:
-    | obs_state   |
-    | IDLE        |
-    | READY       |
-    | SCANNING    |
-
-
 @XTP-78120 @XTP-64112
 Scenario: READY to ABORT - CMD Abort
     Given a Low telescope
