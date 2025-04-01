@@ -232,7 +232,7 @@ class SubarrayNodeWrapperLow:
         LOGGER.info("Invoked Release Resource on SubarrayNode")
         return result, message
 
-    @sync_release_resources()
+    @sync_release_resources(timeout=800)
     def release_resources(self, input_string, subarray_id):
         """Invoke Release Resource command on central Node
         Args:

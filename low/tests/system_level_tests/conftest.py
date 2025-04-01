@@ -72,6 +72,9 @@ def given_the_sut(
     event_tracer.subscribe_event(
         subarray_node_2_low.subarray_devices["mccs_subarray"], "State"
     )
+    event_tracer.subscribe_event(
+        subarray_node_2_low.subarray_devices["sdp_subarray"], "scanID"
+    )
 
     log_events(
         {
@@ -86,6 +89,13 @@ def given_the_sut(
                 "scanID",
             ],
             subarray_node_low.subarray_devices["mccs_subarray"]: ["State"],
+            subarray_node_2_low.subarray_node: ["longRunningCommandResult"],
+            subarray_node_2_low.subarray_devices["csp_subarray"]: ["State"],
+            subarray_node_2_low.subarray_devices["sdp_subarray"]: [
+                "State",
+                "scanID",
+            ],
+            subarray_node_2_low.subarray_devices["mccs_subarray"]: ["State"],
             central_node_low.sdp_master: ["State"],
             central_node_low.csp_master: ["State"],
             central_node_low.mccs_master: ["State"],
