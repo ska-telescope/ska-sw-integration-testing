@@ -25,7 +25,6 @@ from tests.system_level_tests.utils import (
 TIMEOUT = 100
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
@@ -37,7 +36,6 @@ def test_idle_to_abort():
     """
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
@@ -49,7 +47,6 @@ def test_ready_to_abort():
     """
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
@@ -73,7 +70,6 @@ def test_resourcing_to_abort():
     """
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
