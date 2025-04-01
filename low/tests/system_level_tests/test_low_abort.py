@@ -39,7 +39,7 @@ def test_idle_to_abort():
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
-    "IDLE to ABORT - CMD Abort",
+    "READY to ABORT - CMD Abort",
 )
 def test_ready_to_abort():
     """
@@ -50,7 +50,7 @@ def test_ready_to_abort():
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
-    "IDLE to ABORT - CMD Abort",
+    "SCANNING to ABORT - CMD Abort",
 )
 def test_scanning_to_abort():
     """
@@ -83,7 +83,7 @@ def test_configuring_to_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@given("subarrays is in {obs_state} ObsState")
+@given("subarrays is in IDLE ObsState")
 def subarray_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -99,7 +99,7 @@ def subarray_in_idle_obsstate(
     )
 
 
-@given("subarrays is in {obs_state} ObsState")
+@given("subarrays is in READY ObsState")
 def subarray_in_ready_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -122,7 +122,7 @@ def subarray_in_ready_obsstate(
     )
 
 
-@given("subarrays is in {obs_state} ObsState")
+@given("subarrays is in SCANNING ObsState")
 def subarray_in_scanning_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
