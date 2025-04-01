@@ -1,4 +1,4 @@
-Feature: This feature describes abort and reset for the Low telescope subarray 
+Feature: This feature describes abort and restart for the Low telescope subarray 
     with TMC, including expected state transitions across TMC, CSP, SDP, and MCCS subsystems.
 
 @XTP-78118 @XTP-64112
@@ -33,7 +33,7 @@ Scenario: RESOURCING to ABORT -CMD Abort
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
 
-@XTP-78112 @XTP-64112
+@XTP-78122 @XTP-64112
 Scenario: CONFIGURING to ABORT -CMD Abort
     Given a Low telescope
     And telescope is in ON state
