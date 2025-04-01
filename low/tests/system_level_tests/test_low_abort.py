@@ -58,6 +58,7 @@ def test_scanning_to_abort():
     """
 
 
+@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
