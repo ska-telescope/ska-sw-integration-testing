@@ -36,7 +36,7 @@ LOGGER = logging.getLogger(__name__)
 @scenario(
     "system_level_tests/"
     + "xtp_64112_telescope_two_subarrays_testing.feature",
-    "Configure two Low telescope subarrays using TMC",
+    "Execute Scans on two Low telescope subarrays using TMC",
 )
 def test_configure_command_with_two_subarrays():
     """
