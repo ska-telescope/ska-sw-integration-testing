@@ -173,6 +173,7 @@ def subarray_in_resourcing_obsstate(
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
     """Invokes AssignResources command on TMC"""
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low_real", command_input_factory
