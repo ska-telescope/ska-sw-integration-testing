@@ -9,7 +9,7 @@ Scenario: IDLE to ABORT - CMD Abort
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
 
-XTP-78120 @XTP-64112
+@XTP-78120 @XTP-64112
 Scenario: READY to ABORT - CMD Abort
     Given a Low telescope
     And telescope is in ON state
@@ -25,7 +25,7 @@ Scenario: SCANNING to ABORT - CMD Abort
     When I Abort it
     Then the TMC, CSP, SDP and MCCS subarrays transitions to ABORTED obsState
 
-@78123 @XTP-64112
+@XTP-78123 @XTP-64112
 Scenario: RESOURCING to ABORT -CMD Abort
     Given a Low telescope
     And telescope is in ON state
