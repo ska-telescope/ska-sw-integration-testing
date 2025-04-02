@@ -142,78 +142,67 @@ def subarray_in_obsstate(
         check_subarray_obsstate(
             subarray_node_low, event_tracer, obs_state=ObsState.SCANNING
         )
+    elif obs_state == "RESOURCING":
+        """Invokes AssignResources command on TMC"""
+        input_json = prepare_json_args_for_centralnode_commands(
+            "assign_resources_low_real", command_input_factory
+        )
+        assign_input_json = update_eb_pb_ids(input_json)
+        central_node_low.set_serial_number_of_cbf_processor()
+        _, pytest.unique_id = central_node_low.store_resources(
+            assign_input_json
+        )
+        assert_that(event_tracer).described_as(
+            'FAILED ASSUMPTION IN "GIVEN" STEP: '
+            "'the subarray is in RESOURCING obsState'"
+            "TMC Central Node device"
+            f"({central_node_low.central_node.dev_name()}) "
+            "is expected to have longRunningCommand as"
+            '(unique_id,(ResultCode.OK,"Command Completed"))',
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
+            central_node_low.central_node,
+            "longRunningCommandResult",
+            (pytest.unique_id[0], COMMAND_COMPLETED),
+        )
+        check_subarray_obsstate(
+            subarray_node_low,
+            event_tracer,
+            obs_state=ObsState.RESOURCING,
+        )
 
+    elif obs_state == "CONFIGURING":
+        # First ensure the subarray is in IDLE state
+        set_subarray_to_idle(
+            central_node_low,
+            subarray_node_low,
+            command_input_factory,
+            event_tracer,
+        )
+        configure_input_json = prepare_json_args_for_commands(
+            "configure_low_real", command_input_factory
+        )
+        _, pytest.unique_id = subarray_node_low.store_configuration_data(
+            configure_input_json
+        )
 
-@given("subarrays is in RESOURCING ObsState")
-def subarray_in_resourcing_obsstate(
-    central_node_low: CentralNodeWrapperLow,
-    subarray_node_low: SubarrayNodeWrapperLow,
-    command_input_factory,
-    event_tracer: TangoEventTracer,
-):
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
-    """Invokes AssignResources command on TMC"""
-    input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low_real", command_input_factory
-    )
-    assign_input_json = update_eb_pb_ids(input_json)
-    central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "WHEN" STEP: '
-        "'the subarray is in IDLE obsState'"
-        "TMC Central Node device"
-        f"({central_node_low.central_node.dev_name()}) "
-        "is expected have longRunningCommand as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        central_node_low.central_node,
-        "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
-    )
-    check_subarray_obsstate(
-        subarray_node_low,
-        event_tracer,
-        obs_state=ObsState.RESOURCING,
-    )
-
-
-@given("subarrays is in CONFIGURING obsState")
-def invoke_configure(
-    central_node_low, subarray_node_low, event_tracer, command_input_factory
-):
-    # First ensure the subarray is in IDLE state
-    set_subarray_to_idle(
-        central_node_low,
-        subarray_node_low,
-        command_input_factory,
-        event_tracer,
-    )
-    configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
-    )
-    _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_input_json
-    )
-
-    # Verify longRunningCommandResult for the TMC Subarray Node
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "GIVEN" STEP: '
-        "'the subarray is in READY obsState'"
-        "TMC Subarray Node device"
-        f"({subarray_node_low.subarray_node.dev_name()}) "
-        "is expected to have longRunningCommandResult as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id[0], COMMAND_COMPLETED),
-    )
-    check_subarray_obsstate(
-        subarray_node_low,
-        event_tracer,
-        obs_state=ObsState.CONFIGURING,
-    )
+        # Verify longRunningCommandResult for the TMC Subarray Node
+        assert_that(event_tracer).described_as(
+            'FAILED ASSUMPTION IN "GIVEN" STEP: '
+            "'the subarray is in CONFIGURING obsState'"
+            "TMC Subarray Node device"
+            f"({subarray_node_low.subarray_node.dev_name()}) "
+            "is expected to have longRunningCommandResult as"
+            '(unique_id,(ResultCode.OK,"Command Completed"))',
+        ).within_timeout(TIMEOUT).has_change_event_occurred(
+            subarray_node_low.subarray_node,
+            "longRunningCommandResult",
+            (pytest.unique_id[0], COMMAND_COMPLETED),
+        )
+        check_subarray_obsstate(
+            subarray_node_low,
+            event_tracer,
+            obs_state=ObsState.CONFIGURING,
+        )
 
 
 @when("I Abort it")

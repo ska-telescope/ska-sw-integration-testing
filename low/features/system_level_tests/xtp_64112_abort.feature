@@ -14,6 +14,8 @@ Scenario: IDLE to ABORT - CMD Abort
     | IDLE        |
     | READY       |
     | SCANNING    |
+    | RESOURCING  |
+    | CONFIGURING |
 
 
 @XTP-78120 @XTP-64112
