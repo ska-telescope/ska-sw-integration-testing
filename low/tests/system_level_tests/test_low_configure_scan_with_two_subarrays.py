@@ -1,7 +1,6 @@
 """Test module for TMC Configure functionality (XTP-66007)"""
 import json
 import logging
-import time
 
 import pytest
 from assertpy import assert_that
@@ -227,7 +226,6 @@ def subsystem_subarrays_in_scanning(
         (pytest.unique_id_subarray1[0], COMMAND_COMPLETED),
     )
 
-    time.sleep(5)
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "GIVEN" STEP: '
         "'the subarray is in SCANNING obsState'"
@@ -240,7 +238,6 @@ def subsystem_subarrays_in_scanning(
         "longRunningCommandResult",
         (pytest.unique_id_subarray2[0], COMMAND_COMPLETED),
     )
-    time.sleep(10)
 
 
 @then("after the scan duration they transition back to READY obsState")
