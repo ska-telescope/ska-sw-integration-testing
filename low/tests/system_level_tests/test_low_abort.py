@@ -2,7 +2,7 @@ import json
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import given, parsers, scenario, then, when
 from ska_control_model import ObsState, ResultCode
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -86,7 +86,7 @@ def test_configuring_to_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@given("subarrays is in {obs_state} ObsState")
+@given(parsers.parse("subarrays is in {obs_state} ObsState"))
 def subarray_in_obsstate(
     obs_state,
     central_node_low: CentralNodeWrapperLow,
