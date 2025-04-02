@@ -21,8 +21,6 @@ from tests.resources.test_harness.constant import (
     mccs_controller,
     mccs_pasdbus_prefix,
     mccs_prefix,
-    mccs_subarray1,
-    tmc_low_subarraynode1,
 )
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.utils.common_utils import JsonFactory
@@ -110,10 +108,12 @@ def check_subarray_obs_state(obs_state=None, subarray_id="1", timeout=50):
 
     return all(
         [
-            Resource(low_sdp_subarray1).get("obsState") == obs_state,
-            Resource(mccs_subarray1).get("obsState") == obs_state,
-            Resource(tmc_low_subarraynode1).get("obsState") == obs_state,
-            Resource(low_csp_subarray1).get("obsState") == obs_state,
+            Resource(device_dict["sdp_subarray"]).get("obsState") == obs_state,
+            Resource(device_dict["mccs_subarray"]).get("obsState")
+            == obs_state,
+            Resource(device_dict["tmc_subarraynode"]).get("obsState")
+            == obs_state,
+            Resource(device_dict["csp_subarray"]).get("obsState") == obs_state,
         ]
     )
 
