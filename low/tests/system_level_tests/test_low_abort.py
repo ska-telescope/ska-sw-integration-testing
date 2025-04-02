@@ -86,7 +86,7 @@ def test_configuring_to_abort():
 #  @given("telescope is in ON state") -> conftest
 
 
-@given("subarrays is in IDLE ObsState")
+@given("subarrays is in {obs_state} ObsState")
 def subarray_in_obsstate(
     obs_state,
     central_node_low: CentralNodeWrapperLow,
