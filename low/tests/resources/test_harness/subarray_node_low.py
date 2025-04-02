@@ -468,7 +468,7 @@ class SubarrayNodeWrapperLow:
 
         # Move Subarray to OFF state
         self.move_to_off()
-        assert check_subarray_obs_state("EMPTY")
+        assert check_subarray_obs_state("EMPTY", self.subarray_id)
         # Adding a small sleep to allow the systems to clean up processes
         sleep(1)
 

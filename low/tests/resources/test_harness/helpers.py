@@ -17,19 +17,19 @@ from tests.resources.test_harness.constant import (
     INTERMEDIATE_CONFIGURING_OBS_STATE_DEFECT,
     INTERMEDIATE_STATE_DEFECT,
     low_csp_subarray1,
-    low_csp_subarray_leaf_node,
     low_sdp_subarray1,
-    low_sdp_subarray_leaf_node,
     mccs_controller,
     mccs_pasdbus_prefix,
     mccs_prefix,
     mccs_subarray1,
-    mccs_subarray_leaf_node,
     tmc_low_subarraynode1,
 )
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.utils.common_utils import JsonFactory
 from tests.resources.test_harness.utils.enums import SimulatorDeviceType
+from tests.resources.test_harness.utils.sync_decorators import (
+    get_low_devices_dictionary,
+)
 from tests.resources.test_harness.utils.wait_helpers import Waiter, watch
 from tests.resources.test_support.common_utils.common_helpers import Resource
 
@@ -42,15 +42,15 @@ CSP_SIMULATION_ENABLED = os.getenv("CSP_SIMULATION_ENABLED")
 MCCS_SIMULATION_ENABLED = os.getenv("MCCS_SIMULATION_ENABLED")
 
 
-device_dict = {
-    "sdp_subarray": low_sdp_subarray1,
-    "csp_subarray": low_csp_subarray1,
-    "mccs_subarray": mccs_subarray1,
-    "tmc_subarraynode": tmc_low_subarraynode1,
-    "csp_subarray_leaf_node": low_csp_subarray_leaf_node,
-    "sdp_subarray_leaf_node": low_sdp_subarray_leaf_node,
-    "mccs_subarray_leaf_node": mccs_subarray_leaf_node,
-}
+# device_dict = {
+#     "sdp_subarray": low_sdp_subarray1,
+#     "csp_subarray": low_csp_subarray1,
+#     "mccs_subarray": mccs_subarray1,
+#     "tmc_subarraynode": tmc_low_subarraynode1,
+#     "csp_subarray_leaf_node": low_csp_subarray_leaf_node,
+#     "sdp_subarray_leaf_node": low_sdp_subarray_leaf_node,
+#     "mccs_subarray_leaf_node": mccs_subarray_leaf_node,
+# }
 
 
 def check_subarray_instance(device, subarray_id):
@@ -101,26 +101,12 @@ def update_scan_duration(input_json: str, scan_duration: int) -> str:
     return updated_json
 
 
-def check_subarray_obs_state(obs_state=None, timeout=50):
-    LOGGER.info(
-        f"{tmc_low_subarraynode1}.obsState : "
-        + str(Resource(tmc_low_subarraynode1).get("obsState"))
-    )
-    LOGGER.info(
-        f"{low_sdp_subarray1}.obsState : "
-        + str(Resource(low_sdp_subarray1).get("obsState"))
-    )
-    LOGGER.info(
-        f"{low_csp_subarray1}.obsState : "
-        + str(Resource(low_csp_subarray1).get("obsState"))
-    )
-    LOGGER.info(
-        f"{mccs_subarray1}.obsState : "
-        + str(Resource(mccs_subarray1).get("obsState"))
-    )
+def check_subarray_obs_state(obs_state=None, subarray_id="1", timeout=50):
+    device_dict = get_low_devices_dictionary(subarray_id)
+
     the_waiter = Waiter(**device_dict)
     the_waiter.set_wait_for_obs_state(obs_state=obs_state)
-    the_waiter.wait(timeout / 0.1)
+    the_waiter.wait(timeout * 10)
 
     return all(
         [
