@@ -149,6 +149,7 @@ def subarrays_in_ready_obsstate(
         event_tracer,
         obs_state=ObsState.READY,
     )
+    event_tracer.clear_events()
 
 
 @when("I invoke scan command on two subarrays")
