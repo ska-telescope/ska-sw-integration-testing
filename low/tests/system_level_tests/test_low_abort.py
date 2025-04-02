@@ -29,57 +29,13 @@ TIMEOUT = 100
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_abort.feature",
-    "IDLE to ABORT - CMD Abort",
+    "Validates Abort Command",
 )
-def test_idle_to_abort():
+def test_abort_command():
     """
-    Test IDLE to ABORT transitions
-    """
+    BDD test scenario for verifying successful execution of
+    the Abort command in a TMC.
 
-
-# @pytest.mark.test1
-# @pytest.mark.system_level_tests
-# @scenario(
-#     "system_level_tests/" + "xtp_64112_abort.feature",
-#     "READY to ABORT - CMD Abort",
-# )
-# def test_ready_to_abort():
-#     """
-#     Test READY to ABORT transitions
-#     """
-
-
-# @pytest.mark.test1
-# @pytest.mark.system_level_tests
-# @scenario(
-#     "system_level_tests/" + "xtp_64112_abort.feature",
-#     "SCANNING to ABORT - CMD Abort",
-# )
-# def test_scanning_to_abort():
-#     """
-#     Test SCANNING to ABORT transitions
-#     """
-
-
-@pytest.mark.system_level_tests
-@scenario(
-    "system_level_tests/" + "xtp_64112_abort.feature",
-    "RESOURCING to ABORT -CMD Abort",
-)
-def test_resourcing_to_abort():
-    """
-    Test RESOURCING to ABORT transitions
-    """
-
-
-@pytest.mark.system_level_tests
-@scenario(
-    "system_level_tests/" + "xtp_64112_abort.feature",
-    "CONFIGURING to ABORT -CMD Abort",
-)
-def test_configuring_to_abort():
-    """
-    Test CONFIGURING to ABORT transitions
     """
 
 
