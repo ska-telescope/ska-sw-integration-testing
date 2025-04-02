@@ -54,19 +54,19 @@ class CentralNodeCspWrapperLow(CentralNodeWrapperLow):
     def tear_down(self):
         """Handle Tear down of central Node"""
         # reset HealthState.UNKNOWN for mock devices
-        LOGGER.info("Calling Tear down for central node.")
         self._reset_health_state_for_mock_devices()
         for id, subarray in self.tmc_subarrays.items():
+            LOGGER.info(
+                "Calling Tear down for central node for Subarray %s, %s",
+                id,
+                subarray,
+            )
             if subarray.obsState == ObsState.IDLE:
                 LOGGER.info("Calling ReleaseResources on CentralNode")
-
                 release_json = json.loads(self.release_input)
                 release_json["subarray_id"] = int(id)
-                LOGGER.info(
-                    "release_json[subarray_id]: %s",
-                    release_json["subarray_id"],
-                )
                 self.invoke_release_resources(json.dumps(release_json), id)
+
             elif subarray.obsState == ObsState.RESOURCING:
                 LOGGER.info("Calling Abort and Restart on SubarrayNode")
                 self.pst.obsreset()

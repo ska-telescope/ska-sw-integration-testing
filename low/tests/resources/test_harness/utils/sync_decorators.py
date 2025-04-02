@@ -90,10 +90,7 @@ def sync_release_resources(timeout=200):
     def decorator_sync_release_resources(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[2]
-            LOGGER.info("subarray_id: %s", subarray_id)
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_going_to_empty()
@@ -111,16 +108,8 @@ def sync_assign_resources():
     def decorator_sync_assign_resources(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[2]
-            LOGGER.info("subarray_id: %s", subarray_id)
-            # for key, value in kwargs.items():
-            #     LOGGER.info("key %s: value %s", key, value)
-            #     if key == "subarray_id":
-            #         subarray_id = value
             device_dict = get_low_devices_dictionary(subarray_id)
-            LOGGER.info("device_dict: %s", device_dict)
             device = DeviceUtils(
                 obs_state_device_names=[
                     device_dict.get("csp_subarray"),
@@ -147,10 +136,7 @@ def sync_abort(timeout=1000):
     def decorator_sync_abort(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[1]
-            LOGGER.info("subarray_id: %s", subarray_id)
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_aborted()
@@ -168,10 +154,7 @@ def sync_restart(timeout=500):
     def decorator_sync_restart(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[1]
-            LOGGER.info("subarray_id: %s", subarray_id)
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             the_waiter.set_wait_for_going_to_empty()
@@ -190,13 +173,7 @@ def sync_configure():
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             invoked_from_ready = False
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[2]
-            # for key, value in kwargs.items():
-            #     LOGGER.info("key %s: value %s", key, value)
-            #     if key == "subarray_id":
-            #         subarray_id = value
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
             if Resource(device_dict.get("tmc_subarraynode")) == "READY":
@@ -219,8 +196,6 @@ def sync_end():
     def decorator_sync_end(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[1]
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
@@ -239,8 +214,6 @@ def sync_endscan():
     def decorator_sync_endscan(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            LOGGER.info("args: %s", args)
-            LOGGER.info("kwargs: %s", kwargs)
             subarray_id = args[1]
             device_dict = get_low_devices_dictionary(subarray_id)
             the_waiter = Waiter(**device_dict)
@@ -255,7 +228,7 @@ def sync_endscan():
 
 
 def get_low_devices_dictionary(subarray_id: str):
-    """Helper method to provide the dictionary with Low Subarray devices
+    """Helper method to provide the dictionary with Low Telescope devices
     for given Subarray Id"""
     devices_dict = {}
     devices_dict[

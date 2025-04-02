@@ -1,4 +1,4 @@
-Feature: This feature describes assigning, releasing, and configuring resources for the Low telescope with two subarrays, 
+Feature: This feature describes assigning, releasing, configuring resources and Scan workflows for the Low telescope with two subarrays, 
     including expected state transitions across TMC, CSP, SDP, and MCCS subsystems.
 
     @XTP-77663 @XTP-64112

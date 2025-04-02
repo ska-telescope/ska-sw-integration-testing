@@ -69,22 +69,12 @@ def set_subarray_to_idle(
     json = ""
     if subarray_id == "1":
         json = "assign_resources_low_real_subarray1_station1"
-        # json = "assign_resources_low_real"
-        LOGGER.info("Subarray Id 1")
     elif subarray_id == "2":
         subarray_node_low = SubarrayNodeWrapperLow("2")
         json = "assign_resources_low_real_subarray2_station2"
-        LOGGER.info("Subarray Id 2")
     else:
         LOGGER.info("Invalid Subarray Id")
 
-    LOGGER.info(
-        "subarray_node_low.subarray_devices: %s",
-        subarray_node_low.subarray_devices,
-    )
-    LOGGER.info(
-        "subarray_node_low.subarray_node: %s", subarray_node_low.subarray_node
-    )
     subscribe_to_obsstate_events(
         event_tracer,
         subarray_node_low.subarray_devices,
@@ -101,6 +91,7 @@ def set_subarray_to_idle(
     cbf_proc2.serialnumber = "XFL1HOOQ1Y44"
     cbf_proc2.subscribetoallocator("low-cbf/allocator/0")
     cbf_proc2.register()
+
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
         json, command_input_factory

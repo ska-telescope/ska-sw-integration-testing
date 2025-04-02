@@ -64,6 +64,9 @@ class CentralNodeWrapperLow(object):
         self.csp_master_leaf_node = DeviceProxy(low_csp_master_leaf_node)
         self.sdp_master_leaf_node = DeviceProxy(low_sdp_master_leaf_node)
         self.mccs_master_leaf_node = DeviceProxy(mccs_master_leaf_node)
+
+        # Add the number of subarrays available in the deployment, so that
+        # they will be considered in the tear down
         self.tmc_subarrays = {
             "1": self.subarray_node,
             "2": self.subarray_node_2,
@@ -115,9 +118,6 @@ class CentralNodeWrapperLow(object):
         self.event_recorder.subscribe_event(
             self.subarray_node, "longRunningCommandResult"
         )
-        # self.event_recorder.subscribe_event(
-        #     self.subarray_node_2, "longRunningCommandResult"
-        # )
 
         self.event_tracer.subscribe_event(
             self.central_node, "longRunningCommandResult"
@@ -125,9 +125,6 @@ class CentralNodeWrapperLow(object):
         self.event_tracer.subscribe_event(
             self.subarray_node, "longRunningCommandResult"
         )
-        # self.event_tracer.subscribe_event(
-        #     self.subarray_node_2, "longRunningCommandResult"
-        # )
 
         log_events(
             {
@@ -707,7 +704,6 @@ class CentralNodeWrapperLow(object):
         """
         # This methods needs to change, with subsequent changes in the Tear
         # Down of the fixtures. Will be done as an improvement later.
-        LOGGER.info("Assigning the resources to Subarray %s", subarray_id)
         result, message = self.central_node.AssignResources(assign_json)
         LOGGER.info("Invoked AssignResources on CentralNode")
         return result, message
