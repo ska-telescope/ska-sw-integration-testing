@@ -190,7 +190,7 @@ def subsystem_subarrays_in_aborted(
     """Check if all subarrays are in ABORTED obsState."""
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
-    # subarray device. This function can be used to validate any obsState.
+    # subarray device.
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "THEN STEP: '
         f'"the Subarray transitions to ABORTED obsState"'
