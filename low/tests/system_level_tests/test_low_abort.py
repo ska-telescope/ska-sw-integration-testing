@@ -42,7 +42,7 @@ def test_abort_command():
 #  @given("telescope is in ON state") -> conftest
 
 
-@given(parsers.parse("subarrays is in {obs_state} ObsState"))
+@given(parsers.parse("subarray is in {obs_state} ObsState"))
 def subarray_in_obsstate(
     obs_state,
     central_node_low: CentralNodeWrapperLow,
