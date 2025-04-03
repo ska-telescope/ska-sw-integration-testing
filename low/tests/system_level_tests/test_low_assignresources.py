@@ -21,7 +21,7 @@ from tests.system_level_tests.utils import (
 TIMEOUT = 100
 
 
-@pytest.mark.skip(reason="Disabled temporarily")
+# @pytest.mark.skip(reason="Disabled temporarily")
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_subarray_transitions.feature",
