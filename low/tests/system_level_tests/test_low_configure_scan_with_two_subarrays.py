@@ -9,9 +9,7 @@ from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
-from tests.resources.test_harness.helpers import (  # update_scan_duration,
-    update_scan_id,
-)
+from tests.resources.test_harness.helpers import update_scan_id
 from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
@@ -165,30 +163,30 @@ def invoke_scan_on_two_subarrays(
     _, pytest.unique_id_subarray1 = subarray_node_low.store_scan_data(
         scan_input_json
     )
-    # assert_that(event_tracer).described_as(
-    #     "FAILED ASSUMPTION AFTER SCAN COMMAND: "
-    #     "Scan ID on SDP devices"
-    #     "are expected to be as per JSON",
-    # ).within_timeout(TIMEOUT).has_change_event_occurred(
-    #     subarray_node_low.subarray_devices["sdp_subarray"],
-    #     "scanID",
-    #     int(scan_id_for_subarray1),
-    # )
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+        "Scan ID on SDP devices"
+        "are expected to be as per JSON",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_devices["sdp_subarray"],
+        "scanID",
+        int(scan_id_for_subarray1),
+    )
 
     scan_id_for_subarray2 = 2
     scan_input_json = update_scan_id(scan_json, scan_id_for_subarray2)
     _, pytest.unique_id_subarray2 = subarray_node_2_low.store_scan_data(
         scan_input_json
     )
-    # assert_that(event_tracer).described_as(
-    #     "FAILED ASSUMPTION AFTER SCAN COMMAND: "
-    #     "Scan ID on SDP devices"
-    #     "are expected to be as per JSON",
-    # ).within_timeout(TIMEOUT).has_change_event_occurred(
-    #     subarray_node_low.subarray_devices["sdp_subarray"],
-    #     "scanID",
-    #     int(scan_id_for_subarray1),
-    # )
+    assert_that(event_tracer).described_as(
+        "FAILED ASSUMPTION AFTER SCAN COMMAND: "
+        "Scan ID on SDP devices"
+        "are expected to be as per JSON",
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_2_low.subarray_devices["sdp_subarray"],
+        "scanID",
+        int(scan_id_for_subarray2),
+    )
 
 
 @then("the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState")
@@ -200,7 +198,7 @@ def subsystem_subarrays_in_scanning(
     """Check if all subarrays are in CONFIGURING obsState."""
     # Check if the TMC, CSP, SDP, and MCCS subarrays are in the expected
     # observation state by verifying the observed state changes for each
-    # subarray device. This function can be used to validate any obsState.
+    # subarray device.
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,

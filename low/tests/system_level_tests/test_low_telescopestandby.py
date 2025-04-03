@@ -9,7 +9,6 @@ from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
 TIMEOUT = 100
 
 
-# @pytest.mark.skip(reason="Disabled temporarily")
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/" + "xtp_64112_telescope_startup.feature",
