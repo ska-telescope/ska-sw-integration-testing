@@ -82,7 +82,7 @@ def check_subarray_obs_state(
 @when(parsers.parse("I issue End command to the subarray {subarray_id}"))
 def invoke_end(subarray_node_low, event_recorder):
     """A method to invoke End command"""
-    _, unique_id = subarray_node_low.end_observation()
+    _, unique_id = subarray_node_low.end_observation("1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",

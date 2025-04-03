@@ -63,7 +63,7 @@ def invoke_end(
     event_tracer: TangoEventTracer,
 ):
     """Invokes End command"""
-    _, pytest.unique_id = subarray_node_low.end_observation()
+    _, pytest.unique_id = subarray_node_low.end_observation("1")
 
     # Verify longRunningCommandResult for the TMC Subarray Node
     assert_that(event_tracer).described_as(

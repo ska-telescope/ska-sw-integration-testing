@@ -181,7 +181,7 @@ def invoke_end(
     subarray_node_low: SubarrayNodeWrapperLow, event_recorder: EventRecorder
 ):
     """A method to invoke End command"""
-    _, unique_id = subarray_node_low.end_observation()
+    _, unique_id = subarray_node_low.end_observation("1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
