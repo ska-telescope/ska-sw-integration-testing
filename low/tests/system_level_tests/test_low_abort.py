@@ -82,6 +82,7 @@ def subarray_in_obsstate(
             "scan_low", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_scan_data(scan_json)
+        # Verify longRunningCommandResult for the TMC Subarray Node
         assert_that(event_tracer).described_as(
             'FAILED ASSUMPTION IN "GIVEN" STEP: '
             "'the subarray is in SCANNING obsState'"
@@ -107,6 +108,7 @@ def subarray_in_obsstate(
         _, pytest.unique_id = central_node_low.store_resources(
             assign_input_json
         )
+        # Verify longRunningCommandResult for the TMC Subarray Node
         assert_that(event_tracer).described_as(
             'FAILED ASSUMPTION IN "GIVEN" STEP: '
             "'the subarray is in RESOURCING obsState'"
