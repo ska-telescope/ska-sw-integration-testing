@@ -51,6 +51,7 @@ def test_configure_command_with_two_subarrays():
 def subarrays_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_2_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
@@ -66,7 +67,7 @@ def subarrays_in_idle_obsstate(
     # Assign resources to Subarray 2
     set_subarray_to_idle(
         central_node_low,
-        subarray_node_low,
+        subarray_node_2_low,
         command_input_factory,
         event_tracer,
         "2",

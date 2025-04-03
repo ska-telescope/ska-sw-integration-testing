@@ -59,7 +59,6 @@ def given_the_sut(
         subarray_node_low.subarray_devices["sdp_subarray"], "scanID"
     )
 
-    subarray_node_2_low = SubarrayNodeWrapperLow("2")
     event_tracer.subscribe_event(
         subarray_node_2_low.subarray_node, "longRunningCommandResult"
     )
@@ -130,8 +129,6 @@ def check_state_is_on(
 ):
     """A method to check CentralNode.telescopeState"""
     central_node_low.move_to_on()
-
-    subarray_node_2_low = SubarrayNodeWrapperLow("2")
 
     devices = {
         "CSP Master": central_node_low.csp_master,

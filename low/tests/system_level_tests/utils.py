@@ -66,14 +66,12 @@ def set_subarray_to_idle(
 ):
     """Helper method to set subarray to IDLE ObsState."""
     # Subscribe to obsState change events
-    json = ""
-    if subarray_id == "1":
-        json = "assign_resources_low_real_subarray1_station1"
-    elif subarray_id == "2":
-        subarray_node_low = SubarrayNodeWrapperLow("2")
-        json = "assign_resources_low_real_subarray2_station2"
-    else:
-        LOGGER.info("Invalid Subarray Id")
+    json = (
+        "assign_resources_low_real_subarray"
+        + subarray_id
+        + "_station"
+        + subarray_id
+    )
 
     subscribe_to_obsstate_events(
         event_tracer,
