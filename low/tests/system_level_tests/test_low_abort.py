@@ -41,6 +41,30 @@ def test_abort_command():
 #  @given("telescope is in ON state") -> conftest
 
 
+def ensure_subarray_in_obsstate(
+    target_state,
+    central_node_low,
+    subarray_node_low,
+    command_input_factory,
+    event_tracer,
+):
+    """Ensures subarray is in the required state before transitioning"""
+    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+
+    if target_state in ["IDLE", "READY", "SCANNING", "CONFIGURING"]:
+        set_subarray_to_idle(
+            central_node_low,
+            subarray_node_low,
+            command_input_factory,
+            event_tracer,
+        )
+
+    if target_state in ["READY", "SCANNING"]:
+        set_subarray_to_ready(
+            subarray_node_low, command_input_factory, event_tracer
+        )
+
+
 @given(parsers.parse("subarray is in {obs_state} ObsState"))
 def subarray_in_obsstate(
     obs_state,
@@ -49,57 +73,37 @@ def subarray_in_obsstate(
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    ensure_subarray_in_obsstate(
+        obs_state,
+        central_node_low,
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+    )
 
-    if obs_state == "IDLE":
-        set_subarray_to_idle(
-            central_node_low,
-            subarray_node_low,
-            command_input_factory,
-            event_tracer,
-        )
-    elif obs_state == "READY":
-        set_subarray_to_idle(
-            central_node_low,
-            subarray_node_low,
-            command_input_factory,
-            event_tracer,
-        )
-        set_subarray_to_ready(
-            subarray_node_low, command_input_factory, event_tracer
-        )
-    elif obs_state == "SCANNING":
-        set_subarray_to_idle(
-            central_node_low,
-            subarray_node_low,
-            command_input_factory,
-            event_tracer,
-        )
-        set_subarray_to_ready(
-            subarray_node_low, command_input_factory, event_tracer
-        )
+    if obs_state == "SCANNING":
         scan_json = prepare_json_args_for_commands(
             "scan_low", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_scan_data(scan_json)
-        # Verify longRunningCommandResult for the TMC Subarray Node
+
         assert_that(event_tracer).described_as(
             'FAILED ASSUMPTION IN "GIVEN" STEP: '
             "'the subarray is in SCANNING obsState'"
-            "TMC Subarray Node device "
-            f"({subarray_node_low.subarray_node.dev_name()}) "
+            f"TMC Subarray Node ({subarray_node_low.subarray_node.dev_name()})"
             "is expected to have longRunningCommandResult as"
-            '(unique_id,(ResultCode.OK,"Command Completed"))',
+            '(unique_id,(ResultCode.OK,"Command Completed"))'
         ).within_timeout(TIMEOUT).has_change_event_occurred(
             subarray_node_low.subarray_node,
             "longRunningCommandResult",
             (pytest.unique_id[0], COMMAND_COMPLETED),
         )
+
         check_subarray_obsstate(
             subarray_node_low, event_tracer, obs_state=ObsState.SCANNING
         )
+
     elif obs_state == "RESOURCING":
-        """Invokes AssignResources command on TMC"""
         input_json = prepare_json_args_for_centralnode_commands(
             "assign_resources_low_real", command_input_factory
         )
@@ -108,33 +112,24 @@ def subarray_in_obsstate(
         _, pytest.unique_id = central_node_low.store_resources(
             assign_input_json
         )
-        # Verify longRunningCommandResult for the TMC Subarray Node
+
         assert_that(event_tracer).described_as(
             'FAILED ASSUMPTION IN "GIVEN" STEP: '
             "'the subarray is in RESOURCING obsState'"
-            "TMC Central Node device"
-            f"({central_node_low.central_node.dev_name()}) "
+            f"TMC Central Node ({central_node_low.central_node.dev_name()}) "
             "is expected to have longRunningCommand as"
-            '(unique_id,(ResultCode.OK,"Command Completed"))',
+            '(unique_id,(ResultCode.OK,"Command Completed"))'
         ).within_timeout(TIMEOUT).has_change_event_occurred(
             central_node_low.central_node,
             "longRunningCommandResult",
             (pytest.unique_id[0], COMMAND_COMPLETED),
         )
+
         check_subarray_obsstate(
-            subarray_node_low,
-            event_tracer,
-            obs_state=ObsState.RESOURCING,
+            subarray_node_low, event_tracer, obs_state=ObsState.RESOURCING
         )
 
     elif obs_state == "CONFIGURING":
-        # First ensure the subarray is in IDLE state
-        set_subarray_to_idle(
-            central_node_low,
-            subarray_node_low,
-            command_input_factory,
-            event_tracer,
-        )
         configure_input_json = prepare_json_args_for_commands(
             "configure_low_real", command_input_factory
         )
@@ -142,23 +137,20 @@ def subarray_in_obsstate(
             configure_input_json
         )
 
-        # Verify longRunningCommandResult for the TMC Subarray Node
         assert_that(event_tracer).described_as(
             'FAILED ASSUMPTION IN "GIVEN" STEP: '
             "'the subarray is in CONFIGURING obsState'"
-            "TMC Subarray Node device"
-            f"({subarray_node_low.subarray_node.dev_name()}) "
+            f"TMC Subarray Node ({subarray_node_low.subarray_node.dev_name()})"
             "is expected to have longRunningCommandResult as"
-            '(unique_id,(ResultCode.OK,"Command Completed"))',
+            '(unique_id,(ResultCode.OK,"Command Completed"))'
         ).within_timeout(TIMEOUT).has_change_event_occurred(
             subarray_node_low.subarray_node,
             "longRunningCommandResult",
             (pytest.unique_id[0], COMMAND_COMPLETED),
         )
+
         check_subarray_obsstate(
-            subarray_node_low,
-            event_tracer,
-            obs_state=ObsState.CONFIGURING,
+            subarray_node_low, event_tracer, obs_state=ObsState.CONFIGURING
         )
 
 
