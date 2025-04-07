@@ -10,6 +10,7 @@ from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.result_code import ResultCode
+from tests.system_level_tests.utils import set_subarray_to_idle
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
@@ -192,3 +193,30 @@ def check_subarray_obsstate(
         ).within_timeout(TIMEOUT).has_change_event_occurred(
             device, "obsState", obs_state
         )
+
+
+@given("a Telescope with 2 subarrays configured for a IDLE")
+def subarrays_in_idle_obsstate(
+    central_node_low: CentralNodeWrapperLow,
+    subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_2_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+    # Assign resources to subarray 1
+    set_subarray_to_idle(
+        central_node_low,
+        subarray_node_low,
+        command_input_factory,
+        event_tracer,
+        "1",
+    )
+
+    # Assign resources to Subarray 2
+    set_subarray_to_idle(
+        central_node_low,
+        subarray_node_2_low,
+        command_input_factory,
+        event_tracer,
+        "2",
+    )
