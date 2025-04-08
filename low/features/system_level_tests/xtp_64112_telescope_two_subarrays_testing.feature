@@ -20,3 +20,11 @@ Feature: This feature describes assigning, releasing, configuring resources and 
         When I Abort subarray1 and restart it
         then subarray1 goes to obstate= empty 
         And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
+
+    Scenario: Execute Abort on two Low telescope subarrays using TMC
+        Given a Low telescope
+        And telescope is in ON state
+        And a Telescope with 2 subarrays configured for a IDLE
+        When I Abort subarray1 and restart it
+        then subarray1 goes to obstate= empty 
+        And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration

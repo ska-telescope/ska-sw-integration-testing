@@ -125,7 +125,9 @@ def subarrays_in_ready_obsstate(
 
 
 @when("I Abort subarray1 and restart it")
-def invoke_abort_subarray1(subarray_node_low, event_tracer: TangoEventTracer):
+def invoke_abort_subarray1(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
     """Invokes ABORT command"""
     _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray()
     assert_that(event_tracer).described_as(
