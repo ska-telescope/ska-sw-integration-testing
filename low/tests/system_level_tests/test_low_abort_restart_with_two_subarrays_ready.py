@@ -40,7 +40,7 @@ def test_abort_command_with_two_subarrays():
 
 
 @given(
-    " a Telescope with 2 subarrays configured for a scan (i.e. ObsState=Ready)"
+    "a Telescope with subarray2 configured for a scan (i.e. ObsState=Ready)"
 )
 def subarrays_in_ready_obsstate(
     subarray_node_low: SubarrayNodeWrapperLow,
