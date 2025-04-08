@@ -55,7 +55,7 @@ k8s-test-low:
     - ska-k8s
   variables:
     TELESCOPE: 'SKA-low'
-    KUBE_NAMESPACE: 'ci-integration-ska-low-sah1677' #'ci-dev-ska-low-integration'
+    KUBE_NAMESPACE: 'ci-integration-ska-low-sah1680' #'ci-dev-ska-low-integration'
     MARK: 'test1'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
@@ -85,7 +85,7 @@ stop-k8s-test-low:
     - ska-k8s
   when: manual
   variables:
-    KUBE_NAMESPACE: 'ci-integration-ska-low-sah1677' #'ci-dev-ska-low-integration'
+    KUBE_NAMESPACE: 'ci-integration-ska-low-sah1680' #'ci-dev-ska-low-integration'
   script:
     - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
   environment:
