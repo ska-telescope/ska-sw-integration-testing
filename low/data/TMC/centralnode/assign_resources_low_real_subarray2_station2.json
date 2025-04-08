@@ -69,7 +69,7 @@
       ]
     },
     "resources": {
-      "receptors": ["S8-1", "S8-6", "S9-2", "S10-3"],
+      "receptors": ["C2"],
       "receive_nodes": 1
     },
     "processing_blocks": [
