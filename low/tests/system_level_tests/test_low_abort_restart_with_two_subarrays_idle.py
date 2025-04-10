@@ -37,9 +37,11 @@ def test_abort_command_with_two_subarrays():
 
 
 @when("I Abort subarray1")
-def invoke_abort_subarray1(subarray_node_low, event_tracer: TangoEventTracer):
+def invoke_abort_subarray1(
+    subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
+):
     """Invokes ABORT command"""
-    _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray()
+    _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -60,7 +62,7 @@ def invoke_abort_subarray1(subarray_node_low, event_tracer: TangoEventTracer):
 
 
 @then("subarray1 goes to obstate= empty")
-def chek_obsste_for_subarray1_and_subarray2(
+def chek_obsste_for_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow,
     event_tracer: TangoEventTracer,
 ):
