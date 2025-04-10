@@ -27,6 +27,6 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         And a Telescope with 2 subarrays configured for a IDLE
         And a Telescope with 2 subarrays configured for a READY (i.e. ObsState=Ready)
         When I invoke scan command on two subarrays
-        When I Abort subarray1 and restart it
+        When I Abort subarray1
         then subarray1 goes to obstate= empty 
         And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
