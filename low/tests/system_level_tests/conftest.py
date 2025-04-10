@@ -1,5 +1,6 @@
 import json
 
+import pytest
 from assertpy import assert_that
 from pytest_bdd import given
 from ska_control_model import ObsState
@@ -10,6 +11,9 @@ from tests.resources.test_harness.subarray_node_low import (
     SubarrayNodeWrapperLow,
 )
 from tests.resources.test_support.common_utils.result_code import ResultCode
+from tests.resources.test_support.common_utils.tmc_helpers import (
+    prepare_json_args_for_commands,
+)
 from tests.system_level_tests.utils import set_subarray_to_idle
 
 TIMEOUT = 100
@@ -220,3 +224,64 @@ def subarrays_in_idle_obsstate(
         event_tracer,
         "2",
     )
+
+
+@given("a Telescope with 2 subarrays configured for a READY")
+def subarrays_in_ready_obsstate(
+    subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_node_2_low: SubarrayNodeWrapperLow,
+    command_input_factory,
+    event_tracer: TangoEventTracer,
+):
+
+    configure_input_json_1 = prepare_json_args_for_commands(
+        "configure_low_real_subarray1", command_input_factory
+    )
+    configure_input_json_2 = prepare_json_args_for_commands(
+        "configure_low_real_subarray2", command_input_factory
+    )
+    _, pytest.unique_id_sa_1 = subarray_node_low.store_configuration_data(
+        configure_input_json_1, "1"
+    )
+
+    _, pytest.unique_id_sa_2 = subarray_node_2_low.store_configuration_data(
+        configure_input_json_2, "2"
+    )
+    # Verify longRunningCommandResult for the TMC Subarray Node 1
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(TIMEOUT).has_change_event_occurred(
+        subarray_node_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
+    )
+    # Verify longRunningCommandResult for the TMC Subarray Node 2
+    assert_that(event_tracer).described_as(
+        'FAILED ASSUMPTION IN "GIVEN" STEP: '
+        "'the subarray is in READY obsState'"
+        "TMC Subarray Node device"
+        f"({subarray_node_2_low.subarray_node.dev_name()}) "
+        "is expected to have longRunningCommandResult as"
+        '(unique_id,(ResultCode.OK,"Command Completed"))',
+    ).within_timeout(200).has_change_event_occurred(
+        subarray_node_2_low.subarray_node,
+        "longRunningCommandResult",
+        (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
+    )
+
+    check_subarray_obsstate(
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.READY,
+    )
+    check_subarray_obsstate(
+        subarray_node_2_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.READY,
+    )
+    event_tracer.clear_events()

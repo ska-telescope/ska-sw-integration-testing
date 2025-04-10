@@ -3,7 +3,7 @@ import logging
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import given, scenario, then, when
+from pytest_bdd import scenario, then, when
 from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
@@ -38,91 +38,6 @@ def test_abort_command_with_two_subarrays():
 
 
 # @given("telescope is in ON state") -> conftest
-
-
-@given(
-    "a Telescope with subarray2 configured for a scan (i.e. ObsState=Ready)"
-)
-def subarrays_in_ready_obsstate(
-    subarray_node_low: SubarrayNodeWrapperLow,
-    subarray_node_2_low: SubarrayNodeWrapperLow,
-    command_input_factory,
-    event_tracer: TangoEventTracer,
-):
-
-    configure_input_json_1 = prepare_json_args_for_commands(
-        "configure_low_real_subarray1", command_input_factory
-    )
-    configure_input_json_2 = prepare_json_args_for_commands(
-        "configure_low_real_subarray2", command_input_factory
-    )
-    _, pytest.unique_id_sa_1 = subarray_node_low.store_configuration_data(
-        configure_input_json_1, "1"
-    )
-
-    _, pytest.unique_id_sa_2 = subarray_node_2_low.store_configuration_data(
-        configure_input_json_2, "2"
-    )
-
-    LOGGER.info(
-        "LRCR Subarray1: %s",
-        subarray_node_low.subarray_node.read_attribute(
-            "longRunningCommandResult"
-        ).value,
-    )
-    LOGGER.info("Unique id 1: %s", pytest.unique_id_sa_1[0])
-    # Verify longRunningCommandResult for the TMC Subarray Node 1
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "GIVEN" STEP: '
-        "'the subarray is in READY obsState'"
-        "TMC Subarray Node device"
-        f"({subarray_node_low.subarray_node.dev_name()}) "
-        "is expected to have longRunningCommandResult as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
-    )
-
-    LOGGER.info(
-        "LRCR Subarray2: %s",
-        subarray_node_2_low.subarray_node.read_attribute(
-            "longRunningCommandResult"
-        ).value,
-    )
-    LOGGER.info(
-        "Unique id 2:  %s ,%s",
-        pytest.unique_id_sa_2[0],
-        subarray_node_2_low.subarray_node.dev_name(),
-    )
-    # Verify longRunningCommandResult for the TMC Subarray Node 2
-    assert_that(event_tracer).described_as(
-        'FAILED ASSUMPTION IN "GIVEN" STEP: '
-        "'the subarray is in READY obsState'"
-        "TMC Subarray Node device"
-        f"({subarray_node_2_low.subarray_node.dev_name()}) "
-        "is expected to have longRunningCommandResult as"
-        '(unique_id,(ResultCode.OK,"Command Completed"))',
-    ).within_timeout(200).has_change_event_occurred(
-        subarray_node_2_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
-    )
-
-    check_subarray_obsstate(
-        subarray_node_low.subarray_devices,
-        subarray_node_low.subarray_node,
-        event_tracer,
-        obs_state=ObsState.READY,
-    )
-    check_subarray_obsstate(
-        subarray_node_2_low.subarray_devices,
-        subarray_node_2_low.subarray_node,
-        event_tracer,
-        obs_state=ObsState.READY,
-    )
-    event_tracer.clear_events()
 
 
 @when("I invoke scan command on two subarrays")
@@ -176,7 +91,7 @@ def invoke_scan_on_two_subarrays(
     )
 
 
-@when("I Abort subarray1 and restart it")
+@when("I Abort subarray1")
 def invoke_abort_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
@@ -198,24 +113,6 @@ def invoke_abort_subarray1(
         subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.ABORTED,
-    )
-    _, pytest.unique_id_sa_1 = subarray_node_low.restart()
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ABORT COMMAND: "
-        "Central Node device"
-        f"({subarray_node_low.subarray_node.dev_name()}) "
-        "is expected have longRunningCommand as"
-        '(unique_id,(ResultCode.STARTED,"Command Started"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
-    )
-    check_subarray_obsstate(
-        subarray_node_low.subarray_devices,
-        subarray_node_low.subarray_node,
-        event_tracer,
-        obs_state=ObsState.RESTARTING,
     )
 
 
