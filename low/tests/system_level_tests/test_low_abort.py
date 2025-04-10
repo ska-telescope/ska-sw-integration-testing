@@ -152,6 +152,7 @@ def subarray_in_obsstate(
         check_subarray_obsstate(
             subarray_node_low, event_tracer, obs_state=ObsState.CONFIGURING
         )
+        event_tracer.clear_events()
 
 
 @when("I Abort it")
