@@ -51,7 +51,9 @@ def ensure_subarray_in_obsstate(
 ):
     """Ensures subarray is in the required state before transitioning"""
     subscribe_to_obsstate_events(
-        subarray_node_low.subarray_devices, event_tracer, subarray_node_low
+        subarray_node_low.subarray_devices,
+        event_tracer,
+        subarray_node_low.subarray_node,
     )
 
     if target_state in ["IDLE", "READY", "SCANNING", "CONFIGURING"]:
