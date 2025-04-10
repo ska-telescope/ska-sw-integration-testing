@@ -64,7 +64,9 @@ def move_subarray_node_to_ready_obsstate(
     )
     central_node_real_csp_low.set_serial_number_of_cbf_processor()
 
-    _, unique_id = central_node_real_csp_low.store_resources(assign_input_json)
+    _, unique_id = central_node_real_csp_low.store_resources(
+        assign_input_json, "1"
+    )
 
     event_recorder.subscribe_event(
         central_node_real_csp_low.subarray_node, "obsState"
@@ -86,7 +88,7 @@ def move_subarray_node_to_ready_obsstate(
         "configure_low", command_input_factory
     )
     _, unique_id = subarray_node_real_csp_low.store_configuration_data(
-        configure_input_json
+        configure_input_json, "1"
     )
     assert event_recorder.has_change_event_occurred(
         central_node_real_csp_low.subarray_node,

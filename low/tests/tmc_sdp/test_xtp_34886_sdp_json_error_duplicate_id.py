@@ -120,7 +120,7 @@ def check_tmc_sdp_subarray_idle(
         )
     )
     central_node_low.assign_input = assign_input
-    _, unique_id = central_node_low.store_resources(assign_input)
+    _, unique_id = central_node_low.store_resources(assign_input, "1")
 
     assert event_recorder.has_change_event_occurred(
         central_node_low.subarray_node,

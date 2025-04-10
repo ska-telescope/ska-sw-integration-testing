@@ -90,7 +90,7 @@ def assign_resources_to_subarray(
         "assign_resources_low_multiple_scan", command_input_factory
     )
     input_json = update_eb_pb_ids(input_json)
-    _, unique_id = central_node_low.store_resources(input_json)
+    _, unique_id = central_node_low.store_resources(input_json, "1")
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",
@@ -143,7 +143,7 @@ def execute_configure_scan_sequence(
     for scan_id, scan_type in combined_dict.items():
         configure_json = update_scan_type(configure_json, scan_type)
         _, unique_id = subarray_node_low.store_configuration_data(
-            configure_json
+            configure_json, "1"
         )
 
         if configure_cycle == "initial":
@@ -181,7 +181,7 @@ def invoke_end(
     subarray_node_low: SubarrayNodeWrapperLow, event_recorder: EventRecorder
 ):
     """A method to invoke End command"""
-    _, unique_id = subarray_node_low.end_observation()
+    _, unique_id = subarray_node_low.end_observation("1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
@@ -209,7 +209,7 @@ def release_resources_to_subarray(
         "release_resources_low", command_input_factory
     )
     _, unique_id = central_node_low.invoke_release_resources(
-        release_input_json
+        release_input_json, "1"
     )
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,
