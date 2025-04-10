@@ -245,3 +245,4 @@ def chek_obsste_for_subarray2(
         event_tracer,
         obs_state=ObsState.READY,
     )
+    event_tracer.clear_events()
