@@ -51,8 +51,8 @@ def ensure_subarray_in_obsstate(
 ):
     """Ensures subarray is in the required state before transitioning"""
     subscribe_to_obsstate_events(
-        subarray_node_low.subarray_devices,
         event_tracer,
+        subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
     )
 
@@ -107,7 +107,7 @@ def subarray_in_obsstate(
 
         check_subarray_obsstate(
             subarray_node_low.subarray_devices,
-            subarray_node_low,
+            subarray_node_low.subarray_node,
             event_tracer,
             obs_state=ObsState.SCANNING,
         )
@@ -136,7 +136,7 @@ def subarray_in_obsstate(
 
         check_subarray_obsstate(
             subarray_node_low.subarray_devices,
-            subarray_node_low,
+            subarray_node_low.subarray_node,
             event_tracer,
             obs_state=ObsState.RESOURCING,
         )
@@ -163,7 +163,7 @@ def subarray_in_obsstate(
 
         check_subarray_obsstate(
             subarray_node_low.subarray_devices,
-            subarray_node_low,
+            subarray_node_low.subarray_node,
             event_tracer,
             obs_state=ObsState.CONFIGURING,
         )
@@ -214,7 +214,7 @@ def subsystem_subarrays_in_aborted(
     )
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
-        subarray_node_low,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.ABORTED,
     )
