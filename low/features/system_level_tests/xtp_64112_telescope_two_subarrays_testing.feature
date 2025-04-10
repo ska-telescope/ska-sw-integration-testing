@@ -10,5 +10,3 @@ Feature: This feature describes assigning, releasing, configuring resources and 
         When I invoke scan command on two subarrays
         Then the TMC, CSP, SDP and MCCS subarrays transition to SCANNING obsState
         And after the scan duration they transition back to READY obsState
-
-    

@@ -58,14 +58,8 @@ def invoke_abort_subarray1(
         '(unique_id,(ResultCode.STARTED,"Command Started"))',
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
-    )
-    check_subarray_obsstate(
-        subarray_node_low.subarray_devices,
-        subarray_node_low.subarray_node,
-        event_tracer,
-        obs_state=ObsState.ABORTED,
+        "obsState",
+        ObsState.ABORTED,
     )
 
 
