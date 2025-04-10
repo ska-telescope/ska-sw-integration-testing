@@ -20,7 +20,6 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/"
@@ -36,7 +35,7 @@ def test_abort_command_with_two_subarrays():
 # @given("telescope is in ON state") -> conftest
 
 
-@when("I Abort subarray1 and restart it")
+@when("I Abort subarray1")
 def invoke_abort_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
