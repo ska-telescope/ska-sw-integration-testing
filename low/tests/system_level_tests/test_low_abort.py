@@ -49,7 +49,9 @@ def ensure_subarray_in_obsstate(
     event_tracer,
 ):
     """Ensures subarray is in the required state before transitioning"""
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    subscribe_to_obsstate_events(
+        subarray_node_low.subarray_devices, event_tracer, subarray_node_low
+    )
 
     if target_state in ["IDLE", "READY", "SCANNING", "CONFIGURING"]:
         set_subarray_to_idle(
@@ -57,6 +59,7 @@ def ensure_subarray_in_obsstate(
             subarray_node_low,
             command_input_factory,
             event_tracer,
+            "1",
         )
 
     if target_state in ["READY", "SCANNING"]:
@@ -100,7 +103,10 @@ def subarray_in_obsstate(
         )
 
         check_subarray_obsstate(
-            subarray_node_low, event_tracer, obs_state=ObsState.SCANNING
+            subarray_node_low.subarray_devices,
+            subarray_node_low,
+            event_tracer,
+            obs_state=ObsState.SCANNING,
         )
 
     elif obs_state == "RESOURCING":
@@ -110,7 +116,7 @@ def subarray_in_obsstate(
         assign_input_json = update_eb_pb_ids(input_json)
         central_node_low.set_serial_number_of_cbf_processor()
         _, pytest.unique_id = central_node_low.store_resources(
-            assign_input_json
+            assign_input_json, "1"
         )
 
         assert_that(event_tracer).described_as(
@@ -126,15 +132,18 @@ def subarray_in_obsstate(
         )
 
         check_subarray_obsstate(
-            subarray_node_low, event_tracer, obs_state=ObsState.RESOURCING
+            subarray_node_low.subarray_devices,
+            subarray_node_low,
+            event_tracer,
+            obs_state=ObsState.RESOURCING,
         )
 
     elif obs_state == "CONFIGURING":
         configure_input_json = prepare_json_args_for_commands(
-            "configure_low_real", command_input_factory
+            "configure_low_real_subarray1", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_configuration_data(
-            configure_input_json
+            configure_input_json, "1"
         )
 
         assert_that(event_tracer).described_as(
@@ -150,7 +159,10 @@ def subarray_in_obsstate(
         )
 
         check_subarray_obsstate(
-            subarray_node_low, event_tracer, obs_state=ObsState.CONFIGURING
+            subarray_node_low.subarray_devices,
+            subarray_node_low,
+            event_tracer,
+            obs_state=ObsState.CONFIGURING,
         )
         event_tracer.clear_events()
 
@@ -160,7 +172,7 @@ def invoke_abort(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, unique_id = subarray_node_low.abort_subarray()
+    _, unique_id = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -198,6 +210,7 @@ def subsystem_subarrays_in_aborted(
         ObsState.ABORTING,
     )
     check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
         subarray_node_low,
         event_tracer,
         obs_state=ObsState.ABORTED,
