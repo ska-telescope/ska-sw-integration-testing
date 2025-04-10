@@ -58,17 +58,18 @@ def subarray_in_ready_obsstate(
         subarray_node_low,
         command_input_factory,
         event_tracer,
+        "1",
     )
     # Then set it to READY state
 
     configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
+        "configure_low_real_subarray1", command_input_factory
     )
 
     configure_json = update_scan_duration(configure_input_json, scan_duration)
 
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_json
+        configure_json, "1"
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node
@@ -139,7 +140,8 @@ def subsystem_subarrays_in_scanning(
     """Checks if Subarray's obsState attribute value is SCANNING"""
 
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.SCANNING,
     )
@@ -152,7 +154,8 @@ def subsystem_subarrays_in_ready(
     """Checks if Subarray's obsState attribute value is READY"""
 
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,
     )

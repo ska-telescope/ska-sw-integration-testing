@@ -80,7 +80,7 @@ def invoke_assignresources(
     input_json = prepare_json_args_for_centralnode_commands(
         "assign_resources_low", command_input_factory
     )
-    _, unique_id = central_node_low.store_resources(input_json)
+    _, unique_id = central_node_low.store_resources(input_json, "1")
     event_recorder.has_change_event_occurred(
         central_node_low.central_node,
         "longRunningCommandResult",

@@ -63,7 +63,7 @@ def subarray_is_in_given_obsstate(
     central_node_low.set_subarray_id(subarray_id)
     input_json = update_eb_pb_ids(assign_input_json)
 
-    _, unique_id = central_node_low.store_resources(input_json)
+    _, unique_id = central_node_low.store_resources(input_json, "1")
 
     event_recorder.subscribe_event(
         subarray_node_low.subarray_devices.get("sdp_subarray"), "obsState"

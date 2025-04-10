@@ -164,6 +164,15 @@ def subarray_node_low() -> Generator[SubarrayNodeWrapperLow, None, None]:
 
 
 @pytest.fixture()
+def subarray_node_2_low() -> Generator[SubarrayNodeWrapperLow, None, None]:
+    """Return SubarrayNode and calls tear down"""
+    subarray = SubarrayNodeWrapperLow("2")
+    yield subarray
+    # this will call after test complete
+    subarray.tear_down()
+
+
+@pytest.fixture()
 def subarray_node_real_csp_low() -> Generator[
     SubarrayNodeCspWrapperLow, None, None
 ]:

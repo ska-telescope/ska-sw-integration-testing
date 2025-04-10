@@ -69,7 +69,7 @@
       ]
     },
     "resources": {
-      "receptors": ["C1", "C2"],
+      "receptors": ["C1"],
       "receive_nodes": 1
     },
     "processing_blocks": [
@@ -103,10 +103,6 @@
           {
             "station_id": 1,
             "aperture_id": "AP001.01"
-          },
-          {
-            "station_id": 2,
-            "aperture_id": "AP002.01"
           }
         ],
         "number_of_channels": 96

@@ -48,6 +48,7 @@ def subarray_in_ready_obsstate(
         subarray_node_low,
         command_input_factory,
         event_tracer,
+        "1",
     )
     # Then set it to READY state
     """Checks if Subarray's obsState attribute value is SCANNING"""
@@ -72,7 +73,8 @@ def subarray_in_ready_obsstate(
         (pytest.unique_id[0], COMMAND_COMPLETED),
     )
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.SCANNING,
     )
@@ -84,7 +86,7 @@ def invoke_endscan(
     event_tracer: TangoEventTracer,
 ):
     """Invokes EndSCan command before scan duration"""
-    _, pytest.unique_id = subarray_node_low.remove_scan_data()
+    _, pytest.unique_id = subarray_node_low.remove_scan_data("1")
 
     # Verify longRunningCommandResult for the TMC Subarray Node
     assert_that(event_tracer).described_as(
@@ -108,7 +110,8 @@ def subsystem_subarrays_in_scanning(
     """Checks if Subarray's obsState attribute value is READY"""
 
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,
     )
