@@ -14,7 +14,10 @@ from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
 )
-from tests.system_level_tests.utils import check_subarray_obsstate
+from tests.system_level_tests.utils import (
+    check_subarray_obsstate,
+    subscribe_to_obsstate_events,
+)
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
@@ -41,6 +44,11 @@ def invoke_abort_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
     _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
