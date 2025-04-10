@@ -11,7 +11,7 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
 
     @XTP-64112
-    Scenario: Execute Abort on two Low telescope subarrays using TMC 
+    Scenario: Execute Abort on two Low telescope subarrays using TMC for READY
         Given a Low telescope
         And telescope is in ON state
         And a Telescope with 2 subarrays configured for a IDLE

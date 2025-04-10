@@ -20,12 +20,13 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
+@pytest.mark.test1
 @pytest.mark.skip
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/"
     + "xtp_64112_telescope_two_subarrays_testing_abort.feature",
-    "Execute Abort on two Low telescope subarrays using TMC",
+    "Execute Abort on two Low telescope subarrays using TMC for READY",
 )
 def test_abort_command_with_two_subarrays():
     """
