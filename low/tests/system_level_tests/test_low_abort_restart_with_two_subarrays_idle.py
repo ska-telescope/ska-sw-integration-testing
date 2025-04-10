@@ -28,7 +28,7 @@ LOGGER = logging.getLogger(__name__)
 @scenario(
     "system_level_tests/"
     + "xtp_64112_telescope_two_subarrays_testing_abort.feature",
-    "Execute Abort on two Low telescope subarrays using TMC",
+    "Execute Abort on two Low telescope subarrays using TMC for IDLE",
 )
 def test_abort_command_with_two_subarrays():
     """
