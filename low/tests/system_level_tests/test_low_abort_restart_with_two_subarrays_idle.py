@@ -49,7 +49,7 @@ def invoke_abort_subarray1(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
     )
-    _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray("1")
+    _, unique_id = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -58,8 +58,11 @@ def invoke_abort_subarray1(
         '(unique_id,(ResultCode.STARTED,"Command Started"))',
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
-        "obsState",
-        ObsState.ABORTED,
+        "longRunningCommandResult",
+        (
+            unique_id[0],
+            json.dumps((int(ResultCode.STARTED), "Command Started")),
+        ),
     )
 
 
