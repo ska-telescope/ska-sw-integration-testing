@@ -76,7 +76,7 @@ def subarray_in_scanning_obsstate(
         "assign_resources_low", command_input_factory
     )
 
-    _, unique_id = central_node_low.store_resources(input_str)
+    _, unique_id = central_node_low.store_resources(input_str, "1")
 
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node, "obsState", ObsState.IDLE
@@ -93,7 +93,7 @@ def subarray_in_scanning_obsstate(
     input_str = prepare_json_args_for_commands(
         "configure_low", command_input_factory
     )
-    _, unique_id = subarray_node_low.store_configuration_data(input_str)
+    _, unique_id = subarray_node_low.store_configuration_data(input_str, "1")
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node, "obsState", ObsState.READY
     )
@@ -132,7 +132,7 @@ def invoke_endscan(
 ):
     """Invokes EndScan command on TMC"""
     subarray_node_low.set_subarray_id(subarray_id)
-    subarray_node_low.remove_scan_data()
+    subarray_node_low.remove_scan_data("1")
 
 
 @then("the MCCS subarray is transitioned to ObsState READY")

@@ -91,7 +91,7 @@ def check_subarray_is_configured(
 def invoke_endscan(subarray_node_low, subarray_id):
     """A method to invoke EndScan command"""
     subarray_node_low.set_subarray_id(subarray_id)
-    subarray_node_low.remove_scan_data()
+    subarray_node_low.remove_scan_data("1")
 
 
 @then(parsers.parse("the SDP subarray transitions to ObsState READY"))

@@ -43,7 +43,11 @@ def subarray_in_empty_obsstate(
 ):
     """Checks if SubarrayNode's obsState attribute value is EMPTY"""
     central_node_low.set_subarray_id(1)
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
     assert subarray_node_low.subarray_node.obsState == ObsState.EMPTY
 
 
@@ -59,7 +63,9 @@ def invoke_assignresources(
     )
     assign_input_json = update_eb_pb_ids(input_json)
     central_node_low.set_serial_number_of_cbf_processor()
-    _, pytest.unique_id = central_node_low.store_resources(assign_input_json)
+    _, pytest.unique_id = central_node_low.store_resources(
+        assign_input_json, "1"
+    )
     assert_that(event_tracer).described_as(
         'FAILED ASSUMPTION IN "WHEN" STEP: '
         "'the subarray is in IDLE obsState'"
@@ -83,7 +89,8 @@ def subsystem_subarrays_in_resourcing(
 ):
     """Check if all subarrays are in RESOURCING obsState."""
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.RESOURCING,
     )
@@ -95,7 +102,8 @@ def subsystems_subarray_idle(
 ):
     """Check if all subarrays are in IDLE obsState."""
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.IDLE,
     )

@@ -58,7 +58,7 @@ def telescope_is_in_idle_state(
         "assign_resources_low", command_input_factory
     )
     assign_input_json = update_eb_pb_ids(assign_input_json)
-    _, unique_id = central_node_low.store_resources(assign_input_json)
+    _, unique_id = central_node_low.store_resources(assign_input_json, "1")
     event_recorder.subscribe_event(central_node_low.subarray_node, "obsState")
     assert event_recorder.has_change_event_occurred(
         central_node_low.subarray_node,
@@ -84,7 +84,7 @@ def release_resources_to_subarray(
         "release_resources_low", command_input_factory
     )
     _, unique_id = central_node_low.invoke_release_resources(
-        release_input_json
+        release_input_json, "1"
     )
     assert event_recorder.has_change_event_occurred(
         central_node_low.central_node,

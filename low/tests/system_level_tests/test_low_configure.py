@@ -45,22 +45,27 @@ def subarray_in_idle_obsstate(
     command_input_factory,
     event_tracer: TangoEventTracer,
 ):
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
     set_subarray_to_idle(
         central_node_low,
         subarray_node_low,
         command_input_factory,
         event_tracer,
+        "1",
     )
 
 
 @when("I configure it for a scan")
 def invoke_configure(subarray_node_low, event_tracer, command_input_factory):
     configure_input_json = prepare_json_args_for_commands(
-        "configure_low_real", command_input_factory
+        "configure_low_real_subarray1", command_input_factory
     )
     _, pytest.unique_id = subarray_node_low.store_configuration_data(
-        configure_input_json
+        configure_input_json, "1"
     )
 
     # Verify longRunningCommandResult for the TMC Subarray Node
@@ -89,7 +94,8 @@ def subsystem_subarrays_in_configuring(
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.CONFIGURING,
     )
@@ -104,7 +110,8 @@ def tmc_subarray_ready(
     # observation state by verifying the observed state changes for each
     # subarray device. This function can be used to validate any obsState.
     check_subarray_obsstate(
-        subarray_node_low,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,
     )

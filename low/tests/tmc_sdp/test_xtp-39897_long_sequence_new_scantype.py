@@ -55,7 +55,9 @@ def reassign_resources(
         "time-to-ready"
     ] = 2
 
-    _, unique_id = central_node_low.store_resources(json.dumps(assign_str))
+    _, unique_id = central_node_low.store_resources(
+        json.dumps(assign_str), "1"
+    )
 
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_devices.get("sdp_subarray"),

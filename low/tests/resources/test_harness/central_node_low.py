@@ -12,21 +12,27 @@ from ska_tango_testing.integration import TangoEventTracer, log_events
 from tango import DeviceProxy, DevState
 from tests.resources.test_harness.constant import (
     RESET_DEFECT,
-    device_dict_low,
+    device_dict_low_for_cn,
     low_centralnode,
     low_csp_master,
     low_csp_master_leaf_node,
     low_csp_subarray1,
+    low_csp_subarray2,
     low_csp_subarray_leaf_node,
+    low_csp_subarray_leaf_node_2,
     low_sdp_master,
     low_sdp_master_leaf_node,
     low_sdp_subarray1,
+    low_sdp_subarray2,
     low_sdp_subarray_leaf_node,
+    low_sdp_subarray_leaf_node_2,
     mccs_controller,
     mccs_master_leaf_node,
     mccs_subarray1,
+    mccs_subarray2,
     pst,
     tmc_low_subarraynode1,
+    tmc_low_subarraynode2,
 )
 from tests.resources.test_harness.event_recorder import EventRecorder
 from tests.resources.test_harness.helpers import SIMULATED_DEVICES_DICT
@@ -54,20 +60,42 @@ class CentralNodeWrapperLow(object):
     def __init__(self) -> None:
         self.central_node = DeviceProxy(low_centralnode)
         self.subarray_node = DeviceProxy(tmc_low_subarraynode1)
+        self.subarray_node_2 = DeviceProxy(tmc_low_subarraynode2)
         self.csp_master_leaf_node = DeviceProxy(low_csp_master_leaf_node)
         self.sdp_master_leaf_node = DeviceProxy(low_sdp_master_leaf_node)
         self.mccs_master_leaf_node = DeviceProxy(mccs_master_leaf_node)
+
+        # Add the number of subarrays available in the deployment, so that
+        # they will be considered in the tear down
+        self.tmc_subarrays = {
+            "1": self.subarray_node,
+            "2": self.subarray_node_2,
+        }
         self.subarray_devices = {
             "csp_subarray": DeviceProxy(low_csp_subarray1),
             "sdp_subarray": DeviceProxy(low_sdp_subarray1),
             "mccs_subarray": DeviceProxy(mccs_subarray1),
         }
+        self.subarray_2_devices = {
+            "csp_subarray": DeviceProxy(low_csp_subarray2),
+            "sdp_subarray": DeviceProxy(low_sdp_subarray2),
+            "mccs_subarray": DeviceProxy(mccs_subarray2),
+        }
         self.csp_subarray_leaf_node = DeviceProxy(low_csp_subarray_leaf_node)
         self.sdp_subarray_leaf_node = DeviceProxy(low_sdp_subarray_leaf_node)
+        self.csp_subarray_leaf_node_2 = DeviceProxy(
+            low_csp_subarray_leaf_node_2
+        )
+        self.sdp_subarray_leaf_node_2 = DeviceProxy(
+            low_sdp_subarray_leaf_node_2
+        )
         self.subarray_device_by_id: dict = {"1": self.subarray_devices}
         self.csp_subarray1 = DeviceProxy(low_csp_subarray1)
         self.sdp_subarray1 = DeviceProxy(low_sdp_subarray1)
         self.mccs_subarray1 = DeviceProxy(mccs_subarray1)
+        self.csp_subarray2 = DeviceProxy(low_csp_subarray2)
+        self.sdp_subarray2 = DeviceProxy(low_sdp_subarray2)
+        self.mccs_subarray2 = DeviceProxy(mccs_subarray2)
         self.sdp_master = DeviceProxy(low_sdp_master)
         self.csp_master = DeviceProxy(low_csp_master)
         self.mccs_master = DeviceProxy(mccs_controller)
@@ -97,6 +125,7 @@ class CentralNodeWrapperLow(object):
         self.event_tracer.subscribe_event(
             self.subarray_node, "longRunningCommandResult"
         )
+
         log_events(
             {
                 self.central_node: ["longRunningCommandResult"],
@@ -190,7 +219,7 @@ class CentralNodeWrapperLow(object):
         """
         self._telescope_state = value
 
-    @sync_set_to_off(device_dict=device_dict_low)
+    @sync_set_to_off(device_dict=device_dict_low_for_cn)
     def move_to_off(self):
         """
         A method to invoke TelescopeOff command to
@@ -314,75 +343,92 @@ class CentralNodeWrapperLow(object):
         # reset HealthState.UNKNOWN for mock devices
         self._reset_health_state_for_mock_devices()
         self.reset_defects_for_devices()
-        if self.subarray_node.obsState in [
-            ObsState.RESOURCING,
-        ]:
-            LOGGER.info("Calling Abort and Restart on SubarrayNode")
-            _, unique_id = self.subarray_abort()
-            assert_that(self.event_tracer).described_as(
-                "FAILED ASSUMPTION AFTER ABORT COMMAND: "
-                "Central Node device"
-                f"({self.subarray_node.dev_name()}) "
-                "is expected have longRunningCommand as"
-                '(unique_id,(ResultCode.STARTED,"Command Started"))',
-            ).within_timeout(TIMEOUT).has_change_event_occurred(
-                self.subarray_node,
-                "longRunningCommandResult",
-                (
-                    unique_id[0],
-                    json.dumps((int(ResultCode.STARTED), "Command Started")),
-                ),
+        for id, subarray in self.tmc_subarrays.items():
+            LOGGER.info(
+                "Calling Tear down from Central node for Subarray %s, %s",
+                id,
+                subarray,
             )
+            LOGGER.info("Subarray ObsState %s, %s", id, subarray.obsState)
+            if subarray.obsState in [
+                ObsState.RESOURCING,
+            ]:
+                LOGGER.info("Calling Abort and Restart on SubarrayNode")
+                _, unique_id = self.subarray_abort(id)
+                assert_that(self.event_tracer).described_as(
+                    "FAILED ASSUMPTION AFTER ABORT COMMAND: "
+                    "Central Node device"
+                    f"({subarray.dev_name()}) "
+                    "is expected have longRunningCommand as"
+                    '(unique_id,(ResultCode.STARTED,"Command Started"))',
+                ).within_timeout(TIMEOUT).has_change_event_occurred(
+                    subarray,
+                    "longRunningCommandResult",
+                    (
+                        unique_id[0],
+                        json.dumps(
+                            (int(ResultCode.STARTED), "Command Started")
+                        ),
+                    ),
+                )
 
-            _, unique_id = self.subarray_restart()
-            assert_that(self.event_tracer).described_as(
-                "FAILED ASSUMPTION AFTER RESTART COMMAND: "
-                "Central Node device"
-                f"({self.subarray_node.dev_name()}) "
-                "is expected have longRunningCommand as"
-                '(unique_id,(ResultCode.OK,"Command Completed"))',
-            ).within_timeout(TIMEOUT).has_change_event_occurred(
-                self.subarray_node,
-                "longRunningCommandResult",
-                (
-                    unique_id[0],
-                    json.dumps((int(ResultCode.OK), "Command Completed")),
-                ),
-            )
+                _, unique_id = self.subarray_restart(id)
+                assert_that(self.event_tracer).described_as(
+                    "FAILED ASSUMPTION AFTER RESTART COMMAND: "
+                    "Central Node device"
+                    f"({subarray.dev_name()}) "
+                    "is expected have longRunningCommand as"
+                    '(unique_id,(ResultCode.OK,"Command Completed"))',
+                ).within_timeout(TIMEOUT).has_change_event_occurred(
+                    subarray,
+                    "longRunningCommandResult",
+                    (
+                        unique_id[0],
+                        json.dumps((int(ResultCode.OK), "Command Completed")),
+                    ),
+                )
 
-        elif self.subarray_node.obsState == ObsState.ABORTED:
-            _, unique_id = self.subarray_restart()
-            assert_that(self.event_tracer).described_as(
-                "FAILED ASSUMPTION AFTER RESTART COMMAND: "
-                "Central Node device"
-                f"({self.subarray_node.dev_name()}) "
-                "is expected have longRunningCommand as"
-                '(unique_id,(ResultCode.OK,"Command Completed"))',
-            ).within_timeout(TIMEOUT).has_change_event_occurred(
-                self.subarray_node,
-                "longRunningCommandResult",
-                (
-                    unique_id[0],
-                    json.dumps((int(ResultCode.OK), "Command Completed")),
-                ),
-            )
-        elif self.subarray_node.obsState == ObsState.IDLE:
-            LOGGER.info("Calling Release Resource on centralnode")
-            _, unique_id = self.invoke_release_resources(self.release_input)
-            assert_that(self.event_tracer).described_as(
-                "FAILED ASSUMPTION AFTER RELEASE_RESOURCES COMMAND: "
-                "Central Node device"
-                f"({self.central_node.dev_name()}) "
-                "is expected have longRunningCommand as"
-                '(unique_id,(ResultCode.OK,"Command Completed"))',
-            ).within_timeout(TIMEOUT).has_change_event_occurred(
-                self.central_node,
-                "longRunningCommandResult",
-                (
-                    unique_id[0],
-                    json.dumps((int(ResultCode.OK), "Command Completed")),
-                ),
-            )
+            elif subarray.obsState == ObsState.ABORTED:
+                _, unique_id = self.subarray_restart(id)
+                assert_that(self.event_tracer).described_as(
+                    "FAILED ASSUMPTION AFTER RESTART COMMAND: "
+                    "Central Node device"
+                    f"({subarray.dev_name()}) "
+                    "is expected have longRunningCommand as"
+                    '(unique_id,(ResultCode.OK,"Command Completed"))',
+                ).within_timeout(TIMEOUT).has_change_event_occurred(
+                    subarray,
+                    "longRunningCommandResult",
+                    (
+                        unique_id[0],
+                        json.dumps((int(ResultCode.OK), "Command Completed")),
+                    ),
+                )
+            elif subarray.obsState == ObsState.IDLE:
+                LOGGER.info("Calling Release Resource on centralnode")
+                release_json = json.loads(self.release_input)
+                release_json["subarray_id"] = int(id)
+                LOGGER.info(
+                    "release_json[subarray_id]: %s",
+                    release_json["subarray_id"],
+                )
+                _, unique_id = self.invoke_release_resources(
+                    json.dumps(release_json), id
+                )
+                assert_that(self.event_tracer).described_as(
+                    "FAILED ASSUMPTION AFTER RELEASE_RESOURCES COMMAND: "
+                    "Central Node device"
+                    f"({self.central_node.dev_name()}) "
+                    "is expected have longRunningCommand as"
+                    '(unique_id,(ResultCode.OK,"Command Completed"))',
+                ).within_timeout(TIMEOUT).has_change_event_occurred(
+                    self.central_node,
+                    "longRunningCommandResult",
+                    (
+                        unique_id[0],
+                        json.dumps((int(ResultCode.OK), "Command Completed")),
+                    ),
+                )
         if SIMULATED_DEVICES_DICT["sdp_and_mccs"]:
             if self.pst.obsState == ObsState.ABORTED:
                 log_events({self.pst: ["obsState"]})
@@ -410,7 +456,7 @@ class CentralNodeWrapperLow(object):
         # Adding a small sleep to allow the systems to clean up processes
         sleep(0.15)
 
-    @sync_set_to_on(device_dict=device_dict_low)
+    @sync_set_to_on(device_dict=device_dict_low_for_cn)
     def move_to_on(self):
         """
         A method to invoke TelescopeOn command to
@@ -650,8 +696,8 @@ class CentralNodeWrapperLow(object):
             )
         sleep(0.15)
 
-    @sync_assign_resources(device_dict=device_dict_low)
-    def store_resources(self, assign_json: str):
+    @sync_assign_resources()
+    def store_resources(self, assign_json: str, subarray_id: str):
         """Invoke Assign Resource command on subarray Node
         Args:
             assign_json (str): Assign resource input json
@@ -662,8 +708,8 @@ class CentralNodeWrapperLow(object):
         LOGGER.info("Invoked AssignResources on CentralNode")
         return result, message
 
-    @sync_release_resources(device_dict=device_dict_low)
-    def invoke_release_resources(self, input_string):
+    @sync_release_resources()
+    def invoke_release_resources(self, input_string, subarray_id: str):
         """Invoke Release Resource command on central Node
         Args:
             input_string (str): Release resource input json
@@ -671,14 +717,14 @@ class CentralNodeWrapperLow(object):
         result, message = self.central_node.ReleaseResources(input_string)
         return result, message
 
-    @sync_abort(device_dict=device_dict_low)
-    def subarray_abort(self):
+    @sync_abort()
+    def subarray_abort(self, subarray_id):
         """Invoke Abort command on subarray Node"""
         result, message = self.subarray_node.Abort()
         return result, message
 
-    @sync_restart(device_dict=device_dict_low)
-    def subarray_restart(self):
+    @sync_restart()
+    def subarray_restart(self, subarray_id):
         """Invoke Restart command on subarray Node"""
         result, message = self.subarray_node.Restart()
         return result, message

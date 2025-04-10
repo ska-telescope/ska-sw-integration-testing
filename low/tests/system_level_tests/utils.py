@@ -1,8 +1,10 @@
 import json
+import logging
 
 import pytest
 from assertpy import assert_that
 from ska_control_model import ObsState
+from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
 from tango import DeviceProxy
 from tests.resources.test_harness.central_node_low import CentralNodeWrapperLow
@@ -18,33 +20,32 @@ from tests.resources.test_support.common_utils.tmc_helpers import (
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
+configure_logging(logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
 
 
-def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
+def subscribe_to_obsstate_events(
+    event_tracer, subarray_devices, subarray_node
+):
     """Subscribe to obsState events for all relevant subarray devices."""
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["sdp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["csp_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(
-        subarray_node_low.subarray_devices["mccs_subarray"], "obsState"
-    )
-    event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
+    event_tracer.subscribe_event(subarray_devices["sdp_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_devices["csp_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_devices["mccs_subarray"], "obsState")
+    event_tracer.subscribe_event(subarray_node, "obsState")
 
 
 def check_subarray_obsstate(
-    subarray_node_low: SubarrayNodeWrapperLow,
+    subarray_devices: dict,
+    subarray_node,
     event_tracer: TangoEventTracer,
     obs_state: ObsState,
 ):
     """Check if each subarray device is in the expected obsState."""
     subarray_devices = {
-        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
-        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
-        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
-        "TMC": subarray_node_low.subarray_node,
+        "SDP": subarray_devices["sdp_subarray"],
+        "CSP": subarray_devices["csp_subarray"],
+        "MCCS": subarray_devices["mccs_subarray"],
+        "TMC": subarray_node,
     }
 
     for name, device in subarray_devices.items():
@@ -61,10 +62,23 @@ def set_subarray_to_idle(
     subarray_node_low: SubarrayNodeWrapperLow,
     command_input_factory,
     event_tracer: TangoEventTracer,
+    subarray_id: str,
 ):
     """Helper method to set subarray to IDLE ObsState."""
     # Subscribe to obsState change events
-    subscribe_to_obsstate_events(event_tracer, subarray_node_low)
+    json = (
+        "assign_resources_low_real_subarray"
+        + subarray_id
+        + "_station"
+        + subarray_id
+    )
+
+    subscribe_to_obsstate_events(
+        event_tracer,
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+    )
+
     cbf_proc1 = DeviceProxy("low-cbf/processor/0.0.0")
     cbf_proc2 = DeviceProxy("low-cbf/processor/0.0.1")
 
@@ -75,13 +89,16 @@ def set_subarray_to_idle(
     cbf_proc2.serialnumber = "XFL1HOOQ1Y44"
     cbf_proc2.subscribetoallocator("low-cbf/allocator/0")
     cbf_proc2.register()
+
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
-        "assign_resources_low_real", command_input_factory
+        json, command_input_factory
     )
     assign_input_json = update_eb_pb_ids(input_json)
     # central_node_low.set_serial_number_of_cbf_processor()
-    _, unique_id = central_node_low.store_resources(assign_input_json)
+    _, unique_id = central_node_low.store_resources(
+        assign_input_json, subarray_id
+    )
 
     # Verify longRunningCommandResult for the TMC Central Node
     assert_that(event_tracer).described_as(
@@ -97,9 +114,20 @@ def set_subarray_to_idle(
         (unique_id[0], COMMAND_COMPLETED),
     )
 
+    # Confirm subarray is in RESOURCING ObsState
+    check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.RESOURCING,
+    )
+
     # Confirm subarray is in IDLE ObsState
     check_subarray_obsstate(
-        subarray_node_low, event_tracer, obs_state=ObsState.IDLE
+        subarray_node_low.subarray_devices,
+        subarray_node_low.subarray_node,
+        event_tracer,
+        obs_state=ObsState.IDLE,
     )
 
 
@@ -116,10 +144,10 @@ def execute_command(
     """
     if command_name.lower() == "configure":
         input_json = prepare_json_args_for_commands(
-            "configure_low_real", command_input_factory
+            "configure_low_real_subarray1", command_input_factory
         )
         _, pytest.unique_id = subarray_node_low.store_configuration_data(
-            input_json
+            input_json, "1"
         )
     else:
         subarray_node_low.execute_transition(command_name)
@@ -135,7 +163,10 @@ def execute_command(
             (pytest.unique_id[0], COMMAND_COMPLETED),
         )
         check_subarray_obsstate(
-            subarray_node_low, event_tracer, obs_state=expected_obs_state
+            subarray_node_low.subarray_devices,
+            subarray_node_low.subarray_node,
+            event_tracer,
+            obs_state=expected_obs_state,
         )
 
 

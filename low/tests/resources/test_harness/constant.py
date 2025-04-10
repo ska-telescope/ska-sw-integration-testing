@@ -120,6 +120,9 @@ mccs_master_leaf_node = "low-tmc/leaf-node-mccs/0"
 low_csp_subarray_leaf_node = "low-tmc/subarray-leaf-node-csp/01"
 low_sdp_subarray_leaf_node = "low-tmc/subarray-leaf-node-sdp/01"
 mccs_subarray_leaf_node = "low-tmc/subarray-leaf-node-mccs/01"
+low_csp_subarray_leaf_node_2 = "low-tmc/subarray-leaf-node-csp/02"
+low_sdp_subarray_leaf_node_2 = "low-tmc/subarray-leaf-node-sdp/02"
+mccs_subarray_leaf_node_2 = "low-tmc/subarray-leaf-node-mccs/02"
 low_sdp_subarray1 = "low-sdp/subarray/01"
 low_sdp_subarray2 = "low-sdp/subarray/02"
 low_sdp_subarray3 = "low-sdp/subarray/03"
@@ -138,18 +141,34 @@ mccs_prefix = "low-mccs/*"
 mccs_subarraybeam = "low-mccs/subarraybeam/01"
 pst = "low-pst/beam/01"
 
-device_dict_low = {
+tmc_low_subarray_prefix = "low-tmc/subarray/"
+low_csp_subarray_leaf_prefix = "low-tmc/subarray-leaf-node-csp/"
+low_sdp_subarray_leaf_prefix = "low-tmc/subarray-leaf-node-sdp/"
+mccs_subarray_leaf_prefix = "low-tmc/subarray-leaf-node-mccs/"
+low_sdp_subarray_prefix = "low-sdp/subarray/"
+low_csp_subarray_prefix = "low-csp/subarray/"
+mccs_subarray_prefix = "low-mccs/subarray/"
+
+
+device_dict_low_for_cn = {
     "csp_master": low_csp_master,
     "tmc_subarraynode": tmc_low_subarraynode1,
+    "tmc_subarraynode2": tmc_low_subarraynode2,
     "sdp_master": low_sdp_master,
     "mccs_master": mccs_controller,
     "sdp_subarray": low_sdp_subarray1,
+    "sdp_subarray2": low_sdp_subarray2,
     "csp_subarray": low_csp_subarray1,
+    "csp_subarray2": low_csp_subarray2,
     "sdp_subarray_leaf_node": low_sdp_subarray_leaf_node,
+    "sdp_subarray_leaf_node2": low_sdp_subarray_leaf_node_2,
     "csp_subarray_leaf_node": low_csp_subarray_leaf_node,
+    "csp_subarray_leaf_node2": low_csp_subarray_leaf_node_2,
     "mccs_master_leaf_node": mccs_master_leaf_node,
     "mccs_subarray_leaf_node": mccs_subarray_leaf_node,
+    "mccs_subarray_leaf_node2": mccs_subarray_leaf_node_2,
     "mccs_subarray": mccs_subarray1,
+    "mccs_subarray2": mccs_subarray2,
     "central_node": low_centralnode,
 }
 

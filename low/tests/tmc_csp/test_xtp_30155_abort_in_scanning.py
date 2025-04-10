@@ -45,7 +45,7 @@ def subarray_busy_scanning(
         "assign_resources_low", command_input_factory
     )
     # Invoking AssignResources command
-    central_node_low.store_resources(input_json)
+    central_node_low.store_resources(input_json, "1")
     event_recorder.subscribe_event(subarray_node_low.subarray_node, "obsState")
     event_recorder.subscribe_event(
         subarray_node_low.subarray_devices.get("csp_subarray"),
@@ -61,7 +61,7 @@ def subarray_busy_scanning(
         "configure_low", command_input_factory
     )
     # Invoking Configure command
-    subarray_node_low.store_configuration_data(configure_input_json)
+    subarray_node_low.store_configuration_data(configure_input_json, "1")
 
     assert event_recorder.has_change_event_occurred(
         subarray_node_low.subarray_node,
