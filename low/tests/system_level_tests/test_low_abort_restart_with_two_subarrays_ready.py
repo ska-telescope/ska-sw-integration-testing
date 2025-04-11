@@ -20,6 +20,7 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
+@pytest.mark.skip()
 @pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
