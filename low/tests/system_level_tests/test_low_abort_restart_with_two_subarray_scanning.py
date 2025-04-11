@@ -96,7 +96,7 @@ def invoke_abort_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray()
+    _, pytest.unique_id = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -106,7 +106,7 @@ def invoke_abort_subarray1(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
+        (pytest.unique_id[0], COMMAND_COMPLETED),
     )
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
@@ -129,10 +129,7 @@ def chek_obsste_for_subarray1(
     )
 
 
-@then(
-    "subarray2 continues to be in Obstate=ready with the originally assigned "
-    "resources and configuration"
-)
+@then("subarray2 continues to be in Obstate=ready after the scan duration")
 def chek_obsste_for_subarray2(
     subarray_node_2_low, event_tracer: TangoEventTracer
 ):

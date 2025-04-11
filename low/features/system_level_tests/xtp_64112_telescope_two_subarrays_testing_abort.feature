@@ -29,4 +29,4 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         When I invoke scan command on two subarrays
         When I Abort subarray1
         Then subarray1 goes to obstate= empty 
-        And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
+        And subarray2 continues to be in Obstate=ready after the scan duration
