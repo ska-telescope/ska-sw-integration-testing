@@ -276,7 +276,6 @@ def subarrays_in_ready_obsstate(
         "longRunningCommandResult",
         (pytest.unique_id_sa_2[0], COMMAND_COMPLETED),
     )
-
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,

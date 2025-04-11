@@ -7,7 +7,7 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         And telescope is in ON state
         And 2 subarrays are in obsState IDLE
         When I Abort subarray1
-        then subarray1 goes to obstate= empty
+        Then subarray1 goes to obstate= empty
         And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
 
     @XTP-64112
@@ -17,7 +17,7 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         And 2 subarrays are in obsState IDLE
         And a Telescope with 2 subarrays configured for a READY
         When I Abort subarray1
-        then subarray1 goes to obstate= empty 
+        Then subarray1 goes to obstate= empty 
         And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
 
     @XTP-64112
@@ -28,8 +28,8 @@ Feature: This feature describes Abort and Restart workflows for the Low telescop
         And a Telescope with 2 subarrays configured for a READY (i.e. ObsState=Ready)
         When I invoke scan command on two subarrays
         When I Abort subarray1
-        then subarray1 goes to obstate= empty 
-        And subarray2 continues to be in Obstate=ready with the originally assigned resources and configuration
+        Then subarray1 goes to obstate= empty 
+        And subarray2 continues to be in Obstate=ready after the scan duration
 
     XTP-78765 @XTP-64112
     Scenario: Verify Abort-Restart workflow on Subarray 1 in obsState CONFIGURING while subarray 2 is configured successfully

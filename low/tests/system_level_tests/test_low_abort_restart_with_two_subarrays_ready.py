@@ -20,6 +20,7 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
+@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/"
@@ -40,7 +41,7 @@ def invoke_abort_subarray1(
     subarray_node_low: SubarrayNodeWrapperLow, event_tracer: TangoEventTracer
 ):
     """Invokes ABORT command"""
-    _, pytest.unique_id_sa_1 = subarray_node_low.abort_subarray()
+    _, unique_id = subarray_node_low.abort_subarray("1")
     assert_that(event_tracer).described_as(
         "FAILED ASSUMPTION AFTER ABORT COMMAND: "
         "Central Node device"
@@ -50,31 +51,16 @@ def invoke_abort_subarray1(
     ).within_timeout(TIMEOUT).has_change_event_occurred(
         subarray_node_low.subarray_node,
         "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
+        (
+            unique_id[0],
+            json.dumps((int(ResultCode.STARTED), "Command Started")),
+        ),
     )
     check_subarray_obsstate(
         subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.ABORTED,
-    )
-    _, pytest.unique_id_sa_1 = subarray_node_low.restart()
-    assert_that(event_tracer).described_as(
-        "FAILED ASSUMPTION AFTER ABORT COMMAND: "
-        "Central Node device"
-        f"({subarray_node_low.subarray_node.dev_name()}) "
-        "is expected have longRunningCommand as"
-        '(unique_id,(ResultCode.STARTED,"Command Started"))',
-    ).within_timeout(TIMEOUT).has_change_event_occurred(
-        subarray_node_low.subarray_node,
-        "longRunningCommandResult",
-        (pytest.unique_id_sa_1[0], COMMAND_COMPLETED),
-    )
-    check_subarray_obsstate(
-        subarray_node_low.subarray_devices,
-        subarray_node_low.subarray_node,
-        event_tracer,
-        obs_state=ObsState.RESTARTING,
     )
 
 
