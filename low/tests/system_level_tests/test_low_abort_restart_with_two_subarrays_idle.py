@@ -26,7 +26,6 @@ configure_logging(logging.DEBUG)
 LOGGER = logging.getLogger(__name__)
 
 
-@pytest.mark.test1
 @pytest.mark.system_level_tests
 @scenario(
     "system_level_tests/"
