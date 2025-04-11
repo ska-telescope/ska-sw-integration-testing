@@ -155,7 +155,7 @@ def subarray_in_obsstate(
             f"TMC Subarray Node ({subarray_node_low.subarray_node.dev_name()})"
             "is expected to have longRunningCommandResult as"
             '(unique_id,(ResultCode.OK,"Command Completed"))'
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
+        ).within_timeout(200).has_change_event_occurred(
             subarray_node_low.subarray_node,
             "longRunningCommandResult",
             (pytest.unique_id[0], COMMAND_COMPLETED),
