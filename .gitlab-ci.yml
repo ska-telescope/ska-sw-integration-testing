@@ -56,12 +56,12 @@ k8s-test-low:
   variables:
     TELESCOPE: 'SKA-low'
     KUBE_NAMESPACE: 'ci-dev-ska-low-integration' #'ci-dev-ska-low-integration'
-    MARK: 'test1'
+    MARK: 'system_level_tests'
     CSP_SIMULATION_ENABLED: 'false'
     SDP_SIMULATION_ENABLED: 'false'
     MCCS_SIMULATION_ENABLED: 'false'
   script:
-    - make k8s-test MARK='test1'
+    - make k8s-test MARK='system_level_tests'
   after_script:
     - pip3 install -q -U ska-ser-xray
     - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
