@@ -3,7 +3,7 @@ import logging
 
 import pytest
 from assertpy import assert_that
-from pytest_bdd import scenario, then, when
+from pytest_bdd import given, scenario, then, when
 from ska_control_model import ObsState
 from ska_ser_logging import configure_logging
 from ska_tango_testing.integration import TangoEventTracer
@@ -40,7 +40,7 @@ def test_abort_command_with_two_subarrays():
 # @given("telescope is in ON state") -> conftest
 
 
-@when("I invoke scan command on two subarrays")
+@given("I invoke scan command on two subarrays")
 def invoke_scan_on_two_subarrays(
     subarray_node_low, subarray_node_2_low, event_tracer, command_input_factory
 ):
