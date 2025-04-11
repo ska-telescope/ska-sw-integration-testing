@@ -14,7 +14,10 @@ from tests.resources.test_support.common_utils.result_code import ResultCode
 from tests.resources.test_support.common_utils.tmc_helpers import (
     prepare_json_args_for_commands,
 )
-from tests.system_level_tests.utils import set_subarray_to_idle
+from tests.system_level_tests.utils import (
+    check_subarray_obsstate,
+    set_subarray_to_idle,
+)
 
 TIMEOUT = 100
 COMMAND_COMPLETED = json.dumps([ResultCode.OK, "Command Completed"])
@@ -177,29 +180,29 @@ def subscribe_to_obsstate_events(event_tracer, subarray_node_low):
     event_tracer.subscribe_event(subarray_node_low.subarray_node, "obsState")
 
 
-def check_subarray_obsstate(
-    subarray_node_low: SubarrayNodeWrapperLow,
-    event_tracer: TangoEventTracer,
-    obs_state: ObsState,
-):
-    """Check if each subarray device is in the expected obsState."""
-    subarray_devices = {
-        "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
-        "CSP": subarray_node_low.subarray_devices["csp_subarray"],
-        "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
-        "TMC": subarray_node_low.subarray_node,
-    }
+# def check_subarray_obsstate(
+#     subarray_node_low: SubarrayNodeWrapperLow,
+#     event_tracer: TangoEventTracer,
+#     obs_state: ObsState,
+# ):
+#     """Check if each subarray device is in the expected obsState."""
+#     subarray_devices = {
+#         "SDP": subarray_node_low.subarray_devices["sdp_subarray"],
+#         "CSP": subarray_node_low.subarray_devices["csp_subarray"],
+#         "MCCS": subarray_node_low.subarray_devices["mccs_subarray"],
+#         "TMC": subarray_node_low.subarray_node,
+#     }
 
-    for name, device in subarray_devices.items():
-        assert_that(event_tracer).described_as(
-            f"{name} Subarray device ({device.dev_name()}) "
-            f"should be in {obs_state.name} obsState."
-        ).within_timeout(TIMEOUT).has_change_event_occurred(
-            device, "obsState", obs_state
-        )
+#     for name, device in subarray_devices.items():
+#         assert_that(event_tracer).described_as(
+#             f"{name} Subarray device ({device.dev_name()}) "
+#             f"should be in {obs_state.name} obsState."
+#         ).within_timeout(TIMEOUT).has_change_event_occurred(
+#             device, "obsState", obs_state
+#         )
 
 
-@given("a Telescope with 2 subarrays configured for a IDLE")
+@given("2 subarrays are in obsState IDLE")
 def subarrays_in_idle_obsstate(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -275,11 +278,13 @@ def subarrays_in_ready_obsstate(
     )
 
     check_subarray_obsstate(
+        subarray_node_low.subarray_devices,
         subarray_node_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,
     )
     check_subarray_obsstate(
+        subarray_node_2_low.subarray_devices,
         subarray_node_2_low.subarray_node,
         event_tracer,
         obs_state=ObsState.READY,

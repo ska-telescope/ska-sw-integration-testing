@@ -57,6 +57,19 @@ def check_subarray_obsstate(
         )
 
 
+def register_cbf_proc_devices():
+    cbf_proc1 = DeviceProxy("low-cbf/processor/0.0.0")
+    cbf_proc2 = DeviceProxy("low-cbf/processor/0.0.1")
+
+    cbf_proc1.serialnumber = "XFL14SLO1LIF"
+    cbf_proc1.subscribetoallocator("low-cbf/allocator/0")
+    cbf_proc1.register()
+
+    cbf_proc2.serialnumber = "XFL1HOOQ1Y44"
+    cbf_proc2.subscribetoallocator("low-cbf/allocator/0")
+    cbf_proc2.register()
+
+
 def set_subarray_to_idle(
     central_node_low: CentralNodeWrapperLow,
     subarray_node_low: SubarrayNodeWrapperLow,
@@ -79,16 +92,7 @@ def set_subarray_to_idle(
         subarray_node_low.subarray_node,
     )
 
-    cbf_proc1 = DeviceProxy("low-cbf/processor/0.0.0")
-    cbf_proc2 = DeviceProxy("low-cbf/processor/0.0.1")
-
-    cbf_proc1.serialnumber = "XFL14SLO1LIF"
-    cbf_proc1.subscribetoallocator("low-cbf/allocator/0")
-    cbf_proc1.register()
-
-    cbf_proc2.serialnumber = "XFL1HOOQ1Y44"
-    cbf_proc2.subscribetoallocator("low-cbf/allocator/0")
-    cbf_proc2.register()
+    register_cbf_proc_devices()
 
     # Prepare and assign resources
     input_json = prepare_json_args_for_centralnode_commands(
